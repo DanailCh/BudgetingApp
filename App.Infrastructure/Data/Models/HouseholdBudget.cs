@@ -14,19 +14,25 @@ namespace App.Infrastructure.Data.Models
     {
         [Key]
         [Required]
+        [Comment("Identifier for household budget")]
         public int Id { get; set; }
 
         [Required]
+        [Comment("Date for Household Budget")]
         public DateTime Date { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        [Comment("Monthly Income of the Household")]
         public decimal Income { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        [Comment("Monthly Expences of the Household")]
         public decimal Expences { get; set; }
 
         [Required]
-        [Comment("Identifier for User")]
+        [Comment("Foreign key for User")]
         public string UserId { get; set; } = String.Empty;
 
 

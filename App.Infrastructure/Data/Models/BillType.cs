@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,6 +16,7 @@ namespace App.Infrastructure.Data.Models
     {
         [Key]
         [Required]
+        [Comment("Identifier for BillType")]
         public int Id { get; set; }
 
         [Required]
@@ -22,12 +24,14 @@ namespace App.Infrastructure.Data.Models
         [Comment("BillType name")]
         public string Name { get; set; }=String.Empty;
 
-        [Required]
-        [Comment("Identifier for User created BillTypes.Default BillTypes will not have UserId")]
-        public string UserId { get; set; } = String.Empty;
+       
+        [Comment("Foreign key for User created BillTypes.Default BillTypes will not have UserId")]
+        public string? UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
         public IdentityUser? User { get; set; }
+
+        public ICollection<Bill> Bills { get; set; } = new List<Bill>();
 
     }
 }

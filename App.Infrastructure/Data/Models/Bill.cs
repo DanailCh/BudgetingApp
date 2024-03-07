@@ -14,27 +14,33 @@ namespace App.Infrastructure.Data.Models
     {
         [Key]
         [Required]
+        [Comment("Identifier for Bill")]
         public int Id { get; set; }
 
         [Required]
+        [Comment("Foreign key for BillType")]
         public int BillTypeId { get; set; }
 
         [ForeignKey(nameof(BillTypeId))]
         public BillType BillType { get; set; } = null!;
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        [Comment("Cost for Bill")]
         public decimal Cost { get; set; }
 
         [Required]
+        [Comment("For which month and year is the Bill")]
         public DateTime Date { get; set; }
 
-        public int PayerId { get; set; }
+        [Comment("Foreign key for which household member payed the Bill")]
+        public int? PayerId { get; set; }
 
         [ForeignKey(nameof(PayerId))]
         public HouseholdMember? Payer { get; set; }
 
         [Required]
-        [Comment("Identifier for User")]
+        [Comment("Foreign key for User")]
         public string UserId { get; set; } = String.Empty;
 
 

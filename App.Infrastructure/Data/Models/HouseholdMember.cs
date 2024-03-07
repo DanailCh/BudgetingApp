@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -25,12 +26,16 @@ namespace App.Infrastructure.Data.Models
         public string Name { get; set; }=String.Empty;
 
         [Required]
-        [Comment("Identifier for User")]
+        [Comment("Foreign key for User")]
         public string UserId { get; set; }= String.Empty;
 
 
         [ForeignKey(nameof(UserId))]
         public IdentityUser User { get; set; } = null!;
+
+        public ICollection<Bill> Bills { get; set; } = new List<Bill>();
+
+        public ICollection<MemberSalary> MemberSalaries { get; set; } = new List<MemberSalary>();
 
     }
 }
