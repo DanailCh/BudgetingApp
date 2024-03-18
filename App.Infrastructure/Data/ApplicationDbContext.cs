@@ -1,7 +1,9 @@
-﻿using App.Infrastructure.Data.Models;
+﻿using App.Infrastructure.Data.Configurations;
+using App.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace HouseholdBudgetingApp.Data
 {
@@ -37,6 +39,10 @@ namespace HouseholdBudgetingApp.Data
                 .WithMany(h => h.MemberSalaries)
                 .HasForeignKey(m => m.HouseholdMemberId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new BillTypeConfiguration());
+            //modelBuilder.ApplyConfiguration(new TaskConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
