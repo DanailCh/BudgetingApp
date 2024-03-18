@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "HouseholdIncomeAndExpensesWebbApp": {
+    "HouseholdBudgetingApp": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

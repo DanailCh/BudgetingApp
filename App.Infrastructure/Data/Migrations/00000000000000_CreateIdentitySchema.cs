@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace HouseholdIncomeAndExpensesWebbApp.Data.Migrations
+namespace HouseholdBudgetingApp.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

@@ -1,10 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-HouseholdIncomeAndExpensesWebbApp-213E71AA-22F3-4B6E-90AC-E4A016D126EB</UserSecretsId>
+    <UserSecretsId>aspnet-HouseholdBudgetingApp-213E71AA-22F3-4B6E-90AC-E4A016D126EB</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

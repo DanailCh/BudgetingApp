@@ -1,4 +1,4 @@
-namespace HouseholdIncomeAndExpensesWebbApp.Models
+namespace HouseholdBudgetingApp.Models
 {
     public class ErrorViewModel
     {

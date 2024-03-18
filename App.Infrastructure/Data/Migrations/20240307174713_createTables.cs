@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace HouseholdIncomeAndExpensesWebbApp.Data.Migrations
+namespace HouseholdBudgetingApp.Data.Migrations
 {
     /// <inheritdoc />
     public partial class createTables : Migration

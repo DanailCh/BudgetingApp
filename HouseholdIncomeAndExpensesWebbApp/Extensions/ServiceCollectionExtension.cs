@@ -1,4 +1,6 @@
-﻿using HouseholdIncomeAndExpensesWebbApp.Data;
+﻿using App.Core.Contracts;
+using App.Core.Services;
+using HouseholdBudgetingApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +10,9 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddScoped<IBillService, BillService>();
+           
+
             return services;
         }
 

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
-namespace HouseholdIncomeAndExpensesWebbApp.Data
+namespace HouseholdBudgetingApp.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {

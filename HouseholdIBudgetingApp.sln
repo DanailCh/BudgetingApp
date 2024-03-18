@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseholdIncomeAndExpensesWebbApp", "HouseholdIncomeAndExpensesWebbApp\HouseholdIncomeAndExpensesWebbApp.csproj", "{9B84CD91-EC29-4647-8D21-3307E176A381}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HouseholdBudgetingApp", "HouseholdIncomeAndExpensesWebbApp\HouseholdBudgetingApp.csproj", "{9B84CD91-EC29-4647-8D21-3307E176A381}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Infrastructure", "App.Infrastructure\App.Infrastructure.csproj", "{323C3214-794E-4976-97E6-328D9B9141BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Infrastructure", "App.Infrastructure\App.Infrastructure.csproj", "{323C3214-794E-4976-97E6-328D9B9141BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Core", "App.Core\App.Core.csproj", "{3AAFADE0-5A4C-4907-AD63-842074F88BE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Core", "App.Core\App.Core.csproj", "{3AAFADE0-5A4C-4907-AD63-842074F88BE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
