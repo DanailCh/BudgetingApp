@@ -1,4 +1,5 @@
 ﻿using App.Core.Models.Bill;
+using App.Core.Models.BillType;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,8 @@ namespace App.Core.Contracts
     {
         Task<IEnumerable<BillViewModel>> AllBillsAsync(string userId);
 
-        Task CreateBillAsync(BillFormModel model);
+        Task CreateBillAsync(BillFormModel model,string userId);
+        Task <IEnumerable<BillTypeViewModel>> GetBillTypesAsync(string userId);
 
         Task EditBillByIdAsync(BillFormModel model, int id);
         Task DeleteBillByIdAsync(int id);

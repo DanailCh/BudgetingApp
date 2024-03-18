@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using HouseholdBudgetingApp.Data;
 using Microsoft.EntityFrameworkCore;
+using App.Infrastructure.Data.Models;
+using App.Core.Models.BillType;
 
 namespace App.Core.Services
 {
@@ -30,9 +32,18 @@ namespace App.Core.Services
             
         }
 
-        public async Task CreateBillAsync(BillFormModel model)
+        public async Task CreateBillAsync(BillFormModel model,string userId)
         {
-            throw new NotImplementedException();
+            var bill = new Bill
+            {
+                BillTypeId = model.BillTypeId,
+                Cost = model.Cost,
+                PayerId = model.PayerId,
+                UserId = userId,
+                Date = model.Date,
+            };
+            await _context.Bills.AddAsync(bill);
+            await _context.SaveChangesAsync();
         }
 
         public Task DeleteBillByIdAsync(int id)
@@ -41,6 +52,11 @@ namespace App.Core.Services
         }
 
         public Task EditBillByIdAsync(BillFormModel model, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<BillTypeViewModel>> GetBillTypesAsync(string userId)
         {
             throw new NotImplementedException();
         }
