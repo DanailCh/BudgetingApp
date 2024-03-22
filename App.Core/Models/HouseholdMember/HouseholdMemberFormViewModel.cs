@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace App.Core.Models.HouseholdMember
 {
-    public class HouseholdMemberViewModel
+    public class HouseholdMemberFormViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = String.Empty;

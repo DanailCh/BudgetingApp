@@ -14,10 +14,19 @@
             <div class="card-body">
                 <h5 class="card-title mt-1">@e.BillTypeName</h5>                
                 <p class="mb-0"><span class="fw-bold">Cost: </span>@e.Cost</p>
+                @{if (e.PayedBy=="Not Payed")
+                {
+                            <p class="mb-0"><span class="fw-bold">Payed By: None </span></p>
+                }
+                else
+                {
+                            <p class="mb-0"><span class="fw-bold">Payed By: </span>@e.PayedBy</p>
+                }}
+                
             </div>
 
             <a asp-controller="Bill" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
-            
+            <a asp-controller="Bill" asp-action="Delete" asp-route-id="@e.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Delete</a>
         </div>
     }
 </div>

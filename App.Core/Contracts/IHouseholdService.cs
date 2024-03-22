@@ -11,12 +11,13 @@ namespace App.Core.Contracts
 {
     public interface IHouseholdService
     {
-        Task<IEnumerable<HouseholdMemberViewModel>> AllHouseholdMembersAsync(string userId);
+        Task<IEnumerable<HouseholdMemberFormViewModel>> AllHouseholdMembersAsync(string userId);
 
-        Task CreateHouseholdMemberAsync(HouseholdMemberViewModel model, string userId);
-        Task<IEnumerable<HouseholdMemberViewModel>> GetHouseholdMembersAsync(string userId);
+        Task CreateHouseholdMemberAsync(HouseholdMemberFormViewModel model, string userId);
+        Task<IEnumerable<HouseholdMemberFormViewModel>> GetHouseholdMembersAsync(string userId);
 
-        Task EditHouseholdMemberByIdAsync(HouseholdMemberViewModel model, int id);
+        Task EditHouseholdMemberByIdAsync(HouseholdMemberFormViewModel model, int id);
+        Task<HouseholdMemberFormViewModel> FindHouseholdMemberByIdAsync(int id);
         Task DeleteHouseholdMemberByIdAsync(int id);
     }
 }

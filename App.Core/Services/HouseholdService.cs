@@ -20,9 +20,9 @@ namespace App.Core.Services
         {
             _context = context;
         }
-        public async Task<IEnumerable<HouseholdMemberViewModel>> AllHouseholdMembersAsync(string userId)
+        public async Task<IEnumerable<HouseholdMemberFormViewModel>> AllHouseholdMembersAsync(string userId)
         {
-            var members = await _context.HouseholdMembers.AsNoTracking().Where(m => m.UserId == userId).Select(m => new HouseholdMemberViewModel
+            var members = await _context.HouseholdMembers.AsNoTracking().Where(m => m.UserId == userId).Select(m => new HouseholdMemberFormViewModel
             {
                 Id = m.Id,
                 Name = m.Name,
@@ -31,11 +31,11 @@ namespace App.Core.Services
             return members;
         }
 
-        public async Task CreateHouseholdMemberAsync(HouseholdMemberViewModel model, string userId)
+        public async Task CreateHouseholdMemberAsync(HouseholdMemberFormViewModel model, string userId)
         {
             var member = new HouseholdMember
             {
-                Id = model.Id,
+                
                 Name=model.Name,
                 UserId = userId,
                 
@@ -49,17 +49,37 @@ namespace App.Core.Services
             throw new NotImplementedException();
         }
 
-        public Task EditHouseholdMemberByIdAsync(HouseholdMemberViewModel model, int id)
+        public async Task EditHouseholdMemberByIdAsync(HouseholdMemberFormViewModel model, int id)
         {
-            throw new NotImplementedException();
+            var member = await _context.HouseholdMembers.FindAsync(id);
+            if (member != null)
+            {
+                member.Name = model.Name;
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public async Task<IEnumerable<HouseholdMemberViewModel>> GetHouseholdMembersAsync(string userId)
+        public async Task<HouseholdMemberFormViewModel> FindHouseholdMemberByIdAsync(int id)
+        {
+           HouseholdMemberFormViewModel foundMember;
+            var member = await _context.HouseholdMembers.FindAsync(id);
+            if (member == null)
+            {
+                return null;
+            }
+
+            return foundMember = new HouseholdMemberFormViewModel()
+            {
+               Name = member.Name,
+            };
+        }
+
+        public async Task<IEnumerable<HouseholdMemberFormViewModel>> GetHouseholdMembersAsync(string userId)
         {
             var types = await _context
                 .HouseholdMembers.AsNoTracking()
                 .Where(b => b.UserId == userId)
-                .Select(t => new HouseholdMemberViewModel()
+                .Select(t => new HouseholdMemberFormViewModel()
                 {
                     Id = t.Id,
                     Name = t.Name
