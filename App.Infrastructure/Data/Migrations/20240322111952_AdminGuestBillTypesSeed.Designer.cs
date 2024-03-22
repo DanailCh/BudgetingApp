@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HouseholdBudgetingApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240318131601_AdminGuestBillTypeSeed")]
-    partial class AdminGuestBillTypeSeed
+    [Migration("20240322111952_AdminGuestBillTypesSeed")]
+    partial class AdminGuestBillTypesSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,32 +95,27 @@ namespace HouseholdBudgetingApp.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Electricity",
-                            UserId = "efa000aa-adc4-4e24-a145-1ea26fa418b8"
+                            Name = "Electricity"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Water",
-                            UserId = "efa000aa-adc4-4e24-a145-1ea26fa418b8"
+                            Name = "Water"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Heat",
-                            UserId = "efa000aa-adc4-4e24-a145-1ea26fa418b8"
+                            Name = "Heat"
                         },
                         new
                         {
                             Id = 4,
-                            Name = "Internet",
-                            UserId = "efa000aa-adc4-4e24-a145-1ea26fa418b8"
+                            Name = "Internet"
                         },
                         new
                         {
                             Id = 5,
-                            Name = "Rent",
-                            UserId = "efa000aa-adc4-4e24-a145-1ea26fa418b8"
+                            Name = "Rent"
                         });
                 });
 
@@ -338,29 +333,29 @@ namespace HouseholdBudgetingApp.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7e63efa5-331d-4c9d-895e-a62932cf9d16",
+                            Id = "529039c5-1688-44f7-a240-2fdcded4f3ee",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1105b607-2e89-478a-8067-e1665bc79a32",
+                            ConcurrencyStamp = "eb8441dd-2b1d-4394-8d8b-d3d72fa91f68",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "GUEST@GUEST.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFl+eJQ/9LFaL6NNI+Nzv5sExKe5GMYXuhynNcNeHRlov5pWl3mHnw9vs2GQPdJtQA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIqidsNU0x60sf8R7W2ZKfy8U7JYyTiUhdspS5VWMOxl5Wg7mfeQ/STIlaOpQRJXWg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "dcbfbdc5-cf2f-497a-83c3-7c314e8132ab",
+                            SecurityStamp = "6e724bc7-0e61-44e8-bb11-4637ac414f3e",
                             TwoFactorEnabled = false,
                             UserName = "guest@guest.bg"
                         },
                         new
                         {
-                            Id = "efa000aa-adc4-4e24-a145-1ea26fa418b8",
+                            Id = "eaeace5c-bfa5-4b25-a7e3-25b91e3917fd",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6ddf1a4c-b6fb-4ac3-a0c3-52c69bb2fa95",
+                            ConcurrencyStamp = "3ac4ace8-bcf2-49b2-ae5f-8b1632052377",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN@ADMIN.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPYc4UkSoT6vkFIjbmuPBg8EFLyRJxZLqwkD9MRggA2Gd7T29xUr7GgSWDxqx6zP3A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDZgl4xC1WmZVZNsfXv2YuxyJDWlOkEaXTc2zTpsXF+TGJa9/YhO5/G8+ZKgRHFTPA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "118921c1-57e1-4bfd-a8ed-8382a7229e8b",
+                            SecurityStamp = "0221e71d-25ae-4d74-a53e-400cfa7a578b",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.bg"
                         });

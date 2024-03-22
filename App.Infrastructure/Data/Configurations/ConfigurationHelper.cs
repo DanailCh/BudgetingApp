@@ -17,32 +17,32 @@ namespace App.Infrastructure.Data.Configurations
         {
             Id = 1,
             Name = "Electricity",
-            UserId = AdminUser.Id,
+           
         };
 
         public static BillType WaterType = new BillType()
         {
             Id = 2,
             Name = "Water",
-            UserId = AdminUser.Id,
+           
         };
         public static BillType HeatType = new BillType()
         {
             Id = 3,
             Name = "Heat",
-            UserId = AdminUser.Id,
+           
         };
         public static BillType InternetType = new BillType()
         {
             Id = 4,
             Name = "Internet",
-            UserId = AdminUser.Id,
+            
         };
         public static BillType RentType = new BillType()
         {
             Id = 5,
             Name = "Rent",
-            UserId = AdminUser.Id,
+           
         };
 
         private static IdentityUser GetGuestUser()

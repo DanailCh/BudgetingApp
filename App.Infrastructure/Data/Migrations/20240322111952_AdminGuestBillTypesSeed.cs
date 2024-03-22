@@ -7,7 +7,7 @@
 namespace HouseholdBudgetingApp.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AdminGuestBillTypeSeed : Migration
+    public partial class AdminGuestBillTypesSeed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,8 +17,8 @@ namespace HouseholdBudgetingApp.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "7e63efa5-331d-4c9d-895e-a62932cf9d16", 0, "1105b607-2e89-478a-8067-e1665bc79a32", null, false, false, null, null, "GUEST@GUEST.BG", "AQAAAAEAACcQAAAAEFl+eJQ/9LFaL6NNI+Nzv5sExKe5GMYXuhynNcNeHRlov5pWl3mHnw9vs2GQPdJtQA==", null, false, "dcbfbdc5-cf2f-497a-83c3-7c314e8132ab", false, "guest@guest.bg" },
-                    { "efa000aa-adc4-4e24-a145-1ea26fa418b8", 0, "6ddf1a4c-b6fb-4ac3-a0c3-52c69bb2fa95", null, false, false, null, null, "ADMIN@ADMIN.BG", "AQAAAAEAACcQAAAAEPYc4UkSoT6vkFIjbmuPBg8EFLyRJxZLqwkD9MRggA2Gd7T29xUr7GgSWDxqx6zP3A==", null, false, "118921c1-57e1-4bfd-a8ed-8382a7229e8b", false, "admin@admin.bg" }
+                    { "529039c5-1688-44f7-a240-2fdcded4f3ee", 0, "eb8441dd-2b1d-4394-8d8b-d3d72fa91f68", null, false, false, null, null, "GUEST@GUEST.BG", "AQAAAAEAACcQAAAAEIqidsNU0x60sf8R7W2ZKfy8U7JYyTiUhdspS5VWMOxl5Wg7mfeQ/STIlaOpQRJXWg==", null, false, "6e724bc7-0e61-44e8-bb11-4637ac414f3e", false, "guest@guest.bg" },
+                    { "eaeace5c-bfa5-4b25-a7e3-25b91e3917fd", 0, "3ac4ace8-bcf2-49b2-ae5f-8b1632052377", null, false, false, null, null, "ADMIN@ADMIN.BG", "AQAAAAEAACcQAAAAEDZgl4xC1WmZVZNsfXv2YuxyJDWlOkEaXTc2zTpsXF+TGJa9/YhO5/G8+ZKgRHFTPA==", null, false, "0221e71d-25ae-4d74-a53e-400cfa7a578b", false, "admin@admin.bg" }
                 });
 
             migrationBuilder.InsertData(
@@ -26,11 +26,11 @@ namespace HouseholdBudgetingApp.Data.Migrations
                 columns: new[] { "Id", "Name", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "Electricity", "efa000aa-adc4-4e24-a145-1ea26fa418b8" },
-                    { 2, "Water", "efa000aa-adc4-4e24-a145-1ea26fa418b8" },
-                    { 3, "Heat", "efa000aa-adc4-4e24-a145-1ea26fa418b8" },
-                    { 4, "Internet", "efa000aa-adc4-4e24-a145-1ea26fa418b8" },
-                    { 5, "Rent", "efa000aa-adc4-4e24-a145-1ea26fa418b8" }
+                    { 1, "Electricity", null },
+                    { 2, "Water", null },
+                    { 3, "Heat", null },
+                    { 4, "Internet", null },
+                    { 5, "Rent", null }
                 });
         }
 
@@ -40,7 +40,12 @@ namespace HouseholdBudgetingApp.Data.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
-                keyValue: "7e63efa5-331d-4c9d-895e-a62932cf9d16");
+                keyValue: "529039c5-1688-44f7-a240-2fdcded4f3ee");
+
+            migrationBuilder.DeleteData(
+                table: "AspNetUsers",
+                keyColumn: "Id",
+                keyValue: "eaeace5c-bfa5-4b25-a7e3-25b91e3917fd");
 
             migrationBuilder.DeleteData(
                 table: "BillTypes",
@@ -66,11 +71,6 @@ namespace HouseholdBudgetingApp.Data.Migrations
                 table: "BillTypes",
                 keyColumn: "Id",
                 keyValue: 5);
-
-            migrationBuilder.DeleteData(
-                table: "AspNetUsers",
-                keyColumn: "Id",
-                keyValue: "efa000aa-adc4-4e24-a145-1ea26fa418b8");
         }
     }
 }
