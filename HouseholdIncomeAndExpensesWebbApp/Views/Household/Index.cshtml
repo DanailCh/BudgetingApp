@@ -16,7 +16,9 @@
             </div>
 
             <a asp-controller="Household" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
-            <a asp-controller="Household" asp-action="Delete" asp-route-id="@e.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Delete</a>
+            <form class="input-group-sm " asp-controller="Household" asp-action="Delete" asp-route-id="@e.Id">
+                <input type="submit" value="Delete" class="fs-6 btn btn-warning mb-3 w-100 p-3 fw-bold" />
+            </form>
         </div>
     }
     <a asp-controller="Household" asp-action="Add" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Add a new member</a>

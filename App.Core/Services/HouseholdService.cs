@@ -22,7 +22,7 @@ namespace App.Core.Services
         }
         public async Task<IEnumerable<HouseholdMemberFormViewModel>> AllHouseholdMembersAsync(string userId)
         {
-            var members = await _context.HouseholdMembers.AsNoTracking().Where(m => m.UserId == userId).Select(m => new HouseholdMemberFormViewModel
+            var members = await _context.HouseholdMembers.AsNoTracking().Where(m => m.UserId == userId && m.DeletedOn==null).Select(m => new HouseholdMemberFormViewModel
             {
                 Id = m.Id,
                 Name = m.Name,
@@ -44,9 +44,17 @@ namespace App.Core.Services
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteHouseholdMemberByIdAsync(int id)
+        public async Task DeleteHouseholdMemberByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            
+            var member = await _context.HouseholdMembers.FindAsync(id);
+            if (member != null)
+            {
+                member.DeletedOn= DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
+
+            
         }
 
         public async Task EditHouseholdMemberByIdAsync(HouseholdMemberFormViewModel model, int id)

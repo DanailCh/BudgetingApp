@@ -33,5 +33,8 @@ namespace App.Infrastructure.Data.Models
 
         public ICollection<Bill> Bills { get; set; } = new List<Bill>();
 
+        [Comment("Date of deletion")]
+        public DateTime? DeletedOn { get; set; }
+
     }
 }

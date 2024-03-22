@@ -4,6 +4,7 @@ using HouseholdBudgetingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HouseholdBudgetingApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240322144908_softDeleteColumns")]
+    partial class softDeleteColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,7 +67,7 @@ namespace HouseholdBudgetingApp.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bills", (string)null);
+                    b.ToTable("Bills");
                 });
 
             modelBuilder.Entity("App.Infrastructure.Data.Models.BillType", b =>
@@ -94,7 +97,7 @@ namespace HouseholdBudgetingApp.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BillTypes", (string)null);
+                    b.ToTable("BillTypes");
 
                     b.HasData(
                         new
@@ -154,7 +157,7 @@ namespace HouseholdBudgetingApp.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("HouseholdBudgets", (string)null);
+                    b.ToTable("HouseholdBudgets");
                 });
 
             modelBuilder.Entity("App.Infrastructure.Data.Models.HouseholdMember", b =>
@@ -185,7 +188,7 @@ namespace HouseholdBudgetingApp.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("HouseholdMembers", (string)null);
+                    b.ToTable("HouseholdMembers");
                 });
 
             modelBuilder.Entity("App.Infrastructure.Data.Models.MemberSalary", b =>
@@ -220,7 +223,7 @@ namespace HouseholdBudgetingApp.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("MemberSalaries", (string)null);
+                    b.ToTable("MemberSalaries");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

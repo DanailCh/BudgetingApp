@@ -71,5 +71,15 @@ namespace HouseholdBudgetingApp.Controllers
             return RedirectToAction("Index");
 
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await householdService.DeleteHouseholdMemberByIdAsync(id);
+
+            return RedirectToAction("Index");
+        }
+
+       
     }
 }

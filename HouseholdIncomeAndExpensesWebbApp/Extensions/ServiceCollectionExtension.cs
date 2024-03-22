@@ -1,8 +1,10 @@
 ﻿using App.Core.Contracts;
 using App.Core.Services;
+using App.Infrastructure.Data.Configurations;
 using HouseholdBudgetingApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -22,6 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
             var connectionString = config.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
+            
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 

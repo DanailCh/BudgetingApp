@@ -42,9 +42,13 @@ namespace HouseholdBudgetingApp.Data
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new BillTypeConfiguration());
-            
 
             base.OnModelCreating(modelBuilder);
+
+            
+
         }
+
+
     }
 }

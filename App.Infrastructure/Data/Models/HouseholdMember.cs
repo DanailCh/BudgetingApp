@@ -37,5 +37,8 @@ namespace App.Infrastructure.Data.Models
 
         public ICollection<MemberSalary> MemberSalaries { get; set; } = new List<MemberSalary>();
 
+        [Comment("Date of deletion")]
+        public DateTime? DeletedOn { get; set; }
+
     }
 }
