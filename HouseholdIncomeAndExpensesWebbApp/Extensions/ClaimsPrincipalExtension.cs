@@ -4,8 +4,9 @@
      {
          public static string Id(this ClaimsPrincipal user)
          {
-             return user.FindFirstValue(ClaimTypes.NameIdentifier);
-         }
+            //return user.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+            return user.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
      }
    
 }

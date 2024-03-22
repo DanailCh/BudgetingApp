@@ -13,8 +13,8 @@ namespace App.Core.Models.Bill
        
         public int BillTypeId { get; set; }
         public decimal Cost { get; set; }
-        public int PayerId { get; set; }
-        public DateTime Date { get; set; }
+        public int? PayerId { get; set; }
+        public string Date { get; set; }
        
 
         public IEnumerable<BillTypeViewModel> BillTypes { get; set; } = Enumerable.Empty<BillTypeViewModel>();

@@ -11,7 +11,8 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IBillService, BillService>();
-           
+            services.AddScoped<IHouseholdService, HouseholdService>();
+
 
             return services;
         }

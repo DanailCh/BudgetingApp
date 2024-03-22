@@ -16,6 +16,7 @@ namespace App.Core.Contracts
         Task <IEnumerable<BillTypeViewModel>> GetBillTypesAsync(string userId);
 
         Task EditBillByIdAsync(BillFormModel model, int id);
+        Task<BillFormModel> FindBillByIdAsync(int id);
         Task DeleteBillByIdAsync(int id);
     }
 }

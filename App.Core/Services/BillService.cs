@@ -9,6 +9,7 @@ using HouseholdBudgetingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using App.Infrastructure.Data.Models;
 using App.Core.Models.BillType;
+using Microsoft.Identity.Client;
 
 namespace App.Core.Services
 {
@@ -26,7 +27,7 @@ namespace App.Core.Services
                 Id = b.Id,
                 BillTypeName = b.BillType.Name,
                 Cost = b.Cost,
-                PayedBy = b.Payer.Name
+                PayedBy = b.Payer.Name ?? "Not Payed"
             }).ToListAsync();
             return bills;
             
@@ -34,13 +35,14 @@ namespace App.Core.Services
 
         public async Task CreateBillAsync(BillFormModel model,string userId)
         {
+         
             var bill = new Bill
             {
                 BillTypeId = model.BillTypeId,
                 Cost = model.Cost,
                 PayerId = model.PayerId,
                 UserId = userId,
-                Date = model.Date,
+                Date = DateTime.Parse(model.Date),
             };
             await _context.Bills.AddAsync(bill);
             await _context.SaveChangesAsync();
@@ -51,14 +53,52 @@ namespace App.Core.Services
             throw new NotImplementedException();
         }
 
-        public Task EditBillByIdAsync(BillFormModel model, int id)
+        public async Task EditBillByIdAsync(BillFormModel model, int id)
         {
-            throw new NotImplementedException();
+            var bill = await _context.Bills.FindAsync(id);
+            if(bill != null)
+            {
+                bill.BillTypeId = model.BillTypeId;
+                bill.Cost = model.Cost;
+                bill.PayerId = model.PayerId;
+                bill.Date = DateTime.Parse(model.Date);
+                await _context.SaveChangesAsync();
+            }
+
+            
         }
 
-        public Task<IEnumerable<BillTypeViewModel>> GetBillTypesAsync(string userId)
+        public async Task<BillFormModel> FindBillByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            BillFormModel foundBill;
+           var bill=await _context.Bills.FindAsync(id);
+            if (bill==null)
+            {
+                return null;
+            }
+
+            return foundBill = new BillFormModel()
+            { 
+                BillTypeId = bill.BillTypeId,
+                Cost=bill.Cost,
+                PayerId=bill.PayerId,
+                Date=bill.Date.ToString()
+            };
+        }
+
+        public async Task<IEnumerable<BillTypeViewModel>> GetBillTypesAsync(string userId)
+        {
+           
+             var types = await _context
+                 .BillTypes.AsNoTracking()
+                 .Where(b=>b.UserId==userId || b.UserId == null)
+                 .Select(t => new BillTypeViewModel()
+                 {
+                     Id = t.Id,
+                     Name = t.Name
+                 }).ToListAsync();
+             return types;
+           
         }
     }
 }
