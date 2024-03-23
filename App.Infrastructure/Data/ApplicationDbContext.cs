@@ -19,6 +19,7 @@ namespace HouseholdBudgetingApp.Data
         public DbSet<HouseholdBudget> HouseholdBudgets { get; init; }
         public DbSet<HouseholdMember> HouseholdMembers { get; init; }
         public DbSet<MemberSalary> MemberSalaries { get; init; }
+        public DbSet<EndMonthSummary> EndMonthSummaries { get; init; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
