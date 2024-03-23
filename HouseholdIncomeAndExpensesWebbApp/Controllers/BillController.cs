@@ -122,5 +122,14 @@ namespace HouseholdBudgetingApp.Controllers
             await billService.EditBillByIdAsync(model, id);
             return RedirectToAction("Index");
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await billService.DeleteBillByIdAsync(id);
+
+            return RedirectToAction("Index");
+        }
     }
 }

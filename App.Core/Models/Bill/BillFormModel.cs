@@ -17,7 +17,7 @@ namespace App.Core.Models.Bill
         public string Date { get; set; }
        
 
-        public IEnumerable<BillTypeViewModel> BillTypes { get; set; } = Enumerable.Empty<BillTypeViewModel>();
+        public IEnumerable<BillTypeFormViewModel> BillTypes { get; set; } = Enumerable.Empty<BillTypeFormViewModel>();
         public IEnumerable<HouseholdMemberFormViewModel> Payers { get; set; } = Enumerable.Empty<HouseholdMemberFormViewModel>();
 
     }

@@ -22,7 +22,7 @@ namespace App.Core.Services
         }
         public async Task<IEnumerable<BillViewModel>> AllBillsAsync(string userId)
         {
-            var bills = await _context.Bills.AsNoTracking().Where(b => b.UserId == userId).Select(b => new BillViewModel
+            var bills = await _context.Bills.AsNoTracking().Where(b => b.UserId == userId&&b.DeletedOn==null).Select(b => new BillViewModel
             {
                 Id = b.Id,
                 BillTypeName = b.BillType.Name,
@@ -48,9 +48,14 @@ namespace App.Core.Services
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteBillByIdAsync(int id)
+        public async Task DeleteBillByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var bill = await _context.Bills.FindAsync(id);
+            if (bill != null)
+            {
+                bill.DeletedOn = DateTime.Now;
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task EditBillByIdAsync(BillFormModel model, int id)
@@ -86,13 +91,13 @@ namespace App.Core.Services
             };
         }
 
-        public async Task<IEnumerable<BillTypeViewModel>> GetBillTypesAsync(string userId)
+        public async Task<IEnumerable<BillTypeFormViewModel>> GetBillTypesAsync(string userId)
         {
            
              var types = await _context
                  .BillTypes.AsNoTracking()
-                 .Where(b=>b.UserId==userId || b.UserId == null)
-                 .Select(t => new BillTypeViewModel()
+                 .Where(b=>(b.UserId==userId || b.UserId == null)&&b.DeletedOn==null)
+                 .Select(t => new BillTypeFormViewModel()
                  {
                      Id = t.Id,
                      Name = t.Name

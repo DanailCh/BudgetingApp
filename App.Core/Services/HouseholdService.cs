@@ -84,15 +84,15 @@ namespace App.Core.Services
 
         public async Task<IEnumerable<HouseholdMemberFormViewModel>> GetHouseholdMembersAsync(string userId)
         {
-            var types = await _context
+            var members = await _context
                 .HouseholdMembers.AsNoTracking()
-                .Where(b => b.UserId == userId)
-                .Select(t => new HouseholdMemberFormViewModel()
+                .Where(m => m.UserId == userId&&m.DeletedOn==null)
+                .Select(m => new HouseholdMemberFormViewModel()
                 {
-                    Id = t.Id,
-                    Name = t.Name
+                    Id = m.Id,
+                    Name = m.Name
                 }).ToListAsync();
-            return types;
+            return members;
 
         }
     }

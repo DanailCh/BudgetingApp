@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace App.Core.Models.BillType
 {
-    public class BillTypeViewModel
+    public class BillTypeFormViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = String.Empty;
