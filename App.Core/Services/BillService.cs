@@ -42,7 +42,7 @@ namespace App.Core.Services
                 Cost = model.Cost,
                 PayerId = model.PayerId,
                 UserId = userId,
-                Date = DateTime.Parse(model.Date),
+                Date = model.Date,
             };
             await _context.Bills.AddAsync(bill);
             await _context.SaveChangesAsync();
@@ -65,8 +65,7 @@ namespace App.Core.Services
             {
                 bill.BillTypeId = model.BillTypeId;
                 bill.Cost = model.Cost;
-                bill.PayerId = model.PayerId;
-                bill.Date = DateTime.Parse(model.Date);
+                bill.PayerId = model.PayerId;                
                 await _context.SaveChangesAsync();
             }
 
@@ -86,8 +85,7 @@ namespace App.Core.Services
             { 
                 BillTypeId = bill.BillTypeId,
                 Cost=bill.Cost,
-                PayerId=bill.PayerId,
-                Date=bill.Date.ToString()
+                PayerId=bill.PayerId,                
             };
         }
 

@@ -37,11 +37,18 @@ namespace HouseholdBudgetingApp.Controllers
         public async Task<IActionResult> Add()
         {
             var userId = User.Id();
+            DateTime date = DateTime.Now;
+            DateTime monthYearOnly = new DateTime(date.Year, date.Month, 1);
+
+            string formattedDate = monthYearOnly.ToString("MMMM yyyy");
+            ViewBag.Date = formattedDate;
             var model = new BillFormModel()
             {
                 BillTypes = await billService.GetBillTypesAsync(userId),
-                Payers=await householdService.GetHouseholdMembersAsync(userId)
+                Payers=await householdService.GetHouseholdMembersAsync(userId),
+                Date=monthYearOnly,
             };
+            
             return View(model);
         }
 
@@ -54,18 +61,18 @@ namespace HouseholdBudgetingApp.Controllers
                 ModelState.AddModelError(nameof(model.BillTypeId), "Type does not exist.");
             }
 
-            DateTime date = DateTime.Now;
+            //DateTime date = DateTime.Now;
             
 
-            if (!DateTime.TryParseExact(
-                model.Date,"yyyy-MM-dd H:mm",
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out date))
-            {
-                ModelState
-                    .AddModelError(nameof(model.Date), $"Invalid date! Format must be: yyyy-MM-dd H:mm");
-            }
+            //if (!DateTime.TryParseExact(
+            //    model.Date,"yyyy-MM-dd H:mm",
+            //    CultureInfo.InvariantCulture,
+            //    DateTimeStyles.None,
+            //    out date))
+            //{
+            //    ModelState
+            //        .AddModelError(nameof(model.Date), $"Invalid date! Format must be: yyyy-MM-dd H:mm");
+            //}
 
             if (!ModelState.IsValid)
             {
@@ -98,18 +105,18 @@ namespace HouseholdBudgetingApp.Controllers
                 ModelState.AddModelError(nameof(model.BillTypeId), "Type does not exist.");
             }
 
-            DateTime date = DateTime.Now;
+            //DateTime date = DateTime.Now;
 
 
-            if (!DateTime.TryParseExact(
-                model.Date, "yyyy-MM-dd H:mm",
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out date))
-            {
-                ModelState
-                    .AddModelError(nameof(model.Date), $"Invalid date! Format must be: yyyy-MM-dd H:mm");
-            }
+            //if (!DateTime.TryParseExact(
+            //    model.Date, "yyyy-MM-dd H:mm",
+            //    CultureInfo.InvariantCulture,
+            //    DateTimeStyles.None,
+            //    out date))
+            //{
+            //    ModelState
+            //        .AddModelError(nameof(model.Date), $"Invalid date! Format must be: yyyy-MM-dd H:mm");
+            //}
 
             if (!ModelState.IsValid)
             {
