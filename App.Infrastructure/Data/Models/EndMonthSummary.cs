@@ -28,6 +28,9 @@ namespace App.Infrastructure.Data.Models
         [Comment("Summary content")]
         public string Summary { get; set; } = String.Empty;
 
+        [Required]       
+        public bool IsResolved { get; set; }
+
         [Required]
         [Comment("Foreign key for User")]
         public string? UserId { get; set; }

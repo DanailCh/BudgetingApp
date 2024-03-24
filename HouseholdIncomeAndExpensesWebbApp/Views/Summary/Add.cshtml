@@ -1,0 +1,32 @@
+﻿@model IEnumerable<SummaryFormModel>
+@{
+    ViewBag.Title = $"Summarize month: {ViewBag.Date}";
+}
+
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="row">
+    <form asp-action="Add" method="post">
+    @foreach (var e in Model)
+    {
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+         <div class="mb-3">
+                    <h5 class="card-title mt-1">@e.Name</h5>
+                    <label asp-for="@e.Salary" class="form-label-add-edit">This month salary</label>
+             <input asp-for="@e.Salary" class="form-control" aria-required="true"></input>
+             <span asp-validation-for="@e.Salary" class="text-danger"></span>
+         </div> 
+    </div>
+    }
+    <div class="mb-3">
+                <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Add" />
+            </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

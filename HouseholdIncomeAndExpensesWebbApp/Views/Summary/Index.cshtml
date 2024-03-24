@@ -1,0 +1,37 @@
+﻿@model IEnumerable<SummaryViewModel>
+@{
+    ViewBag.Title = "All Summaries";
+}
+
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="text-center row">
+    @foreach (var e in Model)
+    {
+        <div class="card col-4" style="width: 20rem; ">
+            <div class="card-body">
+                <h5 class="card-title mt-1">@e.Date</h5>
+                <p class="mb-0"><span class="fw-bold">Summary: </span>@e.Summary</p>
+                @{
+                    if (e.IsResolved)
+                    {
+                        <p class="mb-0"><span class="fw-bold">Resolved</span></p>
+                    }
+                    else
+                    {
+                        <form class="input-group-sm " asp-controller="Summary" asp-action="Resolve" asp-route-id="@e.Id">
+                            <input type="submit" value="Resolve" class="fs-6 btn btn-warning mb-3 w-100 p-3 fw-bold" />
+                        </form>
+                    }
+                }
+            </div>
+        </div>
+    }
+    <a asp-controller="Summary" asp-action="Add" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Summarize curent month</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

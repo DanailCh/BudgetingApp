@@ -15,6 +15,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IBillService, BillService>();
             services.AddScoped<IHouseholdService, HouseholdService>();
             services.AddScoped<IBillTypeService, BillTypeService>();
+            services.AddScoped<IBudgetSummaryService, BudgetSummaryService>();
+            services.AddScoped<ISummaryLogicService, SummaryLogicService>();
 
 
             return services;
