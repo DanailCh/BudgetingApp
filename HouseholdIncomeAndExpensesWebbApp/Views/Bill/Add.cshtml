@@ -25,16 +25,24 @@
                 <input asp-for="@Model.Cost" class="form-control" aria-required="true"></input>
                 <span asp-validation-for="@Model.Cost" class="text-danger"></span>
             </div>
+
+
             <div class="mb-3">
                 <label asp-for="@Model.PayerId" class="form-label-add-edit">Payed By</label>
-                <select asp-for="@Model.PayerId" class="form-control" aria-required="false">
+                <div class="form-check">
+                    <input type="radio" name="PayerId" value="" class="form-check-input" aria-required="false" checked >
+                    <label class="form-check-label">Not Paid</label><br>
                     @foreach (var type in Model.Payers)
                     {
-                        <option value="@type.Id">@type.Name</option>
+                        <input type="radio" name="PayerId" value="@type.Id" class="form-check-input" aria-required="false">
+                        <label class="form-check-label">@type.Name</label>
+
+                        <br>
                     }
-                </select>
+                </div>
                 <span asp-validation-for="@Model.PayerId" class="text-danger"></span>
-            </div>                       
+            </div>
+
             <div class="mb-3">
                 <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Add" />
             </div>

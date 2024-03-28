@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<BillViewModel>
 @{
-    ViewBag.Title = "Current month's bills.";
+    ViewBag.Title = $"{ViewBag.Date} bills.";
 }
 
 
@@ -14,27 +14,57 @@
             <div class="card-body">
                 <h5 class="card-title mt-1">@e.BillTypeName</h5>                
                 <p class="mb-0"><span class="fw-bold">Cost: </span>@e.Cost</p>
-                @{if (e.PayedBy=="Not Payed")
+                @{if (!e.IsPayed)
                 {
-                            <p class="mb-0"><span class="fw-bold">Payed By: None </span></p>
+                                <p class="mb-0"><span class="fw-bold">Payed By: None </span></p>
+                        <button class="btn btn-warning mb-2 w-100 p-3 fw-bold PayButton" data-target="#hiddenSection-@e.Id">Pay</button>
+                        <section id="hiddenSection-@e.Id" class="hiddenSection" style="display: none;">
+                            <form class="input-group-sm " asp-controller="Bill" asp-action="Pay" asp-route-id="@e.Id">
+                            <label asp-for="@e.PayerId" class="form-label-add-edit">Choose who payed the bill</label>
+                            <div class="form-check">
+                                @foreach (var type in e.Payers)
+                                {
+                                    <input type="radio" name="PayerId" value="@type.Id" class="form-check-input" aria-required="true">
+                                    <label class="form-check-label">@type.Name</label>
+
+                                    <br>
+                                }
+                            </div>
+                            <span asp-validation-for="@e.PayerId" class="text-danger"></span>
+                            
+                                <input type="submit" value="Pay" class="fs-6 btn btn-warning mb-3 w-100 p-3 fw-bold" />
+                            </form>
+                        </section>
+                        <a asp-controller="Bill" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
+                        
                 }
                 else
                 {
-                            <p class="mb-0"><span class="fw-bold">Payed By: </span>@e.PayedBy</p>
+                                <p class="mb-0"><span class="fw-bold">Payed By: </span>@e.PayedBy</p>
                 }}
                 
             </div>
-
-            <a asp-controller="Bill" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
             <form class="input-group-sm " asp-controller="Bill" asp-action="Delete" asp-route-id="@e.Id">
                 <input type="submit" value="Delete" class="fs-6 btn btn-warning mb-3 w-100 p-3 fw-bold" />
             </form>
+           
         </div>
     }
     <a asp-controller="Bill" asp-action="Add" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Add a new bill</a>
     <a asp-controller="BillType" asp-action="Index" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Custom BillTypes</a>
 </div>
 
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('.PayButton').click(function () {
+                var targetId = $(this).data('target');
+                $(targetId).toggle();
+            });
+        });
+    </script>
+    <script src="~/js/payBtn.js"></script>
+
 }
