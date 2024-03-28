@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App.Core.Models.HouseholdMember;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,10 @@ namespace App.Core.Models.Bill
         public int Id { get; set; }
         public string BillTypeName { get; set; }=String.Empty;
         public decimal Cost { get; set; }
+        public bool IsPayed { get; set; }
         public string PayedBy { get; set; }= String.Empty;
+        public int PayerId { get; set; }
+
+        public IEnumerable<HouseholdMemberFormViewModel> Payers { get; set; } = Enumerable.Empty<HouseholdMemberFormViewModel>();
     }
 }
