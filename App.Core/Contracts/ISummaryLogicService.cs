@@ -10,7 +10,8 @@ namespace App.Core.Contracts
     public interface ISummaryLogicService
     {
          string GetSummary(IEnumerable<SummaryFormModel> s, string userId);
-         Task<decimal> GetHouseholdExpences(DateTime date);
+         decimal GetHouseholdExpences(DateTime date);
+
 
     }
 }
