@@ -33,6 +33,10 @@ namespace App.Infrastructure.Data.Models
         [Comment("For which month and year is the Bill")]
         public DateTime Date { get; set; }
 
+        [Required]
+        [Comment("Is the Bill Payed")]
+        public bool IsPayed { get; set; }
+
         [Comment("Foreign key for which household member payed the Bill")]
         public int? PayerId { get; set; }
 
