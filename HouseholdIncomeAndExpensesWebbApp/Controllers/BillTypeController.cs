@@ -22,8 +22,8 @@ namespace HouseholdBudgetingApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var userId = User.Id();            
-            var model = await billTypeService.AllCustomBillTypesAsync(userId);
+                     
+            var model = await billTypeService.AllCustomBillTypesAsync(User.Id());
             return View(model);
         }
         [HttpGet]
@@ -36,15 +36,16 @@ namespace HouseholdBudgetingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(BillTypeFormViewModel model)
         {
-            var userId = User.Id();
-            
-
+            if(await billTypeService.BillTypeExistsAsync(model, User.Id()))
+            {
+                ModelState.AddModelError(nameof(model.Name), "Bill Type already exist.");
+            }
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            await billTypeService.CreateCustomBillTypeAsync(model, userId);
+            await billTypeService.CreateCustomBillTypeAsync(model, User.Id());
             return RedirectToAction("Index");
 
         }

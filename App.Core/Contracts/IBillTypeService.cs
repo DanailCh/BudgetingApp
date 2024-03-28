@@ -13,8 +13,11 @@ namespace App.Core.Contracts
         Task<IEnumerable<BillTypeFormViewModel>> AllCustomBillTypesAsync(string userId);
 
         Task CreateCustomBillTypeAsync(BillTypeFormViewModel model, string userId);
-       
-        
+
+        Task<bool> BillTypeExistsAsync(BillTypeFormViewModel model, string userId);
+
+
+
         Task DeleteCustomBillTypeByIdAsync(int id);
     }
 }
