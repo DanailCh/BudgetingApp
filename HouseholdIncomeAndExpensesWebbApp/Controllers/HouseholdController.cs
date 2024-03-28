@@ -23,8 +23,8 @@ namespace HouseholdBudgetingApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var userId = User.Id();
-            var model = await householdService.AllHouseholdMembersAsync(userId);
+            
+            var model = await householdService.AllHouseholdMembersAsync(User.Id());
 
             return View(model);
         }
@@ -32,6 +32,10 @@ namespace HouseholdBudgetingApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
+            if (await householdService.OverMembersLimitAsync(User.Id()))
+            {
+                return BadRequest();
+            }
             var model = new HouseholdMemberFormViewModel();           
             return View(model);
         }
@@ -39,7 +43,10 @@ namespace HouseholdBudgetingApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(HouseholdMemberFormViewModel model)
         {
-            var userId = User.Id();
+            if(await householdService.OverMembersLimitAsync(User.Id()))
+            {
+                return BadRequest();
+            }
             
 
             if (!ModelState.IsValid)
@@ -47,34 +54,24 @@ namespace HouseholdBudgetingApp.Controllers
                 return View(model);
             }
 
-            await householdService.CreateHouseholdMemberAsync(model, userId);
+            await householdService.CreateHouseholdMemberAsync(model, User.Id());
             return RedirectToAction("Index");
 
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {           
-            var model = await householdService.FindHouseholdMemberByIdAsync(id);
-            return View(model);
-        }
-        [HttpPost]
-        public async Task<IActionResult> Edit(HouseholdMemberFormViewModel model,int id)
-        {
-            
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            await householdService.EditHouseholdMemberByIdAsync(model, id);
-            return RedirectToAction("Index");
-
-        }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
+            if (await householdService.MemberExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            if (await householdService.MemberBelongsToUserAsync(id, User.Id()) == false)
+            {
+                return Unauthorized();
+            }
             await householdService.DeleteHouseholdMemberByIdAsync(id);
 
             return RedirectToAction("Index");

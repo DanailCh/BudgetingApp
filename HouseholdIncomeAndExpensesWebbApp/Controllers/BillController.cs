@@ -28,7 +28,7 @@ namespace HouseholdBudgetingApp.Controllers
         public async Task<IActionResult> Index()
         {
             var model = await billService.AllCurentMonthBillsAsync(User.Id(), billService.GetDate());
-            foreach (var item in model) { item.Payers = await householdService.GetHouseholdMembersAsync(User.Id()); }
+            foreach (var item in model) { item.Payers = await householdService.AllHouseholdMembersAsync(User.Id()); }
             ViewBag.Date = billService.GetFormatedDate();
             return View(model);
         }
@@ -41,7 +41,7 @@ namespace HouseholdBudgetingApp.Controllers
             var model = new BillFormModel()
             {
                 BillTypes = await billService.GetBillTypesAsync(User.Id()),
-                Payers=await householdService.GetHouseholdMembersAsync(User.Id()),                
+                Payers=await householdService.AllHouseholdMembersAsync(User.Id()),                
             };
             
             return View(model);
@@ -70,7 +70,7 @@ namespace HouseholdBudgetingApp.Controllers
             if (!ModelState.IsValid)
             {
                 model.BillTypes = await billService.GetBillTypesAsync(User.Id());
-                model.Payers = await householdService.GetHouseholdMembersAsync(User.Id());
+                model.Payers = await householdService.AllHouseholdMembersAsync(User.Id());
 
                 return View(model);
             }
@@ -149,7 +149,7 @@ namespace HouseholdBudgetingApp.Controllers
             }
            
 
-            if (!(await householdService.GetHouseholdMembersAsync(User.Id())).Any(m => m.Id == model.PayerId))
+            if (!(await householdService.AllHouseholdMembersAsync(User.Id())).Any(m => m.Id == model.PayerId))
             {
                 ModelState.AddModelError(nameof(model.PayerId), "Household Member does not exist.");
             }

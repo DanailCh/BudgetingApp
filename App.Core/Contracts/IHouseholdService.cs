@@ -14,9 +14,11 @@ namespace App.Core.Contracts
         Task<IEnumerable<HouseholdMemberFormViewModel>> AllHouseholdMembersAsync(string userId);
 
         Task CreateHouseholdMemberAsync(HouseholdMemberFormViewModel model, string userId);
-        Task<IEnumerable<HouseholdMemberFormViewModel>> GetHouseholdMembersAsync(string userId);
+        
+        Task<bool> OverMembersLimitAsync(string userId);
 
-        Task EditHouseholdMemberByIdAsync(HouseholdMemberFormViewModel model, int id);
+        Task<bool> MemberExistsAsync(int id);
+        Task<bool> MemberBelongsToUserAsync(int id,string userId);
         Task<HouseholdMemberFormViewModel> FindHouseholdMemberByIdAsync(int id);
         Task DeleteHouseholdMemberByIdAsync(int id);
     }

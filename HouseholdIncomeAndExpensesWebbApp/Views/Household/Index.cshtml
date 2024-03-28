@@ -13,15 +13,17 @@
         <div class="card col-4" style="width: 20rem; ">
             <div class="card-body">
                 <h5 class="card-title mt-1">@e.Name</h5>                
-            </div>
-
-            <a asp-controller="Household" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
+            </div>            
             <form class="input-group-sm " asp-controller="Household" asp-action="Delete" asp-route-id="@e.Id">
                 <input type="submit" value="Delete" class="fs-6 btn btn-warning mb-3 w-100 p-3 fw-bold" />
             </form>
         </div>
     }
-    <a asp-controller="Household" asp-action="Add" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Add a new member</a>
+    @{
+        if (Model.Count() < 5) {
+            <a asp-controller="Household" asp-action="Add" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Add a new member</a>
+        }
+    }    
     <a asp-controller="Summary" asp-action="Index" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Summarize this month's budget</a>
 </div>
 

@@ -3,6 +3,7 @@ using App.Core.Models.Bill;
 using App.Core.Models.BillType;
 using App.Core.Models.HouseholdMember;
 using App.Infrastructure.Data.Models;
+using static App.Infrastructure.Constants.DataConstants.HouseholdMember;
 using HouseholdBudgetingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -57,15 +58,7 @@ namespace App.Core.Services
             
         }
 
-        public async Task EditHouseholdMemberByIdAsync(HouseholdMemberFormViewModel model, int id)
-        {
-            var member = await _context.HouseholdMembers.FindAsync(id);
-            if (member != null)
-            {
-                member.Name = model.Name;
-                await _context.SaveChangesAsync();
-            }
-        }
+        
 
         public async Task<HouseholdMemberFormViewModel> FindHouseholdMemberByIdAsync(int id)
         {
@@ -82,18 +75,20 @@ namespace App.Core.Services
             };
         }
 
-        public async Task<IEnumerable<HouseholdMemberFormViewModel>> GetHouseholdMembersAsync(string userId)
+        public async Task<bool> MemberBelongsToUserAsync(int id, string userId)
         {
-            var members = await _context
-                .HouseholdMembers.AsNoTracking()
-                .Where(m => m.UserId == userId&&m.DeletedOn==null)
-                .Select(m => new HouseholdMemberFormViewModel()
-                {
-                    Id = m.Id,
-                    Name = m.Name
-                }).ToListAsync();
-            return members;
+            return await _context.HouseholdMembers.AnyAsync(hm=>hm.UserId == userId&& hm.Id==id);
+        }
 
+        public async Task<bool> MemberExistsAsync(int id)
+        {
+            return await _context.HouseholdMembers.AnyAsync(hm=>hm.Id == id);
+        }
+
+        public async Task<bool> OverMembersLimitAsync(string userId)
+        {
+            return (await _context.HouseholdMembers.Where(hm => hm.UserId == userId && hm.DeletedOn == null).CountAsync()) >= MaximumMembers; 
+            
         }
     }
 }
