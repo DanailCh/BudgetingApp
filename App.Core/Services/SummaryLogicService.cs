@@ -1,6 +1,8 @@
 ﻿using App.Core.Contracts;
 using App.Core.Models.BudgetSummary;
+using App.Infrastructure.Data.Models;
 using HouseholdBudgetingApp.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using System;
 using System.Collections.Generic;
@@ -24,7 +26,7 @@ namespace App.Core.Services
             _context = context;
         }
 
-        public string GetSummary(List<MemberSalaryFormModel> model,string _userId)
+        public async Task<string> GetSummary(List<MemberSalaryFormModel> model,string _userId,DateTime date)
         {
             GetHouseholdExpences(_userId);
             GetHouseholdIncome(model);
@@ -33,8 +35,34 @@ namespace App.Core.Services
             FillMemberDifferance();
 
             string summary = Summarize(_userId);
+            await  AddDataToDatabase(_userId, date,model);
 
             return summary;
+        }
+
+        private async Task AddDataToDatabase(string userId, DateTime date,List<MemberSalaryFormModel> members)
+        {
+            HouseholdBudget householdBudget = new HouseholdBudget()
+            {
+                Date = date,
+                Income=householdIncome,
+                Expences=householdExpences,
+                UserId=userId,
+            };
+            await _context.HouseholdBudgets.AddAsync(householdBudget);
+            List<MemberSalary> salaries = new List<MemberSalary>();
+            foreach (var member in members)
+            {
+                salaries.Add(new MemberSalary()
+                {
+                    HouseholdMemberId=member.Id,
+                    Date=date,
+                    Salary=member.Salary,
+                    UserId=userId,
+                });
+            };
+            await _context.MemberSalaries.AddRangeAsync(salaries);
+            await _context.SaveChangesAsync();
         }
 
         private string Summarize(string userId)
@@ -106,9 +134,14 @@ namespace App.Core.Services
             }
         }
 
-        public Task ArchiveBills(string userId)
+        public async Task ArchiveBills(string userId)
         {
-            throw new NotImplementedException();
+            var bills = await _context.Bills.Where(b => b.UserId == userId && b.DeletedOn == null && b.IsArchived == false).ToListAsync();
+            foreach(var member in bills)
+            {
+                member.IsArchived = true;
+            }
+            await _context.SaveChangesAsync();
         }
     }
 }

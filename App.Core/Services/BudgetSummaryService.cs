@@ -35,7 +35,7 @@ namespace App.Core.Services
             var summaries = await _context.EndMonthSummaries.AsNoTracking().Where(x => x.UserId == userId).Select(x => new SummaryViewModel()
             {
                 Id = x.Id,
-                Date = x.Date,
+                Date = x.Date.ToString("MMMM yyyy"),
                 Summary = x.Summary,
                 IsResolved = x.IsResolved,
 
@@ -45,13 +45,14 @@ namespace App.Core.Services
 
         public async Task CreateSummary(List<MemberSalaryFormModel> model, string userId)
         {
-            string summary = _summaryLogicService.GetSummary(model, userId);
+            var date=await billService.GetDateAsync(userId);
+            string summary = await _summaryLogicService.GetSummary(model, userId,date);
             var newSummary = new EndMonthSummary
             {
                 Summary = summary,
                 IsResolved = false,
                 UserId = userId,
-                Date = await billService.GetDateAsync(userId),
+                Date = date,
             };
             await _summaryLogicService.ArchiveBills(userId);
 
@@ -75,11 +76,18 @@ namespace App.Core.Services
         public async Task ResolveSummary(int id)
         {
             var summary = await _context.EndMonthSummaries.FindAsync(id);
-            if (summary != null)
-            {
-                summary.IsResolved = true;
-                await _context.SaveChangesAsync();
-            }
+            summary.IsResolved = true;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> SummaryExistsAsync(int id)
+        {
+            return await _context.EndMonthSummaries.AnyAsync(m => m.Id == id);
+        }
+
+        public async Task<bool> SummaryBelongsToUserAsync(int id, string userId)
+        {
+            return await _context.EndMonthSummaries.AnyAsync(m=>m.Id==id&&m.UserId==userId);
         }
     }
 }

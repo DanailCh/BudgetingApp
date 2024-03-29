@@ -3,6 +3,7 @@ using App.Core.Models.BudgetSummary;
 using App.Core.Services;
 using App.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Metrics;
 using System.Security.Claims;
 
 namespace HouseholdBudgetingApp.Controllers
@@ -65,6 +66,23 @@ namespace HouseholdBudgetingApp.Controllers
             }
             await budgetSummaryService.CreateSummary(model, User.Id());
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Resolve(int id)
+        {
+            if (await budgetSummaryService.SummaryExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            if (await budgetSummaryService.SummaryBelongsToUserAsync(id, User.Id()) == false)
+            {
+                return Unauthorized();
+            }
+
+            await budgetSummaryService.ResolveSummary(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

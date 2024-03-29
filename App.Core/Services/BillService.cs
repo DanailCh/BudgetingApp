@@ -132,8 +132,8 @@ namespace App.Core.Services
             DateTime date = DateTime.Now;
             if (await _context.Bills.AnyAsync(b=>b.IsArchived==true&&b.UserId==userId))
             {
-                date = await _context.Bills.Where(b => b.IsArchived == true && b.UserId == userId).Select(b => b.Date).LastAsync();
-                date.AddMonths(1);
+                date = await _context.Bills.Where(b => b.IsArchived == true && b.UserId == userId).OrderByDescending(b => b.Date).Select(b => b.Date).LastAsync();
+                date=date.AddMonths(1);
             }
             return new DateTime(date.Year, date.Month, 1);            
         }

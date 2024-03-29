@@ -14,7 +14,8 @@
         <div class="card col-4" style="width: 20rem; ">
             <div class="card-body">
                 <h5 class="card-title mt-1">@e.Date</h5>
-                <p class="mb-0"><span class="fw-bold">Summary: </span>@e.Summary</p>
+                <h6 class="card-subtitle mb-2 text-body-secondary">Summary</h6>
+                <p class="card-text">@e.Summary</p>                
                 @{
                     if (e.IsResolved)
                     {
