@@ -14,8 +14,7 @@ namespace App.Infrastructure.Constants
             public const int NameMinLength = 3;
         }
         public static class HouseholdMember
-        {
-            public const int MaximumMembers = 5;
+        {           
             public const int NameMaxLength = 50;
             public const int NameMinLength = 3;
         }

@@ -3,7 +3,7 @@ using App.Core.Models.Bill;
 using App.Core.Models.BillType;
 using App.Core.Models.HouseholdMember;
 using App.Infrastructure.Data.Models;
-using static App.Infrastructure.Constants.DataConstants.HouseholdMember;
+using static App.Core.Constants.MemberConstants;
 using HouseholdBudgetingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -83,6 +83,11 @@ namespace App.Core.Services
         public async Task<bool> MemberExistsAsync(int id)
         {
             return await _context.HouseholdMembers.AnyAsync(hm=>hm.Id == id);
+        }
+
+        public async Task<bool> MinimumMembersAsync(string userId)
+        {
+            return (await _context.HouseholdMembers.Where(hm => hm.UserId == userId && hm.DeletedOn == null).CountAsync()) < MinimumMembers;
         }
 
         public async Task<bool> OverMembersLimitAsync(string userId)
