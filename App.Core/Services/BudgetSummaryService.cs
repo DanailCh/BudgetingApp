@@ -15,52 +15,64 @@ namespace App.Core.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly ISummaryLogicService _summaryLogicService;
-        public BudgetSummaryService(ApplicationDbContext context, ISummaryLogicService summaryLogicService)
+        private readonly IBillService billService;
+        public BudgetSummaryService(ApplicationDbContext context, ISummaryLogicService summaryLogicService, IBillService billService)
         {
             _context = context;
             _summaryLogicService = summaryLogicService;
+            this.billService = billService;
         }
 
-        public async Task<IEnumerable<SummaryFormModel>> AllHouseholdMembersAsync(string userId)
+        public async Task<bool> NotAllBillsPayedAsync(string userId)
         {
-            var members = await _context.HouseholdMembers.Where(m => m.UserId == userId && m.DeletedOn == null).Select(m => new SummaryFormModel()
-            {
-                Id = m.Id,
-                Name = m.Name,               
-
-            }).ToListAsync();
-            return members;
+            return await _context.Bills.AnyAsync(b=>b.UserId==userId&&b.IsPayed==false&&b.DeletedOn==null);
         }
 
-        public async Task CreateSummary(IEnumerable<SummaryFormModel> summaryFormModels, string userId)
-        {
-            string summary = _summaryLogicService.GetSummary(summaryFormModels, userId);
-            var newSummary = new EndMonthSummary
-            {
-                Summary=summary,
-                IsResolved=false,
-                UserId = userId,
-                Date = DateTime.Now,
-            };
 
-            await _context.EndMonthSummaries.AddAsync(newSummary);
-            await _context.SaveChangesAsync();
-        }
 
-        public async Task<IEnumerable<SummaryViewModel>> GetAllEndMontSummariesAsync(string userId)
+        public async Task<IEnumerable<SummaryViewModel>> AllSummariesAsync(string userId)
         {
-            var summaries=await _context.EndMonthSummaries.AsNoTracking().Where(x => x.UserId == userId).Select(x=>new SummaryViewModel()
+            var summaries = await _context.EndMonthSummaries.AsNoTracking().Where(x => x.UserId == userId).Select(x => new SummaryViewModel()
             {
                 Id = x.Id,
                 Date = x.Date,
                 Summary = x.Summary,
-                IsResolved=x.IsResolved,
+                IsResolved = x.IsResolved,
 
             }).ToListAsync();
             return summaries;
         }
 
-        public async Task ResolveSummarie(int id)
+        public async Task CreateSummary(List<MemberSalaryFormModel> model, string userId)
+        {
+            string summary = _summaryLogicService.GetSummary(model, userId);
+            var newSummary = new EndMonthSummary
+            {
+                Summary = summary,
+                IsResolved = false,
+                UserId = userId,
+                Date = await billService.GetDateAsync(userId),
+            };
+            await _summaryLogicService.ArchiveBills(userId);
+
+            await _context.EndMonthSummaries.AddAsync(newSummary);
+            await _context.SaveChangesAsync();
+        }
+
+
+
+        public async Task<List<MemberSalaryFormModel>> GetMemberSalaryFormModelsAsync(string userId)
+        {
+            var members = await _context.HouseholdMembers.Where(m => m.UserId == userId && m.DeletedOn == null).Select(m => new MemberSalaryFormModel()
+            {
+                Id = m.Id,
+                Name = m.Name,
+
+            }).ToListAsync();
+            return members;
+        }
+
+        public async Task ResolveSummary(int id)
         {
             var summary = await _context.EndMonthSummaries.FindAsync(id);
             if (summary != null)

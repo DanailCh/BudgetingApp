@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace App.Core.Models.BudgetSummary
 {
-    public class SummaryFormModel
+    public class MemberSalaryFormModel
     {
         public int Id { get; set; }
-        public string Name { get; set; }=String.Empty;
+        public string Name { get; set; } = String.Empty;
         public decimal Salary { get; set; }
     }
 }

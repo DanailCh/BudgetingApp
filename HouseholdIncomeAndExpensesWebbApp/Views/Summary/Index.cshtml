@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<SummaryViewModel>
 @{
     ViewBag.Title = "All Summaries";
+    ViewBag.Text = $"Summarize {ViewBag.Date}";
 }
 
 
@@ -29,7 +30,7 @@
             </div>
         </div>
     }
-    <a asp-controller="Summary" asp-action="Add" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Summarize curent month</a>
+    <a asp-controller="Summary" asp-action="Add" class="btn btn-warning mb-2 w-100 p-3 fw-bold">@ViewBag.Text</a>
 </div>
 
 @section Scripts {

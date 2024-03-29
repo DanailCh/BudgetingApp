@@ -9,10 +9,11 @@ namespace App.Core.Contracts
 {
     public interface IBudgetSummaryService
     {
-        Task<IEnumerable<SummaryFormModel>> AllHouseholdMembersAsync(string userId);
-        Task<IEnumerable<SummaryViewModel>>GetAllEndMontSummariesAsync(string userId);
-        Task CreateSummary(IEnumerable<SummaryFormModel> summaryFormModels,string userId);
-        Task ResolveSummarie(int id);
+        Task<List<MemberSalaryFormModel>> GetMemberSalaryFormModelsAsync(string userId);
+        Task<IEnumerable<SummaryViewModel>>AllSummariesAsync(string userId);
+        Task<bool>NotAllBillsPayedAsync(string userId);
+        Task CreateSummary(List<MemberSalaryFormModel> models,string userId);
+        Task ResolveSummary(int id);
 
     }
 }
