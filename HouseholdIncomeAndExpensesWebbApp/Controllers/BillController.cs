@@ -27,9 +27,9 @@ namespace HouseholdBudgetingApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var model = await billService.AllCurentMonthBillsAsync(User.Id(), billService.GetDate());
+            var model = await billService.AllCurentMonthBillsAsync(User.Id(), await billService.GetDateAsync(User.Id()));
             foreach (var item in model) { item.Payers = await householdService.AllHouseholdMembersAsync(User.Id()); }
-            ViewBag.Date = billService.GetFormatedDate();
+            ViewBag.Date = await billService.GetFormatedDateAsync(User.Id());
             return View(model);
         }
 
@@ -37,7 +37,7 @@ namespace HouseholdBudgetingApp.Controllers
         public async Task<IActionResult> Add()
         {
                         
-            ViewBag.Date = billService.GetFormatedDate();
+            ViewBag.Date = await billService.GetFormatedDateAsync(User.Id());
             var model = new BillFormModel()
             {
                 BillTypes = await billService.GetBillTypesAsync(User.Id()),

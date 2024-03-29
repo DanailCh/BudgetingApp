@@ -75,7 +75,7 @@ namespace App.Core.Services
                 IsPayed = model.IsPayed,
                 PayerId = model.PayerId,
                 UserId = userId,
-                Date = GetDate()
+                Date = await GetDateAsync(userId)
             };
             await _context.Bills.AddAsync(bill);
             await _context.SaveChangesAsync();
@@ -127,15 +127,26 @@ namespace App.Core.Services
            
         }
 
-        public DateTime GetDate()
+        public async Task<DateTime> GetDateAsync(string userId)
         {
             DateTime date = DateTime.Now;
+            if (await _context.Bills.AnyAsync(b=>b.IsArchived==true&&b.UserId==userId))
+            {
+                date = await _context.Bills.Where(b => b.IsArchived == true && b.UserId == userId).Select(b => b.Date).LastAsync();
+                date.AddMonths(1);
+            }
             return new DateTime(date.Year, date.Month, 1);            
         }
 
-        public string GetFormatedDate()
-        { 
-            return GetDate().ToString("MMMM yyyy");
+        public async Task<string> GetFormatedDateAsync(string userId)
+        {
+            var date = await GetDateAsync(userId);
+            return date.ToString("MMMM yyyy");
+        }
+        public  DateTime GetDate()
+        {
+            DateTime date = DateTime.Now;
+            return new DateTime(date.Year, date.Month, 1);
         }
 
         public async Task PayBillAsync(BillViewModel model, int id)

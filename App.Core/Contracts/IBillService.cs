@@ -23,7 +23,7 @@ namespace App.Core.Contracts
         Task<BillFormModel> FindBillByIdAsync(int id);
         Task PayBillAsync(BillViewModel model,int id);
         Task DeleteBillByIdAsync(int id);
-        DateTime GetDate();
-        string GetFormatedDate();
+        Task<DateTime> GetDateAsync(string userId);
+        Task<string> GetFormatedDateAsync(string userId);
     }
 }
