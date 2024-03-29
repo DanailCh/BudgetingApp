@@ -54,6 +54,10 @@ namespace App.Infrastructure.Data.Models
         [Comment("Date of deletion")]
         public DateTime? DeletedOn { get; set; }
 
+        [Required]
+        [Comment("Is the Bill archived")]
+        public bool IsArchived { get; set; }
+
        
     }
 }
