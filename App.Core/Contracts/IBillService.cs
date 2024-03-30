@@ -1,4 +1,5 @@
-﻿using App.Core.Models.Bill;
+﻿using App.Core.Enum;
+using App.Core.Models.Bill;
 using App.Core.Models.BillType;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,11 @@ namespace App.Core.Contracts
 {
     public interface IBillService
     {
-        Task<IEnumerable<BillViewModel>> AllBillsAsync(string userId);
+        Task<ArchiveBillQueryModel> AllBillsAsync(string userId, DateTime? billMonth, int? billTypeId,
+            BillsSorting sortingDate,
+            BillsSorting sortingCost,           
+            int currentPage = 1,
+            int billsPerPage=10);
         Task<IEnumerable<BillViewModel>> AllCurentMonthBillsAsync(string userId,DateTime date);
         Task<bool> BillExistsAsync(int id);
         Task<bool> BillBelongsToUserAsync(int id,string userId);

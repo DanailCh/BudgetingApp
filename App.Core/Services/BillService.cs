@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using App.Infrastructure.Data.Models;
 using App.Core.Models.BillType;
 using Microsoft.Identity.Client;
+using App.Core.Enum;
+using System.Linq.Expressions;
 
 namespace App.Core.Services
 {
@@ -22,17 +24,113 @@ namespace App.Core.Services
             _householdService = householdService;
             _context = context;
         }
-        public async Task<IEnumerable<BillViewModel>> AllBillsAsync(string userId)
+        public async Task<ArchiveBillQueryModel> AllBillsAsync(
+            string userId,
+            DateTime? billMonth,
+            int? billTypeId,            
+            BillsSorting sortingDate = BillsSorting.None,
+            BillsSorting sortingCost = BillsSorting.None,            
+            int currentPage = 1,
+            int billsPerPage=10)
         {
-            var bills = await _context.Bills.AsNoTracking().Where(b => b.UserId == userId&&b.DeletedOn==null).Select(b => new BillViewModel
+            var billsToShow = _context.Bills.AsNoTracking().Where(b => b.UserId == userId && b.DeletedOn == null && b.IsArchived == true);
+
+            if (billMonth!=null)
             {
-                Id = b.Id,
-                BillTypeName = b.BillType.Name,
-                Cost = b.Cost,
-                PayedBy = b.Payer.Name ?? "Not Payed"
-            }).ToListAsync();
-            return bills;
-            
+                billsToShow = billsToShow
+                    .Where(b => b.Date==billMonth);
+                sortingDate = BillsSorting.None;
+            }
+
+            if (billTypeId != 0)
+            {
+                billsToShow = billsToShow
+                    .Where(b => (b.UserId == userId || b.UserId == null) && b.DeletedOn == null && b.BillTypeId == billTypeId);
+            }
+
+           
+
+          
+            switch (sortingDate)
+            {
+                case BillsSorting.DateAscending:
+                    switch (sortingCost)
+                    {
+                        case BillsSorting.CostCheapest:
+                            billsToShow=billsToShow
+                             .OrderBy(b => b.Date)
+                            .ThenBy(b => b.Cost);
+                            break;
+                        case BillsSorting.CostExpensive:
+                            billsToShow = billsToShow
+                           .OrderBy(b => b.Date)
+                           .ThenByDescending(b => b.Cost);
+                            break;
+                        case BillsSorting.None:
+                            billsToShow = billsToShow
+                           .OrderBy(b => b.Date);                           
+                            break;
+
+                    };
+                    break;
+                case BillsSorting.DateDescending:
+                    switch (sortingCost)
+                    {
+                        case BillsSorting.CostCheapest:
+                            billsToShow = billsToShow
+                             .OrderByDescending(b => b.Date)
+                             .ThenBy(b => b.Cost);
+                            break;
+                        case BillsSorting.CostExpensive:
+                            billsToShow = billsToShow
+                           .OrderByDescending(b => b.Date)
+                           .ThenByDescending(b => b.Cost);
+                            break;
+                        case BillsSorting.None:
+                            billsToShow = billsToShow
+                           .OrderByDescending(b => b.Date);
+                            break;
+                    };
+                    break;
+                case BillsSorting.None:
+                    switch (sortingCost)
+                    {
+                        case BillsSorting.CostCheapest:
+                            billsToShow = billsToShow
+                             .OrderByDescending(b => b.Cost);
+                            break;
+                        case BillsSorting.CostExpensive:
+                            billsToShow = billsToShow
+                           .OrderByDescending(b => b.Cost);
+                            break;
+                        case BillsSorting.None:
+                            billsToShow = billsToShow
+                           .OrderByDescending(b => b.Id);
+                            break;
+                    };
+                    break;
+
+            };
+
+            var bills = await billsToShow
+                .Skip((currentPage - 1) * billsPerPage)
+                .Take(billsPerPage)
+                .Select(b => new ArchiveBillViewModel()
+                {
+                    Id = b.Id,
+                    Cost=b.Cost,
+                    BillTypeName=b.BillType.Name,
+                    Date=b.Date,
+                })
+                .ToListAsync();
+
+            int totalArchivedBills = await billsToShow.CountAsync();
+
+            return new ArchiveBillQueryModel()
+            {
+                ArchivedBills = bills,
+                ArchivedBillsCount = totalArchivedBills,                
+            };
         }
 
         public async Task<IEnumerable<BillViewModel>> AllCurentMonthBillsAsync(string userId,DateTime date)
@@ -132,7 +230,7 @@ namespace App.Core.Services
             DateTime date = DateTime.Now;
             if (await _context.Bills.AnyAsync(b=>b.IsArchived==true&&b.UserId==userId))
             {
-                date = await _context.Bills.Where(b => b.IsArchived == true && b.UserId == userId).OrderByDescending(b => b.Date).Select(b => b.Date).LastAsync();
+                date = await _context.Bills.Where(b => b.IsArchived == true && b.UserId == userId).OrderBy(b => b.Date).Select(b => b.Date).LastAsync();
                 date=date.AddMonths(1);
             }
             return new DateTime(date.Year, date.Month, 1);            
