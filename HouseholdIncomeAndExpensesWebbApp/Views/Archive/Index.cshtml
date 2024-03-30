@@ -136,5 +136,14 @@
             }
         </tbody>
     </table>
+    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-primary"
+           asp-controller="Archive"
+           asp-action="DownloadTextFile"           
+           asp-route-billMonth="@Model.BillMonth"
+           asp-route-billTypeId="@Model.BillTypeId"
+           asp-route-sortingDate="@((int)Model.SortingDate)"
+           asp-route-sortingCost="@((int)Model.SortingCost)">Download File</a>
+    </div>
     
 </div>
