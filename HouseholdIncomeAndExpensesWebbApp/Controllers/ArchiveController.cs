@@ -1,5 +1,6 @@
 ﻿using App.Core.Contracts;
-using App.Core.Models.Bill;
+using App.Core.Models.Archive.Bill;
+using App.Core.Models.Archive.HouseholdBudget;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using System.Security.Claims;
@@ -11,18 +12,20 @@ namespace HouseholdBudgetingApp.Controllers
     {
         private readonly IBillService billService;
         private readonly IHouseholdService householdService;
+        private readonly IBudgetSummaryService budgetSummaryService;
         private readonly IFileGeneratorService fileGeneratorService;
 
 
         public ArchiveController(
-            IBillService _billService, IHouseholdService _householdService, IFileGeneratorService _fileGeneratorService)
+            IBillService _billService, IHouseholdService _householdService, IFileGeneratorService _fileGeneratorService, IBudgetSummaryService _budgetSummaryService)
         {
             billService = _billService;
             householdService = _householdService;
             fileGeneratorService = _fileGeneratorService;
+            budgetSummaryService = _budgetSummaryService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] AllArchivedBillsQueryModel model)
+        public async Task<IActionResult> BillsArchive([FromQuery] AllArchivedBillsQueryModel model)
         {
 
             var archivedBills = await billService.AllBillsAsync(
@@ -42,9 +45,21 @@ namespace HouseholdBudgetingApp.Controllers
            
             return View(model);
         }
+        [HttpGet]
+        public async Task<IActionResult> HouseholdArchive([FromQuery] AllArchivedBudgetsQueryModel model)
+        {
+
+            var archivedBudgets = await budgetSummaryService.AllBudgetsAsync(
+                User.Id(),model);
+
+            model.ArchivedBudgets = archivedBudgets.ArchivedBudgets;
+            model.ArchivedBudgetsCount = archivedBudgets.ArchivedBudgetsCount;
+
+            return View(model);
+        }
 
         [HttpGet]
-        public async Task<IActionResult> DownloadTextFile([FromQuery] AllArchivedBillsQueryModel model)
+        public async Task<IActionResult> DownloadTextFileForBills([FromQuery] AllArchivedBillsQueryModel model)
         {
             var archivedBills = await billService.AllBillsAsync(
                User.Id(),
@@ -57,8 +72,21 @@ namespace HouseholdBudgetingApp.Controllers
               );
             var bills= archivedBills.ArchivedBills;
 
-            string text = await fileGeneratorService.GenerateFileForArchivedBills(User.Id(), bills);
-            Response.Headers.Add(HeaderNames.ContentDisposition, @"attachment;filename=file.txt");
+            string text = fileGeneratorService.GenerateFileForArchivedBills(User.Id(), bills);
+            Response.Headers.Add(HeaderNames.ContentDisposition, @"attachment;filename=billsArchive.txt");
+            return File(Encoding.UTF8.GetBytes(text), "text/plain");
+        }
+        [HttpGet]
+        public async Task<IActionResult> DownloadTextFileForBudgets([FromQuery] AllArchivedBudgetsQueryModel model)
+        {
+            var archivedBudgets = await budgetSummaryService.AllBudgetsAsync(
+                User.Id(), model);
+
+            var budgets = archivedBudgets.ArchivedBudgets;
+            
+
+            string text =  fileGeneratorService.GenerateFileForArchivedBudgets(User.Id(), budgets);
+            Response.Headers.Add(HeaderNames.ContentDisposition, @"attachment;filename=budgetsArchive.txt");
             return File(Encoding.UTF8.GetBytes(text), "text/plain");
         }
 

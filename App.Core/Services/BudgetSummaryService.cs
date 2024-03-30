@@ -1,4 +1,7 @@
 ﻿using App.Core.Contracts;
+using App.Core.Enum;
+using App.Core.Models.Archive.Bill;
+using App.Core.Models.Archive.HouseholdBudget;
 using App.Core.Models.BudgetSummary;
 using App.Infrastructure.Data.Models;
 using HouseholdBudgetingApp.Data;
@@ -43,7 +46,7 @@ namespace App.Core.Services
             return summaries;
         }
 
-        public async Task CreateSummary(List<MemberSalaryFormModel> model, string userId)
+        public async Task CreateSummary(List<MemberSalaryFormViewModel> model, string userId)
         {
             var date=await billService.GetDateAsync(userId);
             string summary = await _summaryLogicService.GetSummary(model, userId,date);
@@ -62,9 +65,9 @@ namespace App.Core.Services
 
 
 
-        public async Task<List<MemberSalaryFormModel>> GetMemberSalaryFormModelsAsync(string userId)
+        public async Task<List<MemberSalaryFormViewModel>> GetMemberSalaryFormModelsAsync(string userId)
         {
-            var members = await _context.HouseholdMembers.Where(m => m.UserId == userId && m.DeletedOn == null).Select(m => new MemberSalaryFormModel()
+            var members = await _context.HouseholdMembers.Where(m => m.UserId == userId && m.DeletedOn == null).Select(m => new MemberSalaryFormViewModel()
             {
                 Id = m.Id,
                 Name = m.Name,
@@ -88,6 +91,65 @@ namespace App.Core.Services
         public async Task<bool> SummaryBelongsToUserAsync(int id, string userId)
         {
             return await _context.EndMonthSummaries.AnyAsync(m=>m.Id==id&&m.UserId==userId);
+        }
+
+        public async Task<ArchiveHouseholdBudgetQueryModel> AllBudgetsAsync(string userId,AllArchivedBudgetsQueryModel model)
+        {
+            var budgetsToShow = _context.HouseholdBudgets.AsNoTracking().Where(b => b.UserId == userId);
+
+            if (model.BudgetMonth != null)
+            {
+                budgetsToShow = budgetsToShow
+                    .Where(b => b.Date == model.BudgetMonth);
+                
+            }
+
+
+            switch (model.Sorting)
+            {
+                case BudgetSorting.MostIncome:
+                    budgetsToShow = budgetsToShow
+                              .OrderByDescending(b => b.Income);
+                    break;
+                case BudgetSorting.LeastIncome:
+                    budgetsToShow = budgetsToShow
+                              .OrderBy(b => b.Income);
+                    break;
+                case BudgetSorting.MostExpences:
+                    budgetsToShow = budgetsToShow
+                              .OrderByDescending(b => b.Expences);
+                    break;
+                case BudgetSorting.LeastExpences:
+                    budgetsToShow = budgetsToShow
+                              .OrderBy(b => b.Expences);
+                    break;
+                case BudgetSorting.None:
+                    budgetsToShow = budgetsToShow
+                              .OrderByDescending(b => b.Id);
+                    break;
+
+
+            };
+
+            var budgets = await budgetsToShow
+                .Skip((model.CurrentPage - 1) * model.BudgetsPerPage)
+                .Take(model.BudgetsPerPage)
+                .Select(b => new ArchiveHouseholdBudgetViewModel()
+                {
+                    Id = b.Id,
+                    Income = b.Income,
+                    Expences = b.Expences,
+                    Date = b.Date,
+                })
+                .ToListAsync();
+
+            int totalArchivedBudgets = await budgetsToShow.CountAsync();
+
+            return new ArchiveHouseholdBudgetQueryModel()
+            {
+               ArchivedBudgets=budgets,
+               ArchivedBudgetsCount=totalArchivedBudgets,
+            };
         }
     }
 }

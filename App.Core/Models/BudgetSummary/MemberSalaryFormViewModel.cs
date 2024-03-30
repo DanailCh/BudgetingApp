@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace App.Core.Models.BudgetSummary
 {
-    public class MemberSalaryFormModel
+    public class MemberSalaryFormViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = String.Empty;

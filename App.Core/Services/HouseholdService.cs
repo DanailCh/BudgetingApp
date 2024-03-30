@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using App.Core.Models.Archive.MemberSalary;
 
 namespace App.Core.Services
 {
@@ -30,6 +31,11 @@ namespace App.Core.Services
                
             }).ToListAsync();
             return members;
+        }
+
+        public Task<ArchiveMemberSalaryQueryModel> AllMembersSalariesAsync(string userId, AllArchivedMembersSalariesQueryModel model)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task CreateHouseholdMemberAsync(HouseholdMemberFormViewModel model, string userId)

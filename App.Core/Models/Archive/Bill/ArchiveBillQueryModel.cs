@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Core.Models.Bill
+namespace App.Core.Models.Archive.Bill
 {
     public class ArchiveBillQueryModel
     {

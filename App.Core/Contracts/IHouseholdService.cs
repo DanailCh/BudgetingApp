@@ -1,4 +1,7 @@
-﻿using App.Core.Models.Bill;
+﻿using App.Core.Enum;
+using App.Core.Models.Archive.Bill;
+using App.Core.Models.Archive.HouseholdBudget;
+using App.Core.Models.Archive.MemberSalary;
 using App.Core.Models.BillType;
 using App.Core.Models.HouseholdMember;
 using System;
@@ -11,6 +14,7 @@ namespace App.Core.Contracts
 {
     public interface IHouseholdService
     {
+        Task<ArchiveMemberSalaryQueryModel> AllMembersSalariesAsync(string userId,AllArchivedMembersSalariesQueryModel model);
         Task<IEnumerable<HouseholdMemberFormViewModel>> AllHouseholdMembersAsync(string userId);
 
         Task CreateHouseholdMemberAsync(HouseholdMemberFormViewModel model, string userId);

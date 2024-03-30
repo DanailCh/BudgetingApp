@@ -1,6 +1,6 @@
 ﻿@model AllArchivedBillsQueryModel
 @{
-    ViewBag.Title = "Archive";
+    ViewBag.Title = "Bills Archive";
 }
 
 
@@ -139,7 +139,7 @@
     <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
         <a class="btn btn-primary"
            asp-controller="Archive"
-           asp-action="DownloadTextFile"           
+           asp-action="DownloadTextFileForBills"           
            asp-route-billMonth="@Model.BillMonth"
            asp-route-billTypeId="@Model.BillTypeId"
            asp-route-sortingDate="@((int)Model.SortingDate)"

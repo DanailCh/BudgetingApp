@@ -26,7 +26,7 @@ namespace App.Core.Services
             _context = context;
         }
 
-        public async Task<string> GetSummary(List<MemberSalaryFormModel> model,string _userId,DateTime date)
+        public async Task<string> GetSummary(List<MemberSalaryFormViewModel> model,string _userId,DateTime date)
         {
             GetHouseholdExpences(_userId);
             GetHouseholdIncome(model);
@@ -40,7 +40,7 @@ namespace App.Core.Services
             return summary;
         }
 
-        private async Task AddDataToDatabase(string userId, DateTime date,List<MemberSalaryFormModel> members)
+        private async Task AddDataToDatabase(string userId, DateTime date,List<MemberSalaryFormViewModel> members)
         {
             HouseholdBudget householdBudget = new HouseholdBudget()
             {
@@ -99,12 +99,12 @@ namespace App.Core.Services
         {
            householdExpences = _context.Bills.Where(b => b.UserId == userId && b.DeletedOn == null && b.IsArchived ==false).Select(b=>b.Cost).Sum();
         }
-        private void GetHouseholdIncome(List<MemberSalaryFormModel> model)
+        private void GetHouseholdIncome(List<MemberSalaryFormViewModel> model)
         {
             householdIncome = model.Sum(m => m.Salary);
 
         }
-        private void FillMembersShouldHavePayed(List<MemberSalaryFormModel> model)
+        private void FillMembersShouldHavePayed(List<MemberSalaryFormViewModel> model)
         {
             Dictionary<int,decimal> contributionPercentage=new Dictionary<int,decimal>();
             foreach(var member in model)
@@ -125,7 +125,7 @@ namespace App.Core.Services
             }
         }
 
-        private void FillMembersPayed(List<MemberSalaryFormModel> model,string userId)
+        private void FillMembersPayed(List<MemberSalaryFormViewModel> model,string userId)
         {
             foreach(var member in model)
             {

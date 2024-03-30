@@ -1,4 +1,5 @@
 ﻿using App.Core.Enum;
+using App.Core.Models.Archive.Bill;
 using App.Core.Models.Bill;
 using App.Core.Models.BillType;
 using System;

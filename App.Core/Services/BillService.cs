@@ -1,17 +1,11 @@
 ﻿using App.Core.Contracts;
+using App.Core.Enum;
+using App.Core.Models.Archive.Bill;
 using App.Core.Models.Bill;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using App.Core.Models.BillType;
+using App.Infrastructure.Data.Models;
 using HouseholdBudgetingApp.Data;
 using Microsoft.EntityFrameworkCore;
-using App.Infrastructure.Data.Models;
-using App.Core.Models.BillType;
-using Microsoft.Identity.Client;
-using App.Core.Enum;
-using System.Linq.Expressions;
 
 namespace App.Core.Services
 {

@@ -9,7 +9,7 @@ namespace App.Core.Contracts
 {
     public interface ISummaryLogicService
     {
-         Task<string> GetSummary(List<MemberSalaryFormModel> model, string userId,DateTime date);
+         Task<string> GetSummary(List<MemberSalaryFormViewModel> model, string userId,DateTime date);
         Task ArchiveBills(string userId);
     }
 }

@@ -44,7 +44,7 @@ namespace HouseholdBudgetingApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromForm]List<MemberSalaryFormModel> model)
+        public async Task<IActionResult> Add([FromForm]List<MemberSalaryFormViewModel> model)
         {
             foreach(var member in model)
             {

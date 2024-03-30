@@ -1,4 +1,5 @@
-﻿using App.Core.Models.Bill;
+﻿using App.Core.Models.Archive.Bill;
+using App.Core.Models.Archive.HouseholdBudget;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace App.Core.Contracts
 {
     public interface IFileGeneratorService
     {
-        Task<string> GenerateFileForArchivedBills(string userId, IEnumerable<ArchiveBillViewModel> model);
+        string GenerateFileForArchivedBills(string userId, IEnumerable<ArchiveBillViewModel> model);
+        string GenerateFileForArchivedBudgets(string v, IEnumerable<ArchiveHouseholdBudgetViewModel> budgets);
     }
 }
