@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using HouseholdBudgetingApp.Data;
+using App.Infrastructure.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -33,6 +35,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.SeedAdmin();
 
 app.MapControllerRoute(
     name: "default",

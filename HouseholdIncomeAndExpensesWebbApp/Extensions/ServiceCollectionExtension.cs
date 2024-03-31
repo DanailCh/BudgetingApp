@@ -18,6 +18,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IBudgetSummaryService, BudgetSummaryService>();
             services.AddScoped<ISummaryLogicService, SummaryLogicService>();
             services.AddScoped<IFileGeneratorService, FileGeneratorService>();
+            services.AddScoped<IFeedBackMessageService, FeedbackMessageService>();
 
 
             return services;
@@ -44,6 +45,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
             })
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
             return services;
         }
