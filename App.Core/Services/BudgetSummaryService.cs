@@ -31,8 +31,6 @@ namespace App.Core.Services
             return await _context.Bills.AnyAsync(b=>b.UserId==userId&&b.IsPayed==false&&b.DeletedOn==null);
         }
 
-
-
         public async Task<IEnumerable<SummaryViewModel>> AllSummariesAsync(string userId)
         {
             var summaries = await _context.EndMonthSummaries.AsNoTracking().Where(x => x.UserId == userId).Select(x => new SummaryViewModel()
@@ -62,8 +60,6 @@ namespace App.Core.Services
             await _context.EndMonthSummaries.AddAsync(newSummary);
             await _context.SaveChangesAsync();
         }
-
-
 
         public async Task<List<MemberSalaryFormViewModel>> GetMemberSalaryFormModelsAsync(string userId)
         {
@@ -101,7 +97,7 @@ namespace App.Core.Services
             {
                 budgetsToShow = budgetsToShow
                     .Where(b => b.Date == model.BudgetMonth);
-                
+                model.Sorting = BudgetSorting.None;
             }
 
 

@@ -12,6 +12,6 @@ namespace App.Core.Models.Archive.MemberSalary
     {
         public int ArchivedMembersSalariesCount { get; set; }
 
-        public IEnumerable<MemberSalaryFormViewModel> ArchivedBudgets { get; set; } = new List<MemberSalaryFormViewModel>();
+        public IEnumerable<ArchiveMemberSalaryViewModel> ArchivedSalaries { get; set; } = new List<ArchiveMemberSalaryViewModel>();
     }
 }

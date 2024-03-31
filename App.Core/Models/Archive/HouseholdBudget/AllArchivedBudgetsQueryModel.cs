@@ -15,7 +15,7 @@ namespace App.Core.Models.Archive.HouseholdBudget
 
         public DateTime? BudgetMonth { get; init; }
 
-        public BudgetSorting Sorting { get; init; } = BudgetSorting.None;        
+        public BudgetSorting Sorting { get; set; } = BudgetSorting.None;        
 
         public int CurrentPage { get; init; } = 1;
 

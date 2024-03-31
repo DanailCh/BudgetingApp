@@ -1,6 +1,7 @@
 ﻿using App.Core.Contracts;
 using App.Core.Models.Archive.Bill;
 using App.Core.Models.Archive.HouseholdBudget;
+using App.Core.Models.Archive.MemberSalary;
 using App.Infrastructure.Data.Models;
 using HouseholdBudgetingApp.Data;
 using System;
@@ -13,12 +14,7 @@ namespace App.Core.Services
 {
     public class FileGeneratorService : IFileGeneratorService
     {
-        private readonly ApplicationDbContext _context;
-
-        public FileGeneratorService(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        
 
         public string GenerateFileForArchivedBills(string userId, IEnumerable<ArchiveBillViewModel> model)
         {
@@ -56,6 +52,26 @@ namespace App.Core.Services
                 string monthYear = item.Date.ToString("MMMM yyyy");
                 sb.AppendLine($"| {monthYear.PadRight(maxDateWidth)} | {item.Income.ToString().PadRight(maxIncomeWidth)} | {item.Expences.ToString().PadRight(maxExpencesWidth)} |");
                 sb.AppendLine($"| {new string('-', maxDateWidth)} | {new string('-', maxIncomeWidth)} | {new string('-', maxExpencesWidth)} |");
+            }
+            return sb.ToString();
+        }
+
+        public string GenerateFileForArchivedSalaries(string v, IEnumerable<ArchiveMemberSalaryViewModel> model)
+        {
+            int maxDateWidth = model.Max(b => b.Date.ToString("MMMM yyyy").Length);
+            int maxNameWidth = model.Max(b => b.Name.Length);
+            int maxSalaryWidth = model.Max(b => b.Salary.ToString().Length);
+
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"| {"Name".PadRight(maxNameWidth)} | {"Date".PadRight(maxDateWidth)} | {"Salary".PadRight(maxSalaryWidth)} |");
+            sb.AppendLine($"| {new string('_', maxNameWidth)} | {new string('_', maxDateWidth)} | {new string('_', maxSalaryWidth)} |");
+
+            foreach (var item in model)
+            {
+                string monthYear = item.Date.ToString("MMMM yyyy");
+                sb.AppendLine($"| {item.Name.PadRight(maxNameWidth)} | {monthYear.PadRight(maxDateWidth)} | {item.Salary.ToString().PadRight(maxSalaryWidth)} |");
+                sb.AppendLine($"| {new string('-', maxNameWidth)} | {new string('-', maxDateWidth)} | {new string('-', maxSalaryWidth)} |");
             }
             return sb.ToString();
         }

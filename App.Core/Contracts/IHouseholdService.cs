@@ -16,15 +16,14 @@ namespace App.Core.Contracts
     {
         Task<ArchiveMemberSalaryQueryModel> AllMembersSalariesAsync(string userId,AllArchivedMembersSalariesQueryModel model);
         Task<IEnumerable<HouseholdMemberFormViewModel>> AllHouseholdMembersAsync(string userId);
-
+       
         Task CreateHouseholdMemberAsync(HouseholdMemberFormViewModel model, string userId);
         
         Task<bool> OverMembersLimitAsync(string userId);
         Task<bool> MinimumMembersAsync(string userId);
 
         Task<bool> MemberExistsAsync(int id);
-        Task<bool> MemberBelongsToUserAsync(int id,string userId);
-        Task<HouseholdMemberFormViewModel> FindHouseholdMemberByIdAsync(int id);
+        Task<bool> MemberBelongsToUserAsync(int id,string userId);        
         Task DeleteHouseholdMemberByIdAsync(int id);
     }
 }

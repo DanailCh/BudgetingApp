@@ -1,6 +1,7 @@
 ﻿using App.Core.Enum;
 using App.Core.Models.Archive.HouseholdBudget;
 using App.Core.Models.BillType;
+using App.Core.Models.BudgetSummary;
 using App.Core.Models.HouseholdMember;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace App.Core.Models.Archive.MemberSalary
 
         public DateTime? SalariesMonth { get; init; }
 
-        public SalariesSorting Sorting { get; init; } = SalariesSorting.None;        
+        public SalariesSorting Sorting { get; set; } = SalariesSorting.None;        
 
         public int CurrentPage { get; init; } = 1;
 
@@ -26,6 +27,6 @@ namespace App.Core.Models.Archive.MemberSalary
 
         public IEnumerable<HouseholdMemberFormViewModel> Members { get; set; } = null!;
 
-        public IEnumerable<ArchiveMemberSalaryQueryModel> ArchivedSalaries { get; set; } = new List<ArchiveMemberSalaryQueryModel>();
+        public IEnumerable<ArchiveMemberSalaryViewModel> ArchivedSalaries { get; set; } = new List<ArchiveMemberSalaryViewModel>();
     }
 }

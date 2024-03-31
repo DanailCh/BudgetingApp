@@ -1,0 +1,166 @@
+﻿@model AllArchivedMembersSalariesQueryModel
+@{
+    ViewBag.Title = "Members Salaries Archive";
+}
+
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<form method="get">
+    <div class="row">
+        <div class="form-group col-md-3 d-flex justify-content-between">
+            <div class="form-group mt-4 p-2">
+                <label asp-for="SalariesMonth">Sort by Month</label>
+                <input asp-for="SalariesMonth" type="month" id="salariesMonth">
+            </div>
+        </div>            
+        <div class="form-group col-md-3 d-flex justify-content-between">
+            <div class="form-group mt-4 p-2">
+                <label asp-for="MemberId">Sort by Member</label>
+                <select asp-for="MemberId" class="form-control" id="memberId">
+                    <option value="">All</option>
+                    @foreach (var member in Model.Members)
+                    {
+                        <option value="@member.Id">@member.Name</option>
+                    }
+                </select>
+               <label asp-for="Sorting">Sort by salary</label>
+            <select asp-for="Sorting" class="form-control" id="sorting">
+                <option value="0">-</option>
+                <option value="1">Highest Salary First</option>
+                <option value="2">Lowest Salary First</option>
+            </select>
+            </div>            
+        </div>
+        
+        <div class="form-group col-md-3 d-flex justify-content-between">
+            <div class="form-group mt-4 p-2">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>           
+        </div>
+        <div class="form-group col-md-3 d-flex justify-content-between">
+            <div id="error-message" style="display: none; color: red;"></div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#salariesMonth').change(function () {
+                if ($(this).val() !== '' && $('#memberId').val() !== 'All') {
+                    $('#sorting').val('0');
+                } else {
+                    hideErrorMessage();
+                }
+            });
+
+            $('#memberId').change(function () {
+                if ($(this).val() !== 'All' && $('#salariesMonth').val() !== '') {
+                    $('#sorting').val('0');
+                } else {
+                    hideErrorMessage();
+                }
+            });
+
+            $('#sorting').change(function () {
+                if ($(this).val() !== '0' && $('#salariesMonth').val() !== '' && $('#memberId').val() !== 'All') {
+                    $('#salariesMonth').val('');
+                    $('#memberId').val('All');
+                    displayErrorMessage("Can't sort by all fields at once");
+                } else {
+                    hideErrorMessage();
+                }
+            });
+            function displayErrorMessage(message) {
+                $('#error-message').text(message).show();
+            }
+
+            function hideErrorMessage() {
+                $('#error-message').hide();
+            }
+        });
+    </script>
+}
+
+
+
+    @{
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+
+    var maxPage = Math.Ceiling((double)Model.ArchivedMembersSalariesCount /
+        Model.MembersSalariesPerPage);
+}
+
+<div class="row mb-5">
+    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+           asp-controller="Archive"
+           asp-action="SalariesArchive"
+           asp-route-currentPage="@previousPage"
+           asp-route-memberId="@Model.MemberId"
+           asp-route-salariesMonth="@Model.SalariesMonth"
+           asp-route-sorting="@((int)Model.Sorting)"><<</a>
+
+    </div>
+
+    @{
+        var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
+        !Model.ArchivedSalaries.Any();
+    }
+
+    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-primary
+           @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
+           asp-controller="Archive"
+           asp-action="SalariesArchive"
+           asp-route-currentPage="@(Model.CurrentPage+1)"
+           asp-route-memberId="@Model.MemberId"
+           asp-route-salariesMonth="@Model.SalariesMonth"
+           asp-route-sorting="@((int)Model.Sorting)">>></a>
+    </div>
+</div>
+
+@if (!Model.ArchivedSalaries.Any())
+{
+    <h2 class="text-center">No Archived Salaries found by the given criteria!</h2>
+}
+
+<div class="row">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Month</th>
+                <th scope="col">Salary</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var member in Model.ArchivedSalaries)
+            {
+                string monthYear = member.Date.ToString("MMMM yyyy");
+                <tr>
+                    
+                    <td>@member.Name</td>
+                    <td>@monthYear</td>
+                    <td>@member.Salary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-primary"
+           asp-controller="Archive"
+           asp-action="DownloadTextFileForSalaries"
+           asp-route-memberId="@Model.MemberId"
+           asp-route-salariesMonth="@Model.SalariesMonth"
+           asp-route-sorting="@((int)Model.Sorting)">Download File</a>
+    </div>
+
+</div>

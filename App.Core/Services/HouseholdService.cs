@@ -12,6 +12,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using App.Core.Models.Archive.MemberSalary;
+using App.Core.Enum;
+using App.Core.Models.Archive.HouseholdBudget;
+using App.Core.Models.BudgetSummary;
 
 namespace App.Core.Services
 {
@@ -31,11 +34,66 @@ namespace App.Core.Services
                
             }).ToListAsync();
             return members;
-        }
+        }        
 
-        public Task<ArchiveMemberSalaryQueryModel> AllMembersSalariesAsync(string userId, AllArchivedMembersSalariesQueryModel model)
+
+        public async Task<ArchiveMemberSalaryQueryModel> AllMembersSalariesAsync(string userId, AllArchivedMembersSalariesQueryModel model)
         {
-            throw new NotImplementedException();
+            var salariesToShow = _context.MemberSalaries.AsNoTracking().Where(b => b.UserId == userId);
+
+            if (model.SalariesMonth != null)
+            {
+                salariesToShow = salariesToShow
+                    .Where(b => b.Date == model.SalariesMonth);
+
+            }
+            if (model.MemberId != 0)
+            {
+                salariesToShow = salariesToShow
+                    .Where(b => b.UserId == userId  && b.HouseholdMemberId == model.MemberId);
+
+            }
+            if (model.MemberId != 0 && model.SalariesMonth != null)
+            {
+                model.Sorting = SalariesSorting.None;
+            }
+
+
+            switch (model.Sorting)
+            {
+                case SalariesSorting.HighestFirst:
+                    salariesToShow = salariesToShow
+                              .OrderByDescending(b => b.Salary);
+                    break;
+                case SalariesSorting.LowestFirst:
+                    salariesToShow = salariesToShow
+                              .OrderBy(b => b.Salary);
+                    break;
+                case SalariesSorting.None:
+                    salariesToShow = salariesToShow
+                              .OrderByDescending(b => b.Id);
+                    break;
+
+            }
+            var salaries = await salariesToShow
+               .Skip((model.CurrentPage - 1) * model.MembersSalariesPerPage)
+               .Take(model.MembersSalariesPerPage)
+               .Select(b => new ArchiveMemberSalaryViewModel()
+               {
+                   Id = b.Id,
+                   Salary = b.Salary,
+                   Name=b.HouseholdMember.Name,
+                   Date = b.Date,
+               })
+               .ToListAsync();
+
+            int totalArchivedSalaries = await salariesToShow.CountAsync();
+
+            return new ArchiveMemberSalaryQueryModel()
+            {
+                ArchivedSalaries = salaries,
+                ArchivedMembersSalariesCount = totalArchivedSalaries,
+            };
         }
 
         public async Task CreateHouseholdMemberAsync(HouseholdMemberFormViewModel model, string userId)
@@ -62,23 +120,6 @@ namespace App.Core.Services
             }
 
             
-        }
-
-        
-
-        public async Task<HouseholdMemberFormViewModel> FindHouseholdMemberByIdAsync(int id)
-        {
-           HouseholdMemberFormViewModel foundMember;
-            var member = await _context.HouseholdMembers.FindAsync(id);
-            if (member == null)
-            {
-                return null;
-            }
-
-            return foundMember = new HouseholdMemberFormViewModel()
-            {
-               Name = member.Name,
-            };
         }
 
         public async Task<bool> MemberBelongsToUserAsync(int id, string userId)

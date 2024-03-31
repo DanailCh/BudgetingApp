@@ -10,8 +10,8 @@
 <form method="get">
     <div class="row">
         <div class="form-group col-md-3 d-flex justify-content-between">
-            <div class="form-group">
-                <label asp-for="BillTypeId"></label>
+            <div class="form-group mt-4 p-2">
+                <label asp-for="BillTypeId">Sort by Type of Bill</label>
                 <select asp-for="BillTypeId" class="form-control">
                     <option value="">All</option>
                     @foreach (var billType in Model.BillTypes)
@@ -19,15 +19,17 @@
                         <option value="@billType.Id">@billType.Name</option>
                     }
                 </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="BillMonth"></label>
+            </div>                  
+        </div>
+        <div class="form-group col-md-3 d-flex justify-content-between">
+            <div class="form-group mt-4 p-2">
+                <label asp-for="BillMonth">Choose a specific Month</label>
                 <input asp-for="BillMonth" type="month" id="billMonth">
-            </div>
+            </div>            
         </div>
 
-        <div class="form-group col-md-3">
-            <div class="form-group">
+        <div class="form-group col-md-3 d-flex justify-content-between">
+            <div class="form-group mt-4 p-2">
                 <label asp-for="SortingDate">Sort by month</label>
                 <select asp-for="SortingDate" class="form-control" id="sortingDate">
                     <option value="4">-</option>
@@ -35,15 +37,15 @@
                     <option value="2">Oldest first</option>
                 </select>
                 <label asp-for="SortingCost">Sort by cost</label>
-                <select asp-for="SortingCost" class="form-control"> 
+                <select asp-for="SortingCost" class="form-control">
                     <option value="4">-</option>
                     <option value="1">Cheapest first</option>
                     <option value="0">Expensive first</option>
                 </select>
-            </div>
+            </div>            
         </div>
 
-        <div class="col-md-3">
+        <div class="form-group col-md-3 d-flex justify-content-between">
             <div class="form-group mt-4 p-2">
                 <input type="submit" value="Search" class="btn btn-primary" />
             </div>

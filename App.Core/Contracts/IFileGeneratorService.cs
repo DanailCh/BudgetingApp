@@ -1,5 +1,6 @@
 ﻿using App.Core.Models.Archive.Bill;
 using App.Core.Models.Archive.HouseholdBudget;
+using App.Core.Models.Archive.MemberSalary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace App.Core.Contracts
     {
         string GenerateFileForArchivedBills(string userId, IEnumerable<ArchiveBillViewModel> model);
         string GenerateFileForArchivedBudgets(string v, IEnumerable<ArchiveHouseholdBudgetViewModel> budgets);
+        string GenerateFileForArchivedSalaries(string v, IEnumerable<ArchiveMemberSalaryViewModel> salaries);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using App.Core.Contracts;
 using App.Core.Models.Archive.Bill;
 using App.Core.Models.Archive.HouseholdBudget;
+using App.Core.Models.Archive.MemberSalary;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using System.Security.Claims;
@@ -57,6 +58,19 @@ namespace HouseholdBudgetingApp.Controllers
 
             return View(model);
         }
+        [HttpGet]
+        public async Task<IActionResult> SalariesArchive([FromQuery] AllArchivedMembersSalariesQueryModel
+            model)
+        {
+
+            var archivedSalaries = await householdService.AllMembersSalariesAsync(
+                User.Id(),model
+               );
+            model.Members = await householdService.AllHouseholdMembersAsync(User.Id());
+            model.ArchivedMembersSalariesCount=archivedSalaries.ArchivedMembersSalariesCount;
+            model.ArchivedSalaries = archivedSalaries.ArchivedSalaries;
+            return View(model);
+        }
 
         [HttpGet]
         public async Task<IActionResult> DownloadTextFileForBills([FromQuery] AllArchivedBillsQueryModel model)
@@ -87,6 +101,19 @@ namespace HouseholdBudgetingApp.Controllers
 
             string text =  fileGeneratorService.GenerateFileForArchivedBudgets(User.Id(), budgets);
             Response.Headers.Add(HeaderNames.ContentDisposition, @"attachment;filename=budgetsArchive.txt");
+            return File(Encoding.UTF8.GetBytes(text), "text/plain");
+        }
+        [HttpGet]
+        public async Task<IActionResult> DownloadTextFileForSalaries([FromQuery] AllArchivedMembersSalariesQueryModel model)
+        {
+            var archivedSalaries = await householdService.AllMembersSalariesAsync(
+                User.Id(), model
+               );           
+            var salaries = archivedSalaries.ArchivedSalaries;
+            
+
+            string text = fileGeneratorService.GenerateFileForArchivedSalaries(User.Id(), salaries);
+            Response.Headers.Add(HeaderNames.ContentDisposition, @"attachment;filename=salariesArchive.txt");
             return File(Encoding.UTF8.GetBytes(text), "text/plain");
         }
 

@@ -11,12 +11,12 @@
     <div class="row">
         <div class="form-group col-md-3 d-flex justify-content-between">
             <div class="form-group">
-                <label asp-for="BudgetMonth"></label>
+                <label asp-for="BudgetMonth">Choose a specific Month</label>
                 <input asp-for="BudgetMonth" type="month" id="budgetMonth">
             </div>
         </div>
 
-        <div class="form-group col-md-3">
+        <div class="form-group col-md-3 d-flex justify-content-between">
             <div class="form-group">
                 <label asp-for="Sorting">Sort by income or expences</label>
                 <select asp-for="Sorting" class="form-control" id="sorting">
@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="form-group col-md-3 d-flex justify-content-between">
             <div class="form-group mt-4 p-2">
                 <input type="submit" value="Search" class="btn btn-primary" />
             </div>
