@@ -8,66 +8,112 @@ using System.Threading.Tasks;
 
 namespace App.Infrastructure.Data.Configurations
 {
-    public static class ConfigurationHelper
+    public  class ConfigurationHelper
     {
-        public static IdentityUser GuestUser = GetGuestUser();
-        public static IdentityUser AdminUser = GetAdminUser();
+        public  IdentityUser GuestUser { get; set; }
+        public  IdentityUser AdminUser { get; set; }
 
-        public static BillType ElectricityType = new BillType()
-        {
-            Id = 1,
-            Name = "Electricity",
-           
-        };
+        public  BillType ElectricityType { get; set; }
+        public  BillType WaterType { get; set; }
+        public  BillType HeatType { get; set; }
+        public  BillType InternetType { get; set; }
+        public  BillType RentType { get; set; }
 
-        public static BillType WaterType = new BillType()
-        {
-            Id = 2,
-            Name = "Water",
-           
-        };
-        public static BillType HeatType = new BillType()
-        {
-            Id = 3,
-            Name = "Heat",
-           
-        };
-        public static BillType InternetType = new BillType()
-        {
-            Id = 4,
-            Name = "Internet",
-            
-        };
-        public static BillType RentType = new BillType()
-        {
-            Id = 5,
-            Name = "Rent",
-           
-        };
+        public  SeverityType LowSeverity { get; set; }
+        public  SeverityType MediumSeverity { get; set; }
+        public  SeverityType HighSeverity { get; set; }
 
-        private static IdentityUser GetGuestUser()
+        public ConfigurationHelper()
         {
-            var hasher = new PasswordHasher<IdentityUser>();
-
-            var user = new IdentityUser()
-            {
-                UserName = "guest@guest.bg",
-                NormalizedUserName = "GUEST@GUEST.BG",
-            };
-            user.PasswordHash = hasher.HashPassword(user, "guest123");
-            return user;
+            SeedUsers();
+            SeedBillTypes();
+            SeedSeverityTypes();
+           
         }
-        private static IdentityUser GetAdminUser()
+
+        private void SeedSeverityTypes()
+        {
+            LowSeverity = new SeverityType()
+            {
+                Id = 1,
+                Name = "Low",
+
+            };
+            MediumSeverity = new SeverityType()
+            {
+                Id = 2,
+                Name = "Medium",
+
+            };
+            HighSeverity = new SeverityType()
+            {
+                Id = 3,
+                Name = "High",
+
+            };
+        }
+
+        private void SeedBillTypes()
+        {
+            ElectricityType = new BillType()
+            {
+                Id = 1,
+                Name = "Electricity",
+
+            };
+            WaterType = new BillType()
+            {
+                Id = 2,
+                Name = "Water",
+
+            };
+            HeatType = new BillType()
+            {
+                Id = 3,
+                Name = "Heat",
+
+            };
+            InternetType = new BillType()
+            {
+                Id = 4,
+                Name = "Internet",
+
+            };
+            RentType = new BillType()
+            {
+                Id = 5,
+                Name = "Rent",
+
+            };
+        }
+
+        private void SeedUsers()
         {
             var hasher = new PasswordHasher<IdentityUser>();
 
-            var user = new IdentityUser()
+            AdminUser = new IdentityUser()
             {
-                UserName = "admin@admin.bg",
-                NormalizedUserName = "ADMIN@ADMIN.BG",
+                Id = "dea12856-c198-4129-b3f3-b893d8395082",
+                UserName = "admin",
+                NormalizedUserName = "ADMIN",
+                Email = "admin@mail.com",
+                NormalizedEmail = "admin@mail.com"
             };
-            user.PasswordHash = hasher.HashPassword(user, "admin123");
-            return user;
+
+            AdminUser.PasswordHash =
+                 hasher.HashPassword(AdminUser, "admin123");
+
+            GuestUser = new IdentityUser()
+            {
+                Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
+                UserName = "guest",
+                NormalizedUserName = "GUEST",
+                Email = "guest@mail.com",
+                NormalizedEmail = "guest@mail.com"
+            };
+
+            GuestUser.PasswordHash =
+            hasher.HashPassword(GuestUser, "guest123");
         }
     }
 }

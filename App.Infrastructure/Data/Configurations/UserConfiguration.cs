@@ -11,10 +11,12 @@ namespace App.Infrastructure.Data.Configurations
 {
     public class UserConfiguration:IEntityTypeConfiguration<IdentityUser>
     {
+        
         public void Configure(EntityTypeBuilder<IdentityUser> builder)
         {
-            builder.HasData(ConfigurationHelper.GuestUser);
-            builder.HasData(ConfigurationHelper.AdminUser);
+            var data = new ConfigurationHelper();
+
+            builder.HasData(new IdentityUser[] { data.AdminUser, data.GuestUser });
         }
     }
 }

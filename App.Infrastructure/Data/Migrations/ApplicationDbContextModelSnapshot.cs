@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace HouseholdBudgetingApp.Data.Migrations
+namespace App.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -166,6 +166,55 @@ namespace HouseholdBudgetingApp.Data.Migrations
                     b.ToTable("EndMonthSummaries");
                 });
 
+            modelBuilder.Entity("App.Infrastructure.Data.Models.FeedbackMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Identifier for Message");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comment")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .HasComment("Comment from Admin");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .HasComment("Content of Message");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2")
+                        .HasComment("Timestamp for when the message was send");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("Foreign key for User who send the message");
+
+                    b.Property<int?>("SeverityTypeId")
+                        .IsRequired()
+                        .HasColumnType("int")
+                        .HasComment("Foreign key for SeverityType");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasComment("Title for Message");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SenderId");
+
+                    b.HasIndex("SeverityTypeId");
+
+                    b.ToTable("FeedbackMessages");
+                });
+
             modelBuilder.Entity("App.Infrastructure.Data.Models.HouseholdBudget", b =>
                 {
                     b.Property<int>("Id")
@@ -263,6 +312,43 @@ namespace HouseholdBudgetingApp.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("MemberSalaries");
+                });
+
+            modelBuilder.Entity("App.Infrastructure.Data.Models.SeverityType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasComment("Identifier for SeverityType");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)")
+                        .HasComment("SeverityType name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SeverityTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Low"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Medium"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "High"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -384,31 +470,35 @@ namespace HouseholdBudgetingApp.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9028344b-a6ce-4da4-80ab-413635aa1788",
+                            Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a5e6170b-fb5d-42fe-b367-f9129cc4b6ec",
+                            ConcurrencyStamp = "48440846-2660-4f62-9bd1-ff8a6e588139",
+                            Email = "admin@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedUserName = "GUEST@GUEST.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEGyFHVV8XQ57F1uHckVjKyJdmBJcXaWBtDIr/rD3ymWiKn50Tg21Ole67M9WL42vg==",
+                            NormalizedEmail = "admin@mail.com",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGODI0z5IvHWA8LfBmX6vmds9ToZ9yVxhLKB/dBRa4konkndAJwPzQXmbvHFMuiEow==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "eabe109b-ed72-4469-979b-56bd4aaf74db",
+                            SecurityStamp = "320dd0fe-83bf-49a3-93f7-2593b15da27e",
                             TwoFactorEnabled = false,
-                            UserName = "guest@guest.bg"
+                            UserName = "admin"
                         },
                         new
                         {
-                            Id = "26e9c239-fdf2-4e2d-bcc5-094bf8703c32",
+                            Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ac8e994e-213f-470a-84c1-c7da62c80645",
+                            ConcurrencyStamp = "8bb4e2cb-4568-4299-b75c-38674e7dd9c2",
+                            Email = "guest@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedUserName = "ADMIN@ADMIN.BG",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDxwCKj8RIfIj48zbs14jXhWMmhLZDYTDkNCjgMJ3PHYztmMR48LADfFiC1uMav3MQ==",
+                            NormalizedEmail = "guest@mail.com",
+                            NormalizedUserName = "GUEST",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJwdhoYVAEvO5wUrgDsmG5N7EQlq79+BkfFd7ABlWUor6HGG54k7Q6azinLDSFAd4Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f7842f15-b0e8-4986-80b9-f197580f2c60",
+                            SecurityStamp = "8c881fd6-9983-4729-98a7-3b31730c12a7",
                             TwoFactorEnabled = false,
-                            UserName = "admin@admin.bg"
+                            UserName = "guest"
                         });
                 });
 
@@ -543,6 +633,25 @@ namespace HouseholdBudgetingApp.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("App.Infrastructure.Data.Models.FeedbackMessage", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "SenderUser")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Infrastructure.Data.Models.SeverityType", "SeverityType")
+                        .WithMany("Messages")
+                        .HasForeignKey("SeverityTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("SenderUser");
+
+                    b.Navigation("SeverityType");
+                });
+
             modelBuilder.Entity("App.Infrastructure.Data.Models.HouseholdBudget", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
@@ -645,6 +754,11 @@ namespace HouseholdBudgetingApp.Data.Migrations
                     b.Navigation("Bills");
 
                     b.Navigation("MemberSalaries");
+                });
+
+            modelBuilder.Entity("App.Infrastructure.Data.Models.SeverityType", b =>
+                {
+                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }

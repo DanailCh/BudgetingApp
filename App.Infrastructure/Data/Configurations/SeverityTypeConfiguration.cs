@@ -9,19 +9,17 @@ using System.Threading.Tasks;
 
 namespace App.Infrastructure.Data.Configurations
 {
-    public class BillTypeConfiguration:IEntityTypeConfiguration<BillType>
+    public class SeverityTypeConfiguration : IEntityTypeConfiguration<SeverityType>
     {
-        public void Configure(EntityTypeBuilder<BillType> builder)
+        public void Configure(EntityTypeBuilder<SeverityType> builder)
         {
             var data = new ConfigurationHelper();
-            builder.HasData(new BillType[]
+            builder.HasData(new SeverityType[]
             {
-               data.ElectricityType,
-               data.WaterType,
-               data.HeatType,
-               data.InternetType,
-               data.RentType
-              
+               data.LowSeverity,
+               data.MediumSeverity,
+               data.HighSeverity,              
+
             });
         }
     }

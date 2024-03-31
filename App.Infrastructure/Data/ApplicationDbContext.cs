@@ -20,36 +20,24 @@ namespace HouseholdBudgetingApp.Data
         public DbSet<HouseholdMember> HouseholdMembers { get; init; }
         public DbSet<MemberSalary> MemberSalaries { get; init; }
         public DbSet<EndMonthSummary> EndMonthSummaries { get; init; }
+        public DbSet<FeedbackMessage> FeedbackMessages { get; init; }
+        public DbSet<SeverityType> SeverityTypes { get; init; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Bill>()
-                .HasOne(b => b.Payer)
-                .WithMany(p => p.Bills)
-                .HasForeignKey(b => b.PayerId)
-                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Bill>()
-                .HasOne(b => b.BillType)
-                .WithMany(p => p.Bills)
-                .HasForeignKey(b => b.BillTypeId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<MemberSalary>()
-                .HasOne(m => m.HouseholdMember)
-                .WithMany(h => h.MemberSalaries)
-                .HasForeignKey(m => m.HouseholdMemberId)
-                .OnDelete(DeleteBehavior.Restrict);
-
+           
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new BillConfiguration());
             modelBuilder.ApplyConfiguration(new BillTypeConfiguration());
-
-            base.OnModelCreating(modelBuilder);
-
+            
+            modelBuilder.ApplyConfiguration(new SeverityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new FeedbackMessageConfiguration());
+            modelBuilder.ApplyConfiguration(new MemberSalaryConfiguration());           
             
 
+            base.OnModelCreating(modelBuilder);
         }
-
 
     }
 }
