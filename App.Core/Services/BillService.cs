@@ -235,6 +235,7 @@ namespace App.Core.Services
             var date = await GetDateAsync(userId);
             return date.ToString("MMMM yyyy");
         }
+
         public  DateTime GetDate()
         {
             DateTime date = DateTime.Now;

@@ -112,6 +112,7 @@
     @{
         var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
         !Model.ArchivedSalaries.Any();
+        var shouldDownloadButtonBeDisabled = !Model.ArchivedSalaries.Any();
     }
 
     <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
@@ -155,7 +156,7 @@
         </tbody>
     </table>
     <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
-        <a class="btn btn-primary"
+        <a class="btn btn-primary @(shouldDownloadButtonBeDisabled ? "disabled" : string.Empty)"
            asp-controller="Archive"
            asp-action="DownloadTextFileForSalaries"
            asp-route-memberId="@Model.MemberId"

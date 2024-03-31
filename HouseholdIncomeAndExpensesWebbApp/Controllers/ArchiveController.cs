@@ -2,6 +2,7 @@
 using App.Core.Models.Archive.Bill;
 using App.Core.Models.Archive.HouseholdBudget;
 using App.Core.Models.Archive.MemberSalary;
+using App.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using System.Security.Claims;
@@ -85,7 +86,10 @@ namespace HouseholdBudgetingApp.Controllers
                model.BillsPerPage
               );
             var bills= archivedBills.ArchivedBills;
-
+            if (!bills.Any())
+            {
+                return BadRequest();
+            }
             string text = fileGeneratorService.GenerateFileForArchivedBills(User.Id(), bills);
             Response.Headers.Add(HeaderNames.ContentDisposition, @"attachment;filename=billsArchive.txt");
             return File(Encoding.UTF8.GetBytes(text), "text/plain");
@@ -97,7 +101,11 @@ namespace HouseholdBudgetingApp.Controllers
                 User.Id(), model);
 
             var budgets = archivedBudgets.ArchivedBudgets;
-            
+            if (!budgets.Any())
+            {
+                return BadRequest();
+            }
+
 
             string text =  fileGeneratorService.GenerateFileForArchivedBudgets(User.Id(), budgets);
             Response.Headers.Add(HeaderNames.ContentDisposition, @"attachment;filename=budgetsArchive.txt");
@@ -110,7 +118,11 @@ namespace HouseholdBudgetingApp.Controllers
                 User.Id(), model
                );           
             var salaries = archivedSalaries.ArchivedSalaries;
-            
+            if (!salaries.Any())
+            {
+                return BadRequest();
+            }
+
 
             string text = fileGeneratorService.GenerateFileForArchivedSalaries(User.Id(), salaries);
             Response.Headers.Add(HeaderNames.ContentDisposition, @"attachment;filename=salariesArchive.txt");
