@@ -72,7 +72,7 @@ namespace App.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bills");
+                    b.ToTable("Bills", (string)null);
                 });
 
             modelBuilder.Entity("App.Infrastructure.Data.Models.BillType", b =>
@@ -102,7 +102,7 @@ namespace App.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BillTypes");
+                    b.ToTable("BillTypes", (string)null);
 
                     b.HasData(
                         new
@@ -163,7 +163,7 @@ namespace App.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("EndMonthSummaries");
+                    b.ToTable("EndMonthSummaries", (string)null);
                 });
 
             modelBuilder.Entity("App.Infrastructure.Data.Models.FeedbackMessage", b =>
@@ -195,8 +195,7 @@ namespace App.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasComment("Foreign key for User who send the message");
 
-                    b.Property<int?>("SeverityTypeId")
-                        .IsRequired()
+                    b.Property<int?>("SeverityTypeId")                        
                         .HasColumnType("int")
                         .HasComment("Foreign key for SeverityType");
 
@@ -212,7 +211,7 @@ namespace App.Infrastructure.Data.Migrations
 
                     b.HasIndex("SeverityTypeId");
 
-                    b.ToTable("FeedbackMessages");
+                    b.ToTable("FeedbackMessages", (string)null);
                 });
 
             modelBuilder.Entity("App.Infrastructure.Data.Models.HouseholdBudget", b =>
@@ -245,7 +244,7 @@ namespace App.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("HouseholdBudgets");
+                    b.ToTable("HouseholdBudgets", (string)null);
                 });
 
             modelBuilder.Entity("App.Infrastructure.Data.Models.HouseholdMember", b =>
@@ -276,7 +275,7 @@ namespace App.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("HouseholdMembers");
+                    b.ToTable("HouseholdMembers", (string)null);
                 });
 
             modelBuilder.Entity("App.Infrastructure.Data.Models.MemberSalary", b =>
@@ -311,7 +310,7 @@ namespace App.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("MemberSalaries");
+                    b.ToTable("MemberSalaries", (string)null);
                 });
 
             modelBuilder.Entity("App.Infrastructure.Data.Models.SeverityType", b =>
@@ -331,7 +330,7 @@ namespace App.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SeverityTypes");
+                    b.ToTable("SeverityTypes", (string)null);
 
                     b.HasData(
                         new

@@ -147,5 +147,16 @@ namespace App.Core.Services
                ArchivedBudgetsCount=totalArchivedBudgets,
             };
         }
+
+        public async Task<bool> HasBillsAsync(string userId)
+        {
+            var date=billService.GetDateAsync(userId).Result;
+            var bills=billService.AllCurentMonthBillsAsync(userId, date).Result.Count();
+            if (bills==0)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

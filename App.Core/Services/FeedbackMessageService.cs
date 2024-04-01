@@ -30,7 +30,6 @@ namespace App.Core.Services
                 Content = m.Content,
                 Date = m.Date,
                 Comment = m.Comment,
-                Severity = m.SeverityType.Name
 
             }).ToListAsync();
             return messages;
@@ -39,14 +38,15 @@ namespace App.Core.Services
 
         public async Task<IEnumerable<FeedbackMessageViewModel>> AdminGetAllMessagesAsync()
         {
-            var messages = await _context.FeedbackMessages.AsNoTracking().Select(m => new FeedbackMessageViewModel()
+            
+            var messages = await _context.FeedbackMessages.Select(m => new FeedbackMessageViewModel()
             {
                 SenderUsername = m.SenderUser.UserName,
                 Title = m.Title,
                 Content = m.Content,
                 Date = m.Date,
                 Comment = m.Comment,
-                Severity = m.SeverityType.Name,
+                Severity = m.SeverityType.Name ?? String.Empty,
 
             }).ToListAsync();
             return messages;
@@ -63,6 +63,7 @@ namespace App.Core.Services
                 Date = DateTime.Now,
             };
             await _context.FeedbackMessages.AddAsync(message);
+            await _context.SaveChangesAsync();
         } 
 
         public async Task UpdateSeverityStatusOnMessageAsync(int messageId, int severityId)

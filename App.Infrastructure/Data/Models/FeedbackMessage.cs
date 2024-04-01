@@ -48,7 +48,7 @@ namespace App.Infrastructure.Data.Models
         public int? SeverityTypeId { get; set; }
 
         [ForeignKey(nameof(SeverityTypeId))]
-        public SeverityType SeverityType { get; set; } = null!;
+        public SeverityType? SeverityType { get; set; } = null!;
 
 
         

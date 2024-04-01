@@ -266,7 +266,7 @@ namespace App.Infrastructure.Data.Migrations
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, comment: "Title for Message"),
                     Content = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false, comment: "Content of Message"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "Timestamp for when the message was send"),
-                    SeverityTypeId = table.Column<int>(type: "int", nullable: false, comment: "Foreign key for SeverityType"),
+                    SeverityTypeId = table.Column<int>(type: "int", nullable: true, comment: "Foreign key for SeverityType"),
                     Comment = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true, comment: "Comment from Admin")
                 },
                 constraints: table =>

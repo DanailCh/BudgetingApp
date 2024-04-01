@@ -16,6 +16,7 @@ namespace App.Core.Contracts
         Task<List<MemberSalaryFormViewModel>> GetMemberSalaryFormModelsAsync(string userId);
         Task<IEnumerable<SummaryViewModel>>AllSummariesAsync(string userId);
         Task<bool>NotAllBillsPayedAsync(string userId);
+        Task<bool> HasBillsAsync(string userId);
         Task CreateSummary(List<MemberSalaryFormViewModel> models,string userId);
         Task ResolveSummary(int id);
         Task<bool> SummaryExistsAsync(int id);

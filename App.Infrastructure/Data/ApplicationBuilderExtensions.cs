@@ -45,6 +45,8 @@ namespace App.Infrastructure.Data
                 {
                     var roleGuest = new IdentityRole { Name = "Guest" };
                     await roleManager.CreateAsync(roleGuest);
+                    var guest = await userManager.FindByNameAsync("guest");
+                    await userManager.AddToRoleAsync(guest, roleGuest.Name);
                 }
                 
             })
