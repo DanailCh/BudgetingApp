@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HouseholdBudgetingApp.Controllers
+namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Guest")]
+    [Area("Guest")]
     public class BaseController : Controller
     {
 

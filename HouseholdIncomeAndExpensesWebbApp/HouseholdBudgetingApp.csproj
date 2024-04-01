@@ -22,4 +22,11 @@
     <ProjectReference Include="..\App.Core\App.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Guest\Data\" />
+    <Folder Include="Areas\Guest\Models\" />
+  </ItemGroup>
+
 </Project>

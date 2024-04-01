@@ -5,9 +5,11 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using HouseholdBudgetingApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace HouseholdBudgetingApp.Areas.Identity.Pages.Account.Manage
@@ -16,16 +18,18 @@ namespace HouseholdBudgetingApp.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly ApplicationDbContext _context;
         private readonly ILogger<DeletePersonalDataModel> _logger;
 
         public DeletePersonalDataModel(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
-            ILogger<DeletePersonalDataModel> logger)
+            SignInManager<IdentityUser> signInManager,ApplicationDbContext context, 
+            ILogger<DeletePersonalDataModel> logger )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _context= context;
         }
 
         
@@ -73,8 +77,8 @@ namespace HouseholdBudgetingApp.Areas.Identity.Pages.Account.Manage
                     return Page();
                 }
             }
-
-            var result = await _userManager.DeleteAsync(user);
+            
+            IdentityResult result = await DeleteUserAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);
             if (!result.Succeeded)
             {
@@ -86,6 +90,23 @@ namespace HouseholdBudgetingApp.Areas.Identity.Pages.Account.Manage
             _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
 
             return Redirect("~/");
+        }
+
+        private async Task<IdentityResult> DeleteUserAsync(IdentityUser user)
+        {
+            var feedbackMessage = await _context.FeedbackMessages.Where(b => b.SenderId == user.Id).ToListAsync();
+            foreach (var item in feedbackMessage)
+            {
+                item.SenderId = $"{user.UserName} - deleted user";
+            }
+            await _context.SaveChangesAsync();
+            int billsDeleted=await _context.Bills.Where(b => b.UserId == user.Id).ExecuteDeleteAsync();
+            int salariesDeleted = await _context.MemberSalaries.Where(b => b.UserId == user.Id).ExecuteDeleteAsync();
+            int billTypesDeleted = await _context.BillTypes.Where(b => b.UserId == user.Id).ExecuteDeleteAsync();
+            int membersDeleted = await _context.HouseholdMembers.Where(b => b.UserId == user.Id).ExecuteDeleteAsync();
+            int budgetsDeleted = await _context.HouseholdBudgets.Where(b => b.UserId == user.Id).ExecuteDeleteAsync();
+            int summeryDeleted = await _context.EndMonthSummaries.Where(b => b.UserId == user.Id).ExecuteDeleteAsync();
+            return await _userManager.DeleteAsync(user);
         }
     }
 }

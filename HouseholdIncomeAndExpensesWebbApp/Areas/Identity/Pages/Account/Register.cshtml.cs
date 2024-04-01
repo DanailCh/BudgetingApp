@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -27,18 +28,20 @@ namespace HouseholdBudgetingApp.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly RoleManager<IdentityRole> _roleManager;
-       
+        private readonly IUserStore<IdentityUser> _userStore;
+
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,            
             SignInManager<IdentityUser> signInManager,
-            ILogger<RegisterModel> logger, RoleManager<IdentityRole> roleManager
+            ILogger<RegisterModel> logger, RoleManager<IdentityRole> roleManager, IUserStore<IdentityUser> userStore
            )
         {
             _userManager = userManager;           
             _signInManager = signInManager;
             _logger = logger;   
             _roleManager = roleManager;
+            _userStore = userStore;
         }
 
        
@@ -86,6 +89,8 @@ namespace HouseholdBudgetingApp.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
+               
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)

@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.Metrics;
 using System.Security.Claims;
 
-namespace HouseholdBudgetingApp.Controllers
+namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 {
+    [Area("Guest")]
     public class SummaryController : BaseController
     {
         private readonly IBudgetSummaryService budgetSummaryService;
@@ -23,7 +24,7 @@ namespace HouseholdBudgetingApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            
+
             var model = await budgetSummaryService.AllSummariesAsync(User.Id());
             ViewBag.Date = await billService.GetFormatedDateAsync(User.Id());
             return View(model);
@@ -32,21 +33,32 @@ namespace HouseholdBudgetingApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
+
+            if (await householdService.MinimumMembersAsync(User.Id()))
+            {
+                TempData["Message"] = "Not enough members";
+                return RedirectToAction(nameof(Index),"Household");
+            }
+            if (await budgetSummaryService.HasBillsAsync(User.Id())==false)
+            {
+                TempData["Message"] = "No Bills to Summarize";
+                return RedirectToAction(nameof(Index));
+            }
             if (await budgetSummaryService.NotAllBillsPayedAsync(User.Id()))
             {
                 TempData["Message"] = "All Bills must be payed in order to Summarize month!";
                 return RedirectToAction(nameof(Index), nameof(Bill));
             }
             var model = await budgetSummaryService.GetMemberSalaryFormModelsAsync(User.Id());
-           
-            
+
+
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromForm]List<MemberSalaryFormViewModel> model)
+        public async Task<IActionResult> Add([FromForm] List<MemberSalaryFormViewModel> model)
         {
-            foreach(var member in model)
+            foreach (var member in model)
             {
                 if (await householdService.MemberExistsAsync(member.Id) == false)
                 {
@@ -58,10 +70,10 @@ namespace HouseholdBudgetingApp.Controllers
                     return Unauthorized();
                 }
             }
-           
+
 
             if (!ModelState.IsValid)
-            {               
+            {
                 return View(model);
             }
             await budgetSummaryService.CreateSummary(model, User.Id());

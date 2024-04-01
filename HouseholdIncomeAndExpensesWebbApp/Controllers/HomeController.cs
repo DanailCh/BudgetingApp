@@ -1,11 +1,11 @@
-﻿using HouseholdBudgetingApp.Controllers;
+﻿using HouseholdBudgetingApp.Areas.Guest.Controllers;
 using HouseholdBudgetingApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace HouseholdBudgetingApp.Controllers
 {
-    public class HomeController : BaseController
+    public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
 

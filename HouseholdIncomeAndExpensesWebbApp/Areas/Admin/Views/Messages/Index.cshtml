@@ -1,0 +1,44 @@
+﻿@model IEnumerable<FeedbackMessageViewModel>
+@{
+    ViewBag.Title = "Feedback messages";
+
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="text-center row">
+    @foreach (var e in Model)
+    {string date = e.Date.ToString("dd/MMM/yy HH:mm");
+    <div class="card col-4" style="width: 20rem; ">
+        <div class="card-body">
+        <h5 class="card-title mt-1">@e.Title</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">@date</h6>
+        <h6 class="card-subtitle mb-2 text-body-secondary">Send by:@e.SenderUsername</h6>
+        <p class="card-text">@e.Content</p>
+        @{
+            if (e.Comment == String.Empty)
+            {
+                <a asp-area="Admin" asp-controller="Messages" asp-action="AddComent" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Raspond</a>
+            }
+            else{
+                <p class="mb-0"><span class="fw-bold">@e.Comment</span></p>
+            }
+            if (e.Severity != String.Empty)
+            {
+                    <p class="mb-0"><span class="fw-bold">@e.Severity</span></p>
+            }
+            else
+            {
+                    <a asp-area="Admin" asp-controller="Messages" asp-action="AssignSeverity" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Assign Severity</a>
+            }
+        }
+    </div>
+    </div>
+   
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    }

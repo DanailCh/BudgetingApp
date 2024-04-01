@@ -8,8 +8,9 @@ using Microsoft.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 
-namespace HouseholdBudgetingApp.Controllers
+namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 {
+    [Area("Guest")]
     public class ArchiveController : BaseController
     {
         private readonly IBillService billService;
@@ -40,11 +41,11 @@ namespace HouseholdBudgetingApp.Controllers
                 model.BillsPerPage
                );
 
-            
+
             model.BillTypes = await billService.GetBillTypesAsync(User.Id());
-            model.ArchivedBills=archivedBills.ArchivedBills;
-            model.ArchivedBillsCount=archivedBills.ArchivedBillsCount;
-           
+            model.ArchivedBills = archivedBills.ArchivedBills;
+            model.ArchivedBillsCount = archivedBills.ArchivedBillsCount;
+
             return View(model);
         }
         [HttpGet]
@@ -52,7 +53,7 @@ namespace HouseholdBudgetingApp.Controllers
         {
 
             var archivedBudgets = await budgetSummaryService.AllBudgetsAsync(
-                User.Id(),model);
+                User.Id(), model);
 
             model.ArchivedBudgets = archivedBudgets.ArchivedBudgets;
             model.ArchivedBudgetsCount = archivedBudgets.ArchivedBudgetsCount;
@@ -65,10 +66,10 @@ namespace HouseholdBudgetingApp.Controllers
         {
 
             var archivedSalaries = await householdService.AllMembersSalariesAsync(
-                User.Id(),model
+                User.Id(), model
                );
             model.Members = await householdService.AllHouseholdMembersAsync(User.Id());
-            model.ArchivedMembersSalariesCount=archivedSalaries.ArchivedMembersSalariesCount;
+            model.ArchivedMembersSalariesCount = archivedSalaries.ArchivedMembersSalariesCount;
             model.ArchivedSalaries = archivedSalaries.ArchivedSalaries;
             return View(model);
         }
@@ -85,7 +86,7 @@ namespace HouseholdBudgetingApp.Controllers
                model.CurrentPage,
                model.BillsPerPage
               );
-            var bills= archivedBills.ArchivedBills;
+            var bills = archivedBills.ArchivedBills;
             if (!bills.Any())
             {
                 return BadRequest();
@@ -107,7 +108,7 @@ namespace HouseholdBudgetingApp.Controllers
             }
 
 
-            string text =  fileGeneratorService.GenerateFileForArchivedBudgets(User.Id(), budgets);
+            string text = fileGeneratorService.GenerateFileForArchivedBudgets(User.Id(), budgets);
             Response.Headers.Add(HeaderNames.ContentDisposition, @"attachment;filename=budgetsArchive.txt");
             return File(Encoding.UTF8.GetBytes(text), "text/plain");
         }
@@ -116,7 +117,7 @@ namespace HouseholdBudgetingApp.Controllers
         {
             var archivedSalaries = await householdService.AllMembersSalariesAsync(
                 User.Id(), model
-               );           
+               );
             var salaries = archivedSalaries.ArchivedSalaries;
             if (!salaries.Any())
             {

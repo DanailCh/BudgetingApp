@@ -6,16 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using System.Security.Claims;
 
-namespace HouseholdBudgetingApp.Controllers
+namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 {
-    public class HouseholdController:BaseController
+    [Area("Guest")]
+    public class HouseholdController : BaseController
     {
         private readonly IHouseholdService householdService;
 
         public HouseholdController(
             IHouseholdService _householdService)
         {
-           
+
             householdService = _householdService;
 
         }
@@ -23,7 +24,7 @@ namespace HouseholdBudgetingApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            
+
             var model = await householdService.AllHouseholdMembersAsync(User.Id());
 
             return View(model);
@@ -36,21 +37,21 @@ namespace HouseholdBudgetingApp.Controllers
             {
                 return BadRequest();
             }
-            var model = new HouseholdMemberFormViewModel();           
+            var model = new HouseholdMemberFormViewModel();
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(HouseholdMemberFormViewModel model)
         {
-            if(await householdService.OverMembersLimitAsync(User.Id()))
+            if (await householdService.OverMembersLimitAsync(User.Id()))
             {
                 return BadRequest();
             }
-            
+
 
             if (!ModelState.IsValid)
-            {               
+            {
                 return View(model);
             }
 
@@ -77,6 +78,6 @@ namespace HouseholdBudgetingApp.Controllers
             return RedirectToAction("Index");
         }
 
-       
+
     }
 }

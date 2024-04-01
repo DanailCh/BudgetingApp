@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using System.Security.Claims;
 
-namespace HouseholdBudgetingApp.Controllers
+namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 {
-    public class BillController:BaseController
+    [Area("Guest")]
+    [Authorize(Roles = "Guest")]
+    public class BillController : BaseController
     {
         private readonly IBillService billService;
         private readonly IHouseholdService householdService;
@@ -16,18 +18,18 @@ namespace HouseholdBudgetingApp.Controllers
 
 
         public BillController(
-            IBillService _billService,IHouseholdService _householdService)
+            IBillService _billService, IHouseholdService _householdService)
         {
             billService = _billService;
             householdService = _householdService;
-            
+
         }
 
-        
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            
+
             var model = await billService.AllCurentMonthBillsAsync(User.Id(), await billService.GetDateAsync(User.Id()));
             foreach (var item in model) { item.Payers = await householdService.AllHouseholdMembersAsync(User.Id()); }
             ViewBag.Date = await billService.GetFormatedDateAsync(User.Id());
@@ -37,19 +39,19 @@ namespace HouseholdBudgetingApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-                        
+
             ViewBag.Date = await billService.GetFormatedDateAsync(User.Id());
             var model = new BillFormModel()
             {
                 BillTypes = await billService.GetBillTypesAsync(User.Id()),
-                Payers=await householdService.AllHouseholdMembersAsync(User.Id()),                
+                Payers = await householdService.AllHouseholdMembersAsync(User.Id()),
             };
-            
+
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult>Add(BillFormModel model)
+        public async Task<IActionResult> Add(BillFormModel model)
         {
             if (string.IsNullOrEmpty(Request.Form["PayerId"]))
             {
@@ -66,7 +68,7 @@ namespace HouseholdBudgetingApp.Controllers
             {
                 ModelState.AddModelError(nameof(model.BillTypeId), "Bill Type does not exist.");
             }
-            
+
 
             if (!ModelState.IsValid)
             {
@@ -84,7 +86,7 @@ namespace HouseholdBudgetingApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-           
+
             if (await billService.BillExistsAsync(id) == false)
             {
                 return BadRequest();
@@ -99,12 +101,12 @@ namespace HouseholdBudgetingApp.Controllers
                 return Unauthorized();
             }
 
-            var model=await billService.FindBillByIdAsync(id);
-            model.BillTypes = await billService.GetBillTypesAsync(User.Id());            
+            var model = await billService.FindBillByIdAsync(id);
+            model.BillTypes = await billService.GetBillTypesAsync(User.Id());
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(BillFormModel model,int id)
+        public async Task<IActionResult> Edit(BillFormModel model, int id)
         {
             if (await billService.BillExistsAsync(id) == false)
             {
@@ -123,12 +125,12 @@ namespace HouseholdBudgetingApp.Controllers
             {
                 ModelState.AddModelError(nameof(model.BillTypeId), "Bill Type does not exist.");
             }
-            
+
 
             if (!ModelState.IsValid)
             {
                 model.BillTypes = await billService.GetBillTypesAsync(User.Id());
-               
+
                 return View(model);
             }
 
@@ -148,7 +150,7 @@ namespace HouseholdBudgetingApp.Controllers
             {
                 return Unauthorized();
             }
-           
+
 
             if (!(await householdService.AllHouseholdMembersAsync(User.Id())).Any(m => m.Id == model.PayerId))
             {
