@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace App.Core.Models.FeedbackMessage
 {
-    public class FeedbackMessageFormModel
+    public class StatusViewModel
     {
-        public string Title { get; set; }
-        public string Content { get; set; }  
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

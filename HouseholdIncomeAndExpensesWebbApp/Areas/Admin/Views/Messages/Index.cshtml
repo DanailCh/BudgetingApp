@@ -1,44 +1,132 @@
-﻿@model IEnumerable<FeedbackMessageViewModel>
+﻿@model AllFeedbackQueryModel
 @{
-    ViewBag.Title = "Feedback messages";
-
+    ViewBag.Title = "Messages";
 }
+
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
-<div class="text-center row">
-    @foreach (var e in Model)
-    {string date = e.Date.ToString("dd/MMM/yy HH:mm");
-    <div class="card col-4" style="width: 20rem; ">
-        <div class="card-body">
-        <h5 class="card-title mt-1">@e.Title</h5>
-        <h6 class="card-subtitle mb-2 text-body-secondary">@date</h6>
-        <h6 class="card-subtitle mb-2 text-body-secondary">Send by:@e.SenderUsername</h6>
-        <p class="card-text">@e.Content</p>
-        @{
-            if (e.Comment == String.Empty)
-            {
-                <a asp-area="Admin" asp-controller="Messages" asp-action="AddComent" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Raspond</a>
-            }
-            else{
-                <p class="mb-0"><span class="fw-bold">@e.Comment</span></p>
-            }
-            if (e.Severity != String.Empty)
-            {
-                    <p class="mb-0"><span class="fw-bold">@e.Severity</span></p>
-            }
-            else
-            {
-                    <a asp-area="Admin" asp-controller="Messages" asp-action="AssignSeverity" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Assign Severity</a>
-            }
-        }
+<form method="get">
+    <div class="row">
+        <div class="form-group col-md-3 d-flex justify-content-between">
+            <div class="form-group mt-4 p-2">
+                <label asp-for="SeverityTypeId">Select Priority</label>
+                <select asp-for="SeverityTypeId" class="form-control" id="severityId">
+                    <option value="">All</option>
+                    @foreach (var Type in Model.SeverityTypes)
+                    {
+                        <option value="@Type.Id">@Type.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group mt-4 p-2">
+                <label asp-for="StatusId">Select Status</label>
+                <select asp-for="StatusId" class="form-control" id="statusId">
+                    <option value="">All</option>
+                    @foreach (var Type in Model.Statuses)
+                    {
+                        <option value="@Type.Id">@Type.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-md-3 d-flex justify-content-between">
+            <div class="form-group mt-4 p-2">
+                <label asp-for="Sorting">Sort by date</label>
+                <select asp-for="Sorting" class="form-control" id="sortingDate">
+                    <option value="0">-</option>
+                    <option value="1">Newest first</option>
+                    <option value="2">Oldest first</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-md-3 d-flex justify-content-between">
+            <div class="form-group mt-4 p-2">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </div>
     </div>
-    </div>
-   
-    }
-</div>
+</form>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('#statusId').change(function () {
+               if ($(this).val() == '1') {
+                $('#severityId').prop('disabled', true);
+            } else {
+                $('#severityId').prop('disabled', false);
+            }
+            });
+
+            $('#severityId').change(function () {
+                if ($(this).val() != '') {
+                    $('#statusId option[value="1"]').prop('disabled', true);
+                }
+                else  { $('#statusId option[value="1"]').prop('disabled', false); }
+            });
+        });
+    </script>
+}
+
+
+
+    @{
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
     }
+
+    var maxPage = Math.Ceiling((double)Model.MessagesCount /
+        Model.MessagesPerPage);
+}
+
+<div class="row mb-5">
+    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+           asp-controller="Messages"
+           asp-action="Index"
+           asp-route-currentPage="@previousPage"           
+           asp-route-severityTypeId="@Model.SeverityTypeId"
+           asp-route-statusId="@Model.StatusId"
+           asp-route-sorting="@((int)Model.Sorting)"><<</a>
+
+    </div>
+
+    @{
+        var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
+        !Model.Messages.Any();        
+    }
+
+    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-primary
+           @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
+           asp-controller="Messages"
+           asp-action="Index"
+           asp-route-currentPage="@(Model.CurrentPage+1)"
+           asp-route-severityTypeId="@Model.SeverityTypeId"
+           asp-route-statusId="@Model.StatusId"
+           asp-route-sorting="@((int)Model.Sorting)">>></a>
+    </div>
+</div>
+
+@if (!Model.Messages.Any())
+{
+    <h2 class="text-center">No Messages found by the given criteria!</h2>
+}
+
+<div class="row">
+    @{
+        foreach (var ms in Model.Messages)
+        {
+            ms.SeverityTypes = Model.SeverityTypes;
+            ms.Statuses = Model.Statuses;
+        }
+    }
+    <partial name="_AdminMessagePartial" model="Model.Messages" />
+
+</div>

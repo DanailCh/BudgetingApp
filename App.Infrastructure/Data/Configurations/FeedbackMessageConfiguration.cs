@@ -19,6 +19,11 @@ namespace App.Infrastructure.Data.Configurations
                 .WithMany(p => p.Messages)
                 .HasForeignKey(b => b.SeverityTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
+            builder
+                .HasOne(b => b.Status)
+                .WithMany(p => p.Messages)
+                .HasForeignKey(b => b.StatusId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

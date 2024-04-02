@@ -56,5 +56,11 @@ namespace App.Infrastructure.Data.Models
         [Comment("Comment from Admin")]
         public string? Comment { get; set; } = String.Empty;
 
+        [Required]
+        [Comment("Status for message")]       
+        public int StatusId { get; set; }
+
+        [ForeignKey(nameof(StatusId))]
+        public Status Status { get; set; }
     }
 }

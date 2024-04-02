@@ -1,0 +1,73 @@
+﻿@model IEnumerable<FeedbackMessageFormViewModel>
+@inject IFeedBackMessageService messageService
+
+<div class="accordion" id="accordionExample">
+    @{
+        foreach (var message in Model)
+        {
+            var severity = message.SeverityTypes.FirstOrDefault(s => s.Id == message.SeverityId);
+            var status = message.Statuses.FirstOrDefault(s => s.Id == message.StatusId);
+            var date = message.Date.ToString("dd/MMM/yy HH:mm");
+            <div class="accordion" id="accordionPanels">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@message.Id" aria-expanded="false" aria-controls="collapse-@message.Id">
+                              <div class="col">
+                                   <h3>@message.Title</h3>
+                               </div>
+                               <div class="col">
+                                   <div class="row ">
+                                       @{ if (message.SeverityId != 0)
+                                           {
+                                               var textColor=messageService.GetTextColor(severity.Name);
+                                                <h4 class="text-bg-dark text-end text-@textColor">
+                                                    Priority: @severity.Name
+                                                </h4>
+                                           }}</div>
+                                   <div class="row">
+                                    @{
+                                        var color = messageService.GetTextColor(status.Name);
+                                    }
+                                       <h4 class="text-bg-dark text-end text-@color">@status.Name</h4>
+                                   </div>
+                               </div>
+                      </button>
+                  </h2>
+                 <div id="collapse-@message.Id" class="accordion-collapse collapse ">
+                             <div class="accordion-body">
+                                <figure >
+                                    <blockquote class="blockquote">
+                                      <p>@message.Content</p>
+                                    </blockquote>
+                                    <figcaption class="blockquote-footer text-end">
+                                    Sender: <cite >@message.SenderUsername</cite>                                   
+                                    </figcaption>
+                                    <figcaption class="blockquote-footer text-end">                                        
+                                        Timestamp: <cite>@date</cite>
+                                    </figcaption>
+                                </figure>
+                                 @{if (message.SeverityId==0)
+                                 {
+                                   <h3 class="text-lg-center">Asign Priority</h3>
+                                    <div class="d-grid gap-2 col-6 mx-auto">
+                                        @foreach (var item in message.SeverityTypes){
+                                        var textColor = messageService.GetTextColor(item.Name);
+                                        <form class="input-group-sm " asp-controller="Messages" asp-action="AsignPriority" asp-route-id="@message.Id" asp-route-severityId="@item.Id">
+                                                <input type="submit" value="@item.Name" class="fs-6 btn btn-@textColor mb-3 w-100 p-3 fw-bold" />
+                                        </form>
+                                        }
+                                    </div>
+                                                                 
+                                 } else if(status.Name=="In Progress"){
+                                    <div class="d-grid gap-2 col-6 mx-auto">
+                                      <form class="input-group-sm "  asp-controller="Messages" asp-action="Complete" asp-route-id="@message.Id" >
+                                          <input type="submit" value="Mark as Done" class="fs-6 btn btn-success mb-3 w-100 p-3 fw-bold" />
+                                      </form>
+                                  </div>}}
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+     }
+    }    
+</div>

@@ -23,12 +23,39 @@ namespace App.Infrastructure.Data.Configurations
         public  SeverityType MediumSeverity { get; set; }
         public  SeverityType HighSeverity { get; set; }
 
+        public Status New { get; set; }
+        public Status InProgress { get; set; }
+        public Status Done { get; set; }
+
         public ConfigurationHelper()
         {
             SeedUsers();
             SeedBillTypes();
             SeedSeverityTypes();
-           
+            SeedStatus();
+
+        }
+
+        private void SeedStatus()
+        {
+            New = new Status()
+            {
+                Id = 1,
+                Name = "New",
+
+            };
+            InProgress = new Status()
+            {
+                Id = 2,
+                Name = "In Progress",
+
+            };
+            Done = new Status()
+            {
+                Id = 3,
+                Name = "Done",
+
+            };
         }
 
         private void SeedSeverityTypes()

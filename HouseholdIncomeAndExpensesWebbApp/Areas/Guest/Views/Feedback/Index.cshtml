@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FeedbackMessageViewModel>
+﻿@model GuestFeedbackMessageFormViewModel
 @{
     ViewBag.Title = "Feedback messages";
     
@@ -8,7 +8,7 @@
     <hr />
 
     <div class="text-center row">
-        @foreach (var e in Model)
+        @foreach (var e in Model.FeedbackMessages)
     {
        
         string date = e.Date.ToString("dd/MMM/yy HH:mm");
@@ -28,7 +28,8 @@
         </div>
     }
     </div>
-<a asp-area="Guest" asp-controller="Feedback" asp-action="Add" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Give feedback</a>
+<partial name="_AddFeedbackPartial" model="@Model.Model" />
+
 
     @section Scripts {
         <partial name="_ValidationScriptsPartial" />

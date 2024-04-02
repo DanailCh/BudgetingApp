@@ -22,6 +22,7 @@ namespace HouseholdBudgetingApp.Data
         public DbSet<EndMonthSummary> EndMonthSummaries { get; init; }
         public DbSet<FeedbackMessage> FeedbackMessages { get; init; }
         public DbSet<SeverityType> SeverityTypes { get; init; }
+        public DbSet<Status> Statuses { get; init; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +33,7 @@ namespace HouseholdBudgetingApp.Data
             modelBuilder.ApplyConfiguration(new BillTypeConfiguration());
             
             modelBuilder.ApplyConfiguration(new SeverityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new StatusConfiguration());
             modelBuilder.ApplyConfiguration(new FeedbackMessageConfiguration());
             modelBuilder.ApplyConfiguration(new MemberSalaryConfiguration());           
             

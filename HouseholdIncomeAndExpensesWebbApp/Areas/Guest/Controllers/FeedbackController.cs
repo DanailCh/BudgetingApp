@@ -19,19 +19,13 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var model = await _messageService.GetAllMessagesAsync(User.Id());
-
+           
+            var model = new GuestFeedbackMessageFormViewModel();
+            model.FeedbackMessages= await _messageService.GetAllMessagesAsync(User.Id());
             return View(model);
         }
 
-        [HttpGet]
         
-        public IActionResult Add()
-        {
-            FeedbackMessageFormModel model = new FeedbackMessageFormModel();
-
-            return View(model);
-        }
 
         [HttpPost]
       

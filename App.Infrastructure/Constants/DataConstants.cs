@@ -25,7 +25,7 @@ namespace App.Infrastructure.Constants
         public static class Messages
         {
             public const int TitleMaxLength = 50;
-            public const int ContentMaxLength = 300;
+            public const int ContentMaxLength = 1000;
             public const int CommentMaxLength = 300;
         }
         public static class SeverityType

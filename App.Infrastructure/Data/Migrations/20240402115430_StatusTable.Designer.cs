@@ -4,6 +4,7 @@ using HouseholdBudgetingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240402115430_StatusTable")]
+    partial class StatusTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,8 +185,8 @@ namespace App.Infrastructure.Data.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
                         .HasComment("Content of Message");
 
                     b.Property<DateTime>("Date")
@@ -514,15 +517,15 @@ namespace App.Infrastructure.Data.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3acfcfb6-0d9a-4bbb-bbc0-f4fe66360079",
+                            ConcurrencyStamp = "bd8414be-5391-449a-9be6-972ede49fd8b",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@mail.com",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOQ+iCaL6oKJN8eLzu98AOWr4cfXgHmUjmIHAta4KxVsT9UFcSu3+x19f3Gjvi/ljA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEO2vb8M2jqrtRvnNFn8J7zrvjhXUWe5UaqW9DRta+Xb1LyC2u6j6u7T52VF1Kd/4vw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "860b9927-e10f-4167-afb2-3a677d0198e6",
+                            SecurityStamp = "10955600-f367-4fea-9b30-4f82895dade1",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -530,15 +533,15 @@ namespace App.Infrastructure.Data.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6ba792b0-5823-4cfa-aae2-d1029fac9f69",
+                            ConcurrencyStamp = "9976fbc9-bfee-4995-9acc-b1cfba0c866c",
                             Email = "guest@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "guest@mail.com",
                             NormalizedUserName = "GUEST",
-                            PasswordHash = "AQAAAAEAACcQAAAAELBueZhd0juLw6fzpOctLzPmyx1nwEIonBuJJCx/ZN6mVkwjki5e7gkKs2xI6xnPNQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEP0D0RTlFFSMdtnk9veshRKKHhCFswQWlNlB582ongy+s6Nl+Yq3rAc2A412y0aE0w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "57cc2881-37ea-4179-9501-49d59731f10b",
+                            SecurityStamp = "d64869b9-2bc7-434b-a7a3-45a03c380129",
                             TwoFactorEnabled = false,
                             UserName = "guest"
                         });
