@@ -1,4 +1,9 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿jQuery(function ($) {
+    $.validator.addMethod('number', function (value, element) {
+        return this.optional(element) || /^-?(?:\d+)(?:(\.|,)\d+)?$/.test(value);
+    });
 
-// Write your JavaScript code.
+    $.validator.methods.range = function (value, element, param) {
+        return this.optional(element) || (Number(value.replace(',', '.')) >= Number(param[0]) && Number(value.replace(',', '.')) <= Number(param[1]));
+    }
+});

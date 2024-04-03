@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using HouseholdBudgetingApp.Data;
-using App.Infrastructure.Data;
+using HouseholdBudgetingApp.Extentions;
+using HouseholdBudgetingApp.ModelBinders;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddApplicationIdentity(builder.Configuration);
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+});
 
 builder.Services.AddApplicationServices();
 
@@ -24,9 +30,9 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Home/Error/500");
-    app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode={0}");
-    
+    app.UseExceptionHandler("/Home/Error");   
+    app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
+
     app.UseHsts();
 }
 
