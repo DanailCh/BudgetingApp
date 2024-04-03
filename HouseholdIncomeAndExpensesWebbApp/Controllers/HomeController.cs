@@ -29,6 +29,22 @@ namespace HouseholdBudgetingApp.Controllers
             {
                 return View("Error401");
             }
+            if (statusCode == 403)
+            {
+                return View("Error403");
+            }
+            if (statusCode == 404)
+            {
+                return View("Error404");
+            }
+            if (statusCode == 409)
+            {
+                return View("Error409");
+            }
+            if (statusCode == 500)
+            {
+                return View("Error500");
+            }
             return View();
            
         }
