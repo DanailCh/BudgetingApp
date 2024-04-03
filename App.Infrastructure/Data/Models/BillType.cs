@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static App.Infrastructure.Constants.DataConstants.BilType;
+using static App.Infrastructure.Constants.DataConstants.BillType;
 
 namespace App.Infrastructure.Data.Models
 {

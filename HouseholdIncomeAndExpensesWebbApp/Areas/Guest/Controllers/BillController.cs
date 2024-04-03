@@ -53,16 +53,6 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(BillFormModel model)
         {
-            if (string.IsNullOrEmpty(Request.Form["PayerId"]))
-            {
-                model.IsPayed = false;
-                model.PayerId = null;
-            }
-            else
-            {
-                model.IsPayed = true;
-                model.PayerId = int.Parse(Request.Form["PayerId"]);
-            }
 
             if (!(await billService.GetBillTypesAsync(User.Id())).Any(b => b.Id == model.BillTypeId))
             {
@@ -89,16 +79,17 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 
             if (await billService.BillExistsAsync(id) == false)
             {
-                return BadRequest();
+                return NotFound();
             }
             if (await billService.BillIsPayedAsync(id))
             {
-                return BadRequest();
+                TempData["ErrorMessage"] = "Cannot edit details of a bill that has already been paid.";
+                return StatusCode(StatusCodes.Status409Conflict);
             }
 
             if (await billService.BillBelongsToUserAsync(id, User.Id()) == false)
             {
-                return Unauthorized();
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
 
             var model = await billService.FindBillByIdAsync(id);
@@ -145,7 +136,10 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
             {
                 return BadRequest();
             }
-
+            if (await billService.BillIsPayedAsync(id))
+            {
+                return BadRequest();
+            }
             if (await billService.BillBelongsToUserAsync(id, User.Id()) == false)
             {
                 return Unauthorized();

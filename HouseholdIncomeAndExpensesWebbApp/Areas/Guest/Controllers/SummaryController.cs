@@ -47,7 +47,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
             if (await budgetSummaryService.NotAllBillsPayedAsync(User.Id()))
             {
                 TempData["Message"] = "All Bills must be payed in order to Summarize month!";
-                return RedirectToAction(nameof(Index), nameof(Bill));
+                return RedirectToAction(nameof(Index), "Bill");
             }
             var model = await budgetSummaryService.GetMemberSalaryFormModelsAsync(User.Id());
 

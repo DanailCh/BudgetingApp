@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static App.Infrastructure.Constants.DataConstants.Status;
 
 namespace App.Infrastructure.Data.Models
 {
@@ -16,7 +17,7 @@ namespace App.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(20)]
+        [MaxLength(NameMaxLength)]
         [Comment("Status name")]
         public string Name { get; set; } = String.Empty;
 
