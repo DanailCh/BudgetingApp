@@ -6,7 +6,7 @@ namespace App.Core.Models.Archive.Bill
 {
     public class AllArchivedBillsQueryModel
     {
-        public int BillsPerPage { get; } = Constants.ArchiveConstants.BillsPerPage;
+        public int BillsPerPage { get; } = Constants.PaginationConstants.BillsPerPage;
 
         public int BillTypeId { get; init; }
 

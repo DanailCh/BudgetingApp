@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using App.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Mvc;
-using static App.Core.Constants.FeedbackMessageConstants;
+using static App.Core.Constants.FeedbackMessageCommentConstants;
 using App.Core.Enum;
 using App.Core.Models.Archive.Bill;
 
@@ -65,10 +65,6 @@ namespace App.Core.Services
                   .Where(b => b.SeverityTypeId == model.SeverityTypeId);
                 }
             }
-            
-
-
-
 
             switch (model.Sorting)
             {

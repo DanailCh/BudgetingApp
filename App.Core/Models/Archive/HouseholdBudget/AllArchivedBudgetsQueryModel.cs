@@ -11,7 +11,7 @@ namespace App.Core.Models.Archive.HouseholdBudget
 {
     public class AllArchivedBudgetsQueryModel
     {
-        public int BudgetsPerPage { get; } = Constants.ArchiveConstants.BudgetsPerPage;
+        public int BudgetsPerPage { get; } = Constants.PaginationConstants.BudgetsPerPage;
 
         public DateTime? BudgetMonth { get; init; }
 

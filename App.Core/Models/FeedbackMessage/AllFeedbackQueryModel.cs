@@ -11,7 +11,7 @@ namespace App.Core.Models.FeedbackMessage
 {
     public class AllFeedbackQueryModel
     {
-        public int MessagesPerPage { get; } = Constants.FeedbackMessageConstants.MessagesPerPage;
+        public int MessagesPerPage { get; } = Constants.PaginationConstants.MessagesPerPage;
 
         public int SeverityTypeId { get; set; }
         public int StatusId { get; set; }

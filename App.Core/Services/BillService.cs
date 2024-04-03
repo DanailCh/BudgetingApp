@@ -159,12 +159,13 @@ namespace App.Core.Services
 
         public async Task CreateBillAsync(BillFormModel model,string userId)
         {
-         
+            bool isPayed = false;
+            if (model.PayerId != null) { isPayed = true;};
             var bill = new Bill
             {
                 BillTypeId = model.BillTypeId,
-                Cost = model.Cost,
-                IsPayed = model.IsPayed,
+                Cost = model.Cost, 
+                IsPayed=isPayed,
                 PayerId = model.PayerId,
                 UserId = userId,
                 Date = await GetDateAsync(userId)

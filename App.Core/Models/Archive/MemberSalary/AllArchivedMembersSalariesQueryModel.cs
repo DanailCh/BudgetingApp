@@ -13,7 +13,7 @@ namespace App.Core.Models.Archive.MemberSalary
 {
     public class AllArchivedMembersSalariesQueryModel
     {
-        public int MembersSalariesPerPage { get; } = Constants.ArchiveConstants.MembersSalariesPerPage;
+        public int MembersSalariesPerPage { get; } = Constants.PaginationConstants.MembersSalariesPerPage;
 
         public int MemberId { get; init; }
 
