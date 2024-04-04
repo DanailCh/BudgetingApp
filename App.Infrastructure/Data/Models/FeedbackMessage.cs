@@ -62,5 +62,8 @@ namespace App.Infrastructure.Data.Models
 
         [ForeignKey(nameof(StatusId))]
         public Status Status { get; set; }
+
+        [Required]
+        public bool IsReadByUser { get; set; }
     }
 }

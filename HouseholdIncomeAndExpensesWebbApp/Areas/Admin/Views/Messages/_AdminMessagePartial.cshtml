@@ -1,9 +1,9 @@
-﻿@model IEnumerable<FeedbackMessageFormViewModel>
+﻿@model AllFeedbackQueryModel
 @inject IFeedBackMessageService messageService
 
 <div class="accordion" id="accordionExample">
     @{
-        foreach (var message in Model)
+        foreach (var message in Model.Messages)
         {
             var severity = message.SeverityTypes.FirstOrDefault(s => s.Id == message.SeverityId);
             var status = message.Statuses.FirstOrDefault(s => s.Id == message.StatusId);
@@ -52,17 +52,30 @@
                                     <div class="d-grid gap-2 col-6 mx-auto">
                                         @foreach (var item in message.SeverityTypes){
                                         var textColor = messageService.GetTextColor(item.Name);
-                                        <form class="input-group-sm " asp-controller="Messages" asp-action="AsignPriority" asp-route-id="@message.Id" asp-route-severityId="@item.Id">
-                                                <input type="submit" value="@item.Name" class="fs-6 btn btn-@textColor mb-3 w-100 p-3 fw-bold" />
-                                        </form>
+                                       
+                                            <a class="fs-6 btn btn-@textColor mb-3 w-100 p-3 fw-bold"
+                                             asp-controller="Messages"
+                                             asp-action="AsignPriority"
+                                             asp-route-messageId="@message.Id"
+                                             asp-route-severityId="@item.Id"
+                                             asp-route-currentPage="@Model.CurrentPage"           
+                                             asp-route-severityTypeId="@Model.SeverityTypeId"
+                                             asp-route-statusId="@Model.StatusId"
+                                             asp-route-sorting="@((int)Model.Sorting)">@item.Name</a>
                                         }
                                     </div>
                                                                  
                                  } else if(status.Name=="In Progress"){
                                     <div class="d-grid gap-2 col-6 mx-auto">
-                                      <form class="input-group-sm "  asp-controller="Messages" asp-action="Complete" asp-route-id="@message.Id" >
-                                          <input type="submit" value="Mark as Done" class="fs-6 btn btn-success mb-3 w-100 p-3 fw-bold" />
-                                      </form>
+                                      
+                                        <a class="fs-6 btn btn-success mb-3 w-100 p-3 fw-bold"
+                                           asp-controller="Messages"
+                                           asp-action="Complete"
+                                           asp-route-messageId="@message.Id"
+                                           asp-route-currentPage="@Model.CurrentPage"
+                                           asp-route-severityTypeId="@Model.SeverityTypeId"
+                                           asp-route-statusId="@Model.StatusId"
+                                           asp-route-sorting="@((int)Model.Sorting)">Mark as Done</a>
                                   </div>}}
                              </div>
                          </div>

@@ -26,8 +26,9 @@ namespace App.Core.Services
 
         public async Task<IEnumerable<FeedbackMessageViewModel>> GetAllMessagesAsync(string userId)
         {
-            var messages = await _context.FeedbackMessages.AsNoTracking().Where(m => m.SenderId == userId).Select(m => new FeedbackMessageViewModel()
+            var messages = await _context.FeedbackMessages.AsNoTracking().Where(m => m.SenderId == userId && m.IsReadByUser==false).Select(m => new FeedbackMessageViewModel()
             {
+                Id = m.Id,
                 Title = m.Title,
                 Content = m.Content,
                 Date = m.Date,
@@ -116,8 +117,9 @@ namespace App.Core.Services
                 Title = model.Title,
                 Content = model.Content,
                 Date = DateTime.Now,
-                StatusId= status.Id
-        };
+                StatusId= status.Id,
+                IsReadByUser=true,
+            };
             await _context.FeedbackMessages.AddAsync(message);
             await _context.SaveChangesAsync();
         } 
@@ -132,21 +134,9 @@ namespace App.Core.Services
                message.SeverityTypeId=severityId;
                 message.StatusId = status.Id;
                 message.Comment=StatusChangeComment;
+                message.IsReadByUser=false;
                 await _context.SaveChangesAsync();
             }
-        }
-
-        public async Task<FeedbackMessageFormViewModel> FindMessageByIdAsync(int id)
-        {
-            var message =await _context.FeedbackMessages.FindAsync(id);
-            return new FeedbackMessageFormViewModel()
-            {
-                Id = id,
-                Title = message.Title,
-                Content = message.Content,
-                Comment = message.Comment,
-                SeverityId = message.SeverityTypeId ?? 0,
-            };            
         }
 
         public async Task<IEnumerable<SeverityTypeViewModel>> GetSeverityTypesAsync()
@@ -186,6 +176,7 @@ namespace App.Core.Services
             {
                 message.StatusId = status.Id;
                 message.Comment = ResolveComment;
+                message.IsReadByUser = false;
                 await _context.SaveChangesAsync();
             }
         }
@@ -208,6 +199,21 @@ namespace App.Core.Services
                     return "success";
             }
             return string.Empty;
+        }
+
+        public async Task RemoveMessageAsync(int id)
+        {
+            var message=await _context.FeedbackMessages.FindAsync(id);
+            if (message!=null)
+            {
+                message.IsReadByUser = true;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<bool> MessageBelongsToUser(int id, string userId)
+        {
+            return await _context.FeedbackMessages.AnyAsync(m=>m.SenderId==userId&&m.Id==id);            
         }
     }
 }

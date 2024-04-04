@@ -54,20 +54,26 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
+            
             $('#statusId').change(function () {
-               if ($(this).val() == '1') {
-                $('#severityId').prop('disabled', true);
-            } else {
-                $('#severityId').prop('disabled', false);
-            }
+                if ($(this).val() == '1') {
+                    $('#severityId').prop('disabled', true);
+                } else {
+                    $('#severityId').prop('disabled', false);
+                }
             });
 
+            
             $('#severityId').change(function () {
                 if ($(this).val() != '') {
                     $('#statusId option[value="1"]').prop('disabled', true);
+                } else {
+                    $('#statusId option[value="1"]').prop('disabled', false);
                 }
-                else  { $('#statusId option[value="1"]').prop('disabled', false); }
             });
+
+            $('#statusId').change();
+            $('#severityId').change();
         });
     </script>
 }
@@ -127,6 +133,7 @@
             ms.Statuses = Model.Statuses;
         }
     }
-    <partial name="_AdminMessagePartial" model="Model.Messages" />
+    
+    <partial name="_AdminMessagePartial" model="Model" />
 
 </div>

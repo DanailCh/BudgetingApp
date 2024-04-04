@@ -32,17 +32,17 @@ namespace HouseholdBudgetingApp.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AsignPriority(int id,int severityId)
+        [HttpGet]
+        public async Task<IActionResult> AsignPriority(int messageId,int severityId, AllFeedbackQueryModel model)
         {
-            await feedBackMessageService.SetSeverityStatusOnMessageAsync(id, severityId);
-            return RedirectToAction(nameof(Index));
+            await feedBackMessageService.SetSeverityStatusOnMessageAsync(messageId, severityId);
+            return RedirectToAction(nameof(Index),model);
         }
-        [HttpPost]
-        public async Task<IActionResult> Complete(int id)
+        [HttpGet]
+        public async Task<IActionResult> Complete(int messageId, AllFeedbackQueryModel model)
         {
-            await feedBackMessageService.SetDoneStatusOnMessageAsync(id);
-            return RedirectToAction(nameof(Index));
+            await feedBackMessageService.SetDoneStatusOnMessageAsync(messageId);
+            return RedirectToAction(nameof(Index),model);
         }
     }
 }
