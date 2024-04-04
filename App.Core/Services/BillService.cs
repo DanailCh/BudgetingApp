@@ -177,32 +177,39 @@ namespace App.Core.Services
         public async Task DeleteBillByIdAsync(int id)
         {
             var bill = await _context.Bills.FindAsync(id);
-            bill.DeletedOn = GetDate();
-            await _context.SaveChangesAsync();
+            if (bill!=null)
+            {
+                bill.DeletedOn = GetDate();
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task EditBillByIdAsync(BillFormModel model, int id)
         {
             var bill = await _context.Bills.FindAsync(id);
-            bill.BillTypeId = model.BillTypeId;
-            bill.Cost = model.Cost;
-            
-            await _context.SaveChangesAsync();
+            if (bill!=null)
+            {
+                bill.BillTypeId = model.BillTypeId;
+                bill.Cost = model.Cost;
 
-
+                await _context.SaveChangesAsync();
+            }  
         }
 
-        public async Task<BillFormModel> FindBillByIdAsync(int id)
+        public async Task<BillFormModel?> FindBillByIdAsync(int id)
         {
-            BillFormModel foundBill;
-           var bill=await _context.Bills.FindAsync(id);           
+            BillFormModel foundBill=new BillFormModel();
+           var bill=await _context.Bills.FindAsync(id);
+            if (bill!=null)
+            {
+                foundBill = new BillFormModel()
+                {
+                    BillTypeId = bill.BillTypeId,
+                    Cost = bill.Cost,
 
-            return foundBill = new BillFormModel()
-            { 
-                BillTypeId = bill.BillTypeId,
-                Cost=bill.Cost,
-                               
+                };
             };
+            return foundBill;
         }
 
         public async Task<IEnumerable<BillTypeFormViewModel>> GetBillTypesAsync(string userId)

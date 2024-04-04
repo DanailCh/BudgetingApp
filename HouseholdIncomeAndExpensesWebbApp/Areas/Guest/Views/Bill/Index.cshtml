@@ -18,8 +18,9 @@
                 <p class="mb-0"><span class="fw-bold">Cost: </span>@e.Cost</p>
                 @{if (!e.IsPayed)
                 {
-                                <p class="mb-0"><span class="fw-bold">Payed By: None </span></p>
-                        <button class="btn btn-warning mb-2 w-100 p-3 fw-bold PayButton" data-target="#hiddenSection-@e.Id">Pay</button>
+                                <p class="mb-0"><span class="fw-bold">Payed By: None </span></p>  
+                                
+                        <button class="fs-6 btn btn-success mb-2 PayButton" data-target="#hiddenSection-@e.Id">Pay</button>
                         <section id="hiddenSection-@e.Id" class="hiddenSection" style="display: none;">
                             <form class="input-group-sm " asp-controller="Bill" asp-action="Pay" asp-route-id="@e.Id">
                             <label asp-for="@e.PayerId" class="form-label-add-edit">Choose who payed the bill</label>
@@ -33,11 +34,12 @@
                                 }
                             </div>
                             <span asp-validation-for="@e.PayerId" class="text-danger"></span>
-                            
-                                <input type="submit" value="Pay" class="fs-6 btn btn-warning mb-3 w-100 p-3 fw-bold" />
+                                <div class="d-grid gap-2">
+                                    <input type="submit" value="Pay" class="fs-6 btn btn-success mb-2" />
+                                </div>                                
                             </form>
                         </section>
-                        <a asp-controller="Bill" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
+                        <a asp-controller="Bill" asp-action="Edit" asp-route-id="@e.Id" class="fs-6 btn btn-warning mb-2 ">Edit</a>
                         
                 }
                 else
@@ -47,11 +49,15 @@
                 
             </div>
             <form class="input-group-sm " asp-controller="Bill" asp-action="Delete" asp-route-id="@e.Id">
-                <input type="submit" value="Delete" class="fs-6 btn btn-warning mb-3 w-100 p-3 fw-bold" />
+                <div class="d-grid gap-2">
+                    <input type="submit" value="Delete" class="btn btn-danger mb-2"
+                       onclick="return confirm('Are you sure you want to delete bill: @e.BillTypeName')" />
+                </div>
             </form>
            
         </div>
     }
+
     <a asp-controller="Bill" asp-action="Add" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Add a new bill</a>
     <a asp-controller="BillType" asp-action="Index" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Custom BillTypes</a>
 </div>
@@ -64,6 +70,13 @@
             $('.PayButton').click(function () {
                 var targetId = $(this).data('target');
                 $(targetId).toggle();
+
+                
+                if ($(this).text() === 'Pay') {
+                    $(this).text('Close'); 
+                } else {
+                    $(this).text('Pay'); 
+                }
             });
         });
     </script>
