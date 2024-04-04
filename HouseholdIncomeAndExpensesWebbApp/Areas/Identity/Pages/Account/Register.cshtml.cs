@@ -64,9 +64,14 @@ namespace HouseholdBudgetingApp.Areas.Identity.Pages.Account
         }
 
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
-            ReturnUrl = returnUrl;           
+            if (User?.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
+            ReturnUrl = returnUrl; 
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
