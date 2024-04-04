@@ -15,7 +15,7 @@ namespace App.Core.Contracts
     public interface IHouseholdService
     {
         Task<ArchiveMemberSalaryQueryModel> AllMembersSalariesAsync(string userId,AllArchivedMembersSalariesQueryModel model);
-        Task<IEnumerable<HouseholdMemberFormViewModel>> AllHouseholdMembersAsync(string userId);
+        Task<IEnumerable<HouseholdMemberViewModel>> AllHouseholdMembersAsync(string userId);
        
         Task CreateHouseholdMemberAsync(HouseholdMemberFormViewModel model, string userId);
         

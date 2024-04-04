@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HouseholdMemberFormViewModel>
+﻿@model HouseholdMemberFormViewModel
 @{
     ViewBag.Title = "Household";
     ViewBag.Message = TempData["Message"];
@@ -10,7 +10,7 @@
 <hr />
 
 <div class="text-center row">
-    @foreach (var e in Model)
+    @foreach (var e in Model.Members)
     {
         <div class="card col-4" style="width: 20rem; ">
             <div class="card-body">
@@ -22,13 +22,10 @@
         </div>
     }
     @{
-        if (Model.Count() < 5) {
-            <a asp-controller="Household" asp-action="Add" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Add a new member</a>
+        if (Model.Members.Count() < 5) {
+            <partial name="_AddMemberPartial" model="@Model" />
         }
     }    
     <a asp-controller="Summary" asp-action="Index" class="btn btn-warning mb-2 w-100 p-3 fw-bold">View summaries</a>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

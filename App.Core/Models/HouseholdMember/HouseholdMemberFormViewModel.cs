@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App.Core.Models.BillType;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,5 +19,7 @@ namespace App.Core.Models.HouseholdMember
            MinimumLength = NameMinLength,
            ErrorMessage = LengthMessage)]
         public string Name { get; set; } = String.Empty;
+
+        public IEnumerable<HouseholdMemberViewModel> Members { get; set; } = new List<HouseholdMemberViewModel>();
     }
 }

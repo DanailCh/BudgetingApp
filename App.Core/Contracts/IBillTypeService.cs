@@ -10,7 +10,7 @@ namespace App.Core.Contracts
 {
     public interface IBillTypeService
     {
-        Task<IEnumerable<BillTypeFormViewModel>> AllCustomBillTypesAsync(string userId);
+        Task<IEnumerable<BillTypeViewModel>> AllCustomBillTypesAsync(string userId);
 
         Task CreateCustomBillTypeAsync(BillTypeFormViewModel model, string userId);
 

@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 {
-    [Area("Guest")]
+    
     public class HouseholdController : BaseController
     {
         private readonly IHouseholdService householdService;
@@ -24,20 +24,9 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-
-            var model = await householdService.AllHouseholdMembersAsync(User.Id());
-
-            return View(model);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Add()
-        {
-            if (await householdService.OverMembersLimitAsync(User.Id()))
-            {
-                return BadRequest();
-            }
             var model = new HouseholdMemberFormViewModel();
+            model.Members = await householdService.AllHouseholdMembersAsync(User.Id());
+
             return View(model);
         }
 

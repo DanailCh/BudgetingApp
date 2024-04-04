@@ -19,9 +19,9 @@ namespace App.Core.Services
         {
             _context = context;
         }
-        public async Task<IEnumerable<BillTypeFormViewModel>> AllCustomBillTypesAsync(string userId)
+        public async Task<IEnumerable<BillTypeViewModel>> AllCustomBillTypesAsync(string userId)
         {
-            var billTypes = await _context.BillTypes.AsNoTracking().Where(b => b.UserId == userId && b.DeletedOn == null).Select(b => new BillTypeFormViewModel
+            var billTypes = await _context.BillTypes.AsNoTracking().Where(b => b.UserId == userId && b.DeletedOn == null).Select(b => new BillTypeViewModel
             {
                 Id = b.Id,
                 Name = b.Name,

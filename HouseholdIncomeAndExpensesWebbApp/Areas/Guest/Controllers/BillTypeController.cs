@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 {
-    [Area("Guest")]
+    
     public class BillTypeController : BaseController
     {
         private readonly IBillTypeService billTypeService;
@@ -23,16 +23,10 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-
-            var model = await billTypeService.AllCustomBillTypesAsync(User.Id());
-            return View(model);
-        }
-        [HttpGet]
-        public async Task<IActionResult> Add()
-        {
             var model = new BillTypeFormViewModel();
+            model.CustomBillTypes = await billTypeService.AllCustomBillTypesAsync(User.Id());
             return View(model);
-        }
+        }        
 
         [HttpPost]
         public async Task<IActionResult> Add(BillTypeFormViewModel model)

@@ -16,6 +16,6 @@ namespace App.Core.Models.Bill
         public string PayedBy { get; set; }= String.Empty;
         public int PayerId { get; set; }
 
-        public IEnumerable<HouseholdMemberFormViewModel> Payers { get; set; } = Enumerable.Empty<HouseholdMemberFormViewModel>();
+        public IEnumerable<HouseholdMemberViewModel> Payers { get; set; } = Enumerable.Empty<HouseholdMemberViewModel>();
     }
 }

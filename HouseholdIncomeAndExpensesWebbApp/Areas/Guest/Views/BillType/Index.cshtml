@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BillTypeFormViewModel>
+﻿@model BillTypeFormViewModel
 @{
     ViewBag.Title = "Custom BillTypes";
 }
@@ -8,7 +8,7 @@
 <hr />
 
 <div class="text-center row">
-    @foreach (var e in Model)
+    @foreach (var e in Model.CustomBillTypes)
     {
         <div class="card col-4" style="width: 20rem; ">
             <div class="card-body">
@@ -21,9 +21,5 @@
             </form>
         </div>
     }
-    <a asp-controller="BillType" asp-action="Add" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Add a custom bill type</a>
+    <partial name="_AddBillTypePartial" model="@Model" />    
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

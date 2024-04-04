@@ -25,7 +25,7 @@ namespace App.Core.Models.Archive.MemberSalary
 
         public int ArchivedMembersSalariesCount { get; set; }
 
-        public IEnumerable<HouseholdMemberFormViewModel> Members { get; set; } = null!;
+        public IEnumerable<HouseholdMemberViewModel> Members { get; set; } = null!;
 
         public IEnumerable<ArchiveMemberSalaryViewModel> ArchivedSalaries { get; set; } = new List<ArchiveMemberSalaryViewModel>();
     }

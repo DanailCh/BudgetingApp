@@ -30,7 +30,7 @@ namespace App.Core.Models.Bill
         public int? PayerId { get; set; }
 
         public IEnumerable<BillTypeFormViewModel> BillTypes { get; set; } = Enumerable.Empty<BillTypeFormViewModel>();
-        public IEnumerable<HouseholdMemberFormViewModel> Payers { get; set; } = Enumerable.Empty<HouseholdMemberFormViewModel>();
+        public IEnumerable<HouseholdMemberViewModel> Payers { get; set; } = Enumerable.Empty<HouseholdMemberViewModel>();
 
     }
 }

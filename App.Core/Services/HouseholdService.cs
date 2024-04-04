@@ -25,9 +25,9 @@ namespace App.Core.Services
         {
             _context = context;
         }
-        public async Task<IEnumerable<HouseholdMemberFormViewModel>> AllHouseholdMembersAsync(string userId)
+        public async Task<IEnumerable<HouseholdMemberViewModel>> AllHouseholdMembersAsync(string userId)
         {
-            var members = await _context.HouseholdMembers.AsNoTracking().Where(m => m.UserId == userId && m.DeletedOn==null).Select(m => new HouseholdMemberFormViewModel
+            var members = await _context.HouseholdMembers.AsNoTracking().Where(m => m.UserId == userId && m.DeletedOn==null).Select(m => new HouseholdMemberViewModel
             {
                 Id = m.Id,
                 Name = m.Name,

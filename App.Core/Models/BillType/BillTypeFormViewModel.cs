@@ -18,5 +18,7 @@ namespace App.Core.Models.BillType
             MinimumLength = NameMinLength,
             ErrorMessage = LengthMessage)]
         public string Name { get; set; } = String.Empty;
+
+        public IEnumerable<BillTypeViewModel> CustomBillTypes { get; set; } = new List<BillTypeViewModel>();
     }
 }
