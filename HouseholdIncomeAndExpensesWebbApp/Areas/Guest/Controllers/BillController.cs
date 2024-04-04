@@ -58,7 +58,11 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
             {
                 ModelState.AddModelError(nameof(model.BillTypeId), "Bill Type does not exist.");
             }
-
+            
+            if (model.PayerId!=null&&(await householdService.AllHouseholdMembersAsync(User.Id())).Any(m=>m.Id==model.PayerId)==false)
+            {
+               ModelState.AddModelError(nameof(model.PayerId), "Member does not exist.");
+            }
 
             if (!ModelState.IsValid)
             {
@@ -101,16 +105,17 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         {
             if (await billService.BillExistsAsync(id) == false)
             {
-                return BadRequest();
+                return NotFound();
             }
             if (await billService.BillIsPayedAsync(id))
             {
-                return BadRequest();
+                TempData["ErrorMessage"] = "Cannot edit details of a bill that has already been paid.";
+                return StatusCode(StatusCodes.Status409Conflict);
             }
 
             if (await billService.BillBelongsToUserAsync(id, User.Id()) == false)
             {
-                return Unauthorized();
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
             if (!(await billService.GetBillTypesAsync(User.Id())).Any(b => b.Id == model.BillTypeId))
             {
@@ -134,15 +139,15 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         {
             if (await billService.BillExistsAsync(id) == false)
             {
-                return BadRequest();
+                return NotFound();
             }
             if (await billService.BillIsPayedAsync(id))
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status409Conflict);
             }
             if (await billService.BillBelongsToUserAsync(id, User.Id()) == false)
             {
-                return Unauthorized();
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
 
 
@@ -167,12 +172,12 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         {
             if (await billService.BillExistsAsync(id) == false)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             if (await billService.BillBelongsToUserAsync(id, User.Id()) == false)
             {
-                return Unauthorized();
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
             await billService.DeleteBillByIdAsync(id);
 
