@@ -19,8 +19,7 @@ namespace App.Core.Contracts
         Task<bool> HasBillsAsync(string userId);
         Task CreateSummary(List<MemberSalaryFormViewModel> models,string userId);
         Task ResolveSummary(int id);
-        Task<bool> SummaryExistsAsync(int id);
-        Task<bool> SummaryBelongsToUserAsync(int id,string userId);
+       
 
     }
 }

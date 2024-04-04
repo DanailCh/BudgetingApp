@@ -39,7 +39,7 @@ namespace App.Core.Services
 
         }
 
-        public async Task<FeedbackQueryModel> AdminGetAllMessagesAsync(string userId, AllFeedbackQueryModel model)
+        public async Task<FeedbackQueryModel> AdminGetAllMessagesAsync(AllFeedbackQueryModel model)
         {
             var messagesToShow = _context.FeedbackMessages.AsQueryable();
 
@@ -211,9 +211,6 @@ namespace App.Core.Services
             }
         }
 
-        public async Task<bool> MessageBelongsToUser(int id, string userId)
-        {
-            return await _context.FeedbackMessages.AnyAsync(m=>m.SenderId==userId&&m.Id==id);            
-        }
+        
     }
 }

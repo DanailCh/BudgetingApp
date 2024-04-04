@@ -6,7 +6,7 @@ namespace App.Core.Contracts
     public  interface IFeedBackMessageService
     {
         Task<IEnumerable<FeedbackMessageViewModel>> GetAllMessagesAsync(string userId);
-        Task<FeedbackQueryModel> AdminGetAllMessagesAsync(string userId, AllFeedbackQueryModel model);
+        Task<FeedbackQueryModel> AdminGetAllMessagesAsync(AllFeedbackQueryModel model);
         Task CreateMessageAsync(FeedbackMessageFormModel model,string userId);
         Task RemoveMessageAsync(int id);
         
@@ -20,6 +20,6 @@ namespace App.Core.Contracts
         Task<IEnumerable<SeverityTypeViewModel>> GetSeverityTypesAsync();
 
         string GetTextColor(string input);
-        Task<bool> MessageBelongsToUser(int id, string userId);
+       
     }
 }

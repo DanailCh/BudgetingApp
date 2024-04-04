@@ -48,6 +48,10 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
+            if (!(await billTypeService.AllCustomBillTypesAsync(User.Id())).Any(b=>b.Id==id))
+            {
+                return NotFound();
+            }
             await billTypeService.DeleteCustomBillTypeByIdAsync(id);
 
             return RedirectToAction("Index");

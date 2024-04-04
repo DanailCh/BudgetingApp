@@ -1,14 +1,12 @@
 ﻿using App.Core.Contracts;
 using App.Core.Models.BudgetSummary;
 using App.Core.Services;
-using App.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.Metrics;
 using System.Security.Claims;
 
 namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 {
-    [Area("Guest")]
+
     public class SummaryController : BaseController
     {
         private readonly IBudgetSummaryService budgetSummaryService;
@@ -60,17 +58,11 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         {
             foreach (var member in model)
             {
-                if (await householdService.MemberExistsAsync(member.Id) == false)
+                if (!(await householdService.AllHouseholdMembersAsync(User.Id())).Any(b => b.Id ==member.Id))
                 {
-                    return BadRequest();
-                }
-
-                if (await householdService.MemberBelongsToUserAsync(member.Id, User.Id()) == false)
-                {
-                    return Unauthorized();
-                }
+                    return NotFound();
+                }                
             }
-
 
             if (!ModelState.IsValid)
             {
@@ -83,15 +75,10 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         [HttpPost]
         public async Task<IActionResult> Resolve(int id)
         {
-            if (await budgetSummaryService.SummaryExistsAsync(id) == false)
+            if (!(await budgetSummaryService.AllSummariesAsync(User.Id())).Any(b => b.Id == id))
             {
-                return BadRequest();
-            }
-
-            if (await budgetSummaryService.SummaryBelongsToUserAsync(id, User.Id()) == false)
-            {
-                return Unauthorized();
-            }
+                return NotFound();
+            }            
 
             await budgetSummaryService.ResolveSummary(id);
             return RedirectToAction(nameof(Index));

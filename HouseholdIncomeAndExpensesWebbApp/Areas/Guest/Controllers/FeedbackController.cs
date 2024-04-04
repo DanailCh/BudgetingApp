@@ -46,15 +46,11 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         [HttpPost]
         public async Task<IActionResult> Remove(int id)
         {
-            if (await _messageService.MessageExistsAsync(id) == false)
+            if (!(await _messageService.GetAllMessagesAsync(User.Id())).Any(b => b.Id == id))
             {
-                return BadRequest();
+                return NotFound();
             }
-
-            if (await _messageService.MessageBelongsToUser(id, User.Id()) == false)
-            {
-                return Unauthorized();
-            }
+            
             await _messageService.RemoveMessageAsync(id);
 
             return RedirectToAction(nameof(Index));

@@ -10,7 +10,7 @@ using System.Text;
 
 namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 {
-    [Area("Guest")]
+   
     public class ArchiveController : BaseController
     {
         private readonly IBillService billService;
@@ -89,7 +89,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
             var bills = archivedBills.ArchivedBills;
             if (!bills.Any())
             {
-                return BadRequest();
+                return NoContent();
             }
             string text = fileGeneratorService.GenerateFileForArchivedBills(User.Id(), bills);
             Response.Headers.Add(HeaderNames.ContentDisposition, @"attachment;filename=billsArchive.txt");
@@ -104,7 +104,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
             var budgets = archivedBudgets.ArchivedBudgets;
             if (!budgets.Any())
             {
-                return BadRequest();
+                return NoContent();
             }
 
 
@@ -121,7 +121,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
             var salaries = archivedSalaries.ArchivedSalaries;
             if (!salaries.Any())
             {
-                return BadRequest();
+                return NoContent();
             }
 
 

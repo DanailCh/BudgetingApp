@@ -21,9 +21,7 @@ namespace HouseholdBudgetingApp.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] AllFeedbackQueryModel model)
         {
-            var messages = await feedBackMessageService.AdminGetAllMessagesAsync(
-                User.Id(),model
-            );
+            var messages = await feedBackMessageService.AdminGetAllMessagesAsync(model);
             model.SeverityTypes = await feedBackMessageService.GetSeverityTypesAsync();
             model.Statuses = await feedBackMessageService.GetStatusesAsync();
             model.MessagesCount = messages.MessagesCount;
@@ -35,12 +33,25 @@ namespace HouseholdBudgetingApp.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> AsignPriority(int messageId,int severityId, AllFeedbackQueryModel model)
         {
+            if (!(await feedBackMessageService.MessageExistsAsync(messageId)))
+            {
+                return NotFound();
+            }
+            if (!(await feedBackMessageService.SeverityTypeExistsAsync(severityId)))
+            {
+                return NotFound();
+            }
             await feedBackMessageService.SetSeverityStatusOnMessageAsync(messageId, severityId);
             return RedirectToAction(nameof(Index),model);
         }
         [HttpGet]
         public async Task<IActionResult> Complete(int messageId, AllFeedbackQueryModel model)
         {
+            if (!(await feedBackMessageService.MessageExistsAsync(messageId)))
+            {
+                return NotFound();
+            }
+
             await feedBackMessageService.SetDoneStatusOnMessageAsync(messageId);
             return RedirectToAction(nameof(Index),model);
         }

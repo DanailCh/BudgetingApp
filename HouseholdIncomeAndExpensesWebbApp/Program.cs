@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using HouseholdBudgetingApp.Data;
 using HouseholdBudgetingApp.Extentions;
 using HouseholdBudgetingApp.ModelBinders;
 using Microsoft.AspNetCore.Mvc;
@@ -44,13 +41,15 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.SeedAdmin();
-app.MapControllerRoute(
-    name: "Areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "Areas",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
-
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapRazorPages();
+});
 app.Run();

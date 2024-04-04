@@ -75,20 +75,13 @@ namespace App.Core.Services
         public async Task ResolveSummary(int id)
         {
             var summary = await _context.EndMonthSummaries.FindAsync(id);
-            summary.IsResolved = true;
-            await _context.SaveChangesAsync();
+            if (summary!=null)
+            {
+                summary.IsResolved = true;
+                await _context.SaveChangesAsync();
+            }           
         }
-
-        public async Task<bool> SummaryExistsAsync(int id)
-        {
-            return await _context.EndMonthSummaries.AnyAsync(m => m.Id == id);
-        }
-
-        public async Task<bool> SummaryBelongsToUserAsync(int id, string userId)
-        {
-            return await _context.EndMonthSummaries.AnyAsync(m=>m.Id==id&&m.UserId==userId);
-        }
-
+       
         public async Task<ArchiveHouseholdBudgetQueryModel> AllBudgetsAsync(string userId,AllArchivedBudgetsQueryModel model)
         {
             var budgetsToShow = _context.HouseholdBudgets.AsNoTracking().Where(b => b.UserId == userId);
@@ -150,8 +143,8 @@ namespace App.Core.Services
 
         public async Task<bool> HasBillsAsync(string userId)
         {
-            var date=billService.GetDateAsync(userId).Result;
-            var bills=billService.AllCurentMonthBillsAsync(userId, date).Result.Count();
+            var date=await billService.GetDateAsync(userId);
+            var bills=(await billService.AllCurentMonthBillsAsync(userId, date)).Count();
             if (bills==0)
             {
                 return false;

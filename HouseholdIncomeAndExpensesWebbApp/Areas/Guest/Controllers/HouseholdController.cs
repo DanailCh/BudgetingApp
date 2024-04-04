@@ -35,6 +35,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         {
             if (await householdService.OverMembersLimitAsync(User.Id()))
             {
+                TempData["ErrorMessage"] = "Household Member Limit reached";
                 return BadRequest();
             }
 
@@ -53,15 +54,11 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            if (await householdService.MemberExistsAsync(id) == false)
+            if (!(await householdService.AllHouseholdMembersAsync(User.Id())).Any(b => b.Id == id))
             {
-                return BadRequest();
+                return NotFound();
             }
-
-            if (await householdService.MemberBelongsToUserAsync(id, User.Id()) == false)
-            {
-                return Unauthorized();
-            }
+            
             await householdService.DeleteHouseholdMemberByIdAsync(id);
 
             return RedirectToAction("Index");

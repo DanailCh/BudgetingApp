@@ -8,8 +8,6 @@ using System.Security.Claims;
 
 namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 {
-    [Area("Guest")]
-    [Authorize(Roles = "Guest")]
     public class BillController : BaseController
     {
         private readonly IBillService billService;
