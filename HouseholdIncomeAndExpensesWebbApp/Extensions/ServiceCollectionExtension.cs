@@ -1,6 +1,7 @@
 ﻿using App.Core.Contracts;
 using App.Core.Services;
 using App.Infrastructure.Data.Configurations;
+using App.Infrastructure.Data.Models;
 using HouseholdBudgetingApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<ISummaryLogicService, SummaryLogicService>();
             services.AddScoped<IFileGeneratorService, FileGeneratorService>();
             services.AddScoped<IFeedBackMessageService, FeedbackMessageService>();
+            services.AddScoped<IAdminService, AdminService>();
 
 
             return services;
@@ -38,7 +40,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddApplicationIdentity(this IServiceCollection services,IConfiguration config)
         {
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireDigit = false;

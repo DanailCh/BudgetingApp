@@ -10,6 +10,10 @@
         {
             return user.IsInRole("Administrator");
         }
-     }
+        public static bool IsMasterAdmin(this ClaimsPrincipal user)
+        {
+            return user.IsInRole("MasterAdmin");
+        }
+    }
    
 }
