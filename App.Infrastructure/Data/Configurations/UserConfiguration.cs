@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using App.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -9,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace App.Infrastructure.Data.Configurations
 {
-    public class UserConfiguration:IEntityTypeConfiguration<IdentityUser>
+    public class UserConfiguration:IEntityTypeConfiguration<ApplicationUser>
     {
         
-        public void Configure(EntityTypeBuilder<IdentityUser> builder)
+        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
             var data = new ConfigurationHelper();
 
-            builder.HasData(new IdentityUser[] { data.AdminUser, data.GuestUser });
+            builder.HasData(new ApplicationUser[] { data.AdminUser, data.GuestUser , data.MasterAdminUser});
         }
     }
 }

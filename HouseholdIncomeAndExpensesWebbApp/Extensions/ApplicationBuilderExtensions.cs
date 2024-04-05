@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using App.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 
 
@@ -11,7 +12,7 @@ namespace HouseholdBudgetingApp.Extentions
             using var scopedServices = app.ApplicationServices.CreateScope();
             var services = scopedServices.ServiceProvider;
 
-            var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+            var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager= services.GetRequiredService<RoleManager<IdentityRole>>();
 
             Task.Run(async () =>
@@ -26,6 +27,17 @@ namespace HouseholdBudgetingApp.Extentions
                     await roleManager.CreateAsync(role);
                     var admin = await userManager.FindByNameAsync("admin");
                     await userManager.AddToRoleAsync(admin, role.Name);
+                }
+                if (await roleManager.RoleExistsAsync("MasterAdmin"))
+                {
+                    return;
+                }
+                else
+                {
+                    var role = new IdentityRole { Name = "MasterAdmin" };
+                    await roleManager.CreateAsync(role);
+                    var masterAdmin = await userManager.FindByNameAsync("masteradmin");
+                    await userManager.AddToRoleAsync(masterAdmin, role.Name);
                 }
 
 

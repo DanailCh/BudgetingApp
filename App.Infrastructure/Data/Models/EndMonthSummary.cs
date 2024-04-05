@@ -36,6 +36,6 @@ namespace App.Infrastructure.Data.Models
         public string? UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public IdentityUser? User { get; set; }
+        public ApplicationUser? User { get; set; }
     }
 }

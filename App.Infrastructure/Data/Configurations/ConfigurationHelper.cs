@@ -10,8 +10,9 @@ namespace App.Infrastructure.Data.Configurations
 {
     public  class ConfigurationHelper
     {
-        public  IdentityUser GuestUser { get; set; }
-        public  IdentityUser AdminUser { get; set; }
+        public ApplicationUser  GuestUser { get; set; }
+        public ApplicationUser  AdminUser { get; set; }
+        public ApplicationUser MasterAdminUser { get; set; }
 
         public  BillType ElectricityType { get; set; }
         public  BillType WaterType { get; set; }
@@ -116,31 +117,46 @@ namespace App.Infrastructure.Data.Configurations
 
         private void SeedUsers()
         {
-            var hasher = new PasswordHasher<IdentityUser>();
+            var hasher = new PasswordHasher<ApplicationUser>();
 
-            AdminUser = new IdentityUser()
+            AdminUser = new ApplicationUser()
             {
                 Id = "dea12856-c198-4129-b3f3-b893d8395082",
                 UserName = "admin",
                 NormalizedUserName = "ADMIN",
                 Email = "admin@mail.com",
-                NormalizedEmail = "admin@mail.com"
+                NormalizedEmail = "admin@mail.com",
+                PasswordSetupRequired=true,
             };
 
             AdminUser.PasswordHash =
                  hasher.HashPassword(AdminUser, "admin123");
 
-            GuestUser = new IdentityUser()
+            GuestUser = new ApplicationUser()
             {
                 Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                 UserName = "guest",
                 NormalizedUserName = "GUEST",
                 Email = "guest@mail.com",
-                NormalizedEmail = "guest@mail.com"
+                NormalizedEmail = "guest@mail.com",
+                PasswordSetupRequired=false,
             };
 
             GuestUser.PasswordHash =
             hasher.HashPassword(GuestUser, "guest123");
+
+            MasterAdminUser = new ApplicationUser()
+            {
+                Id = "7245911e-1ad6-46aa-a087-e4eb1445b500",
+                UserName = "masteradmin",
+                NormalizedUserName = "MASTERADMIN",
+                Email = "madmin@mail.com",
+                NormalizedEmail = "madmin@mail.com",
+                PasswordSetupRequired= false,
+            };
+
+            MasterAdminUser.PasswordHash =
+                 hasher.HashPassword(MasterAdminUser, "madmin123");
         }
     }
 }

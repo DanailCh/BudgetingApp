@@ -25,7 +25,7 @@ namespace App.Infrastructure.Data.Models
 
 
         [ForeignKey(nameof(SenderId))]
-        public IdentityUser SenderUser { get; set; } = null!;
+        public ApplicationUser SenderUser { get; set; } = null!;
 
         [Required]
         [MaxLength(TitleMaxLength)]

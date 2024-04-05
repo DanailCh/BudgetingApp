@@ -31,7 +31,7 @@ namespace App.Infrastructure.Data.Models
 
 
         [ForeignKey(nameof(UserId))]
-        public IdentityUser User { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
 
         public ICollection<Bill> Bills { get; set; } = new List<Bill>();
 
