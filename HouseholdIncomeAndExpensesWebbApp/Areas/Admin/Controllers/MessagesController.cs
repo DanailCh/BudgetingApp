@@ -10,7 +10,7 @@ using System.Data;
 namespace HouseholdBudgetingApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator,MasterAdmin")]
     public class MessagesController : Controller
     {
         private readonly IFeedBackMessageService feedBackMessageService;

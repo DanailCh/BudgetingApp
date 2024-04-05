@@ -18,7 +18,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    @{if(User.IsAdmin()){
+                    @{if(User.IsAdmin()||User.IsMasterAdmin()){
                                 <partial name="_AdminLayoutPartial" />
                     }
                     else{

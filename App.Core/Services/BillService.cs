@@ -5,6 +5,7 @@ using App.Core.Models.Bill;
 using App.Core.Models.BillType;
 using App.Infrastructure.Data.Models;
 using HouseholdBudgetingApp.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Core.Services
@@ -137,7 +138,7 @@ namespace App.Core.Services
                 PayedBy = b.Payer.Name,
                 IsPayed = b.IsPayed,
             }).ToListAsync();
-
+            
 
             return bills;
         }
