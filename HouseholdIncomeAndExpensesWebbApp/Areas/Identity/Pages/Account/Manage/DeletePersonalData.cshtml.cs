@@ -5,6 +5,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using App.Infrastructure.Data.Models;
 using HouseholdBudgetingApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,14 +17,14 @@ namespace HouseholdBudgetingApp.Areas.Identity.Pages.Account.Manage
 {
     public class DeletePersonalDataModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _context;
         private readonly ILogger<DeletePersonalDataModel> _logger;
 
         public DeletePersonalDataModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,ApplicationDbContext context, 
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,ApplicationDbContext context, 
             ILogger<DeletePersonalDataModel> logger )
         {
             _userManager = userManager;
@@ -71,6 +72,7 @@ namespace HouseholdBudgetingApp.Areas.Identity.Pages.Account.Manage
             RequirePassword = await _userManager.HasPasswordAsync(user);
             if (RequirePassword)
             {
+
                 if (!await _userManager.CheckPasswordAsync(user, Input.Password))
                 {
                     ModelState.AddModelError(string.Empty, "Incorrect password.");
@@ -92,7 +94,7 @@ namespace HouseholdBudgetingApp.Areas.Identity.Pages.Account.Manage
             return Redirect("~/");
         }
 
-        private async Task<IdentityResult> DeleteUserAsync(IdentityUser user)
+        private async Task<IdentityResult> DeleteUserAsync(ApplicationUser user)
         {
             var feedbackMessage = await _context.FeedbackMessages.Where(b => b.SenderId == user.Id).ToListAsync();
             foreach (var item in feedbackMessage)
