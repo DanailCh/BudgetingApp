@@ -39,17 +39,17 @@ namespace App.Core.Services
 
         public async Task<ArchiveMemberSalaryQueryModel> AllMembersSalariesAsync(string userId, AllArchivedMembersSalariesQueryModel model)
         {
-            var salariesToShow = _context.MemberSalaries.AsNoTracking().Where(b => b.UserId == userId);
+            var allSalaries = _context.MemberSalaries.AsNoTracking().Where(b => b.UserId == userId);
 
             if (model.SalariesMonth != null)
             {
-                salariesToShow = salariesToShow
+                allSalaries = allSalaries
                     .Where(b => b.Date == model.SalariesMonth);
 
             }
             if (model.MemberId != 0)
             {
-                salariesToShow = salariesToShow
+                allSalaries = allSalaries
                     .Where(b => b.UserId == userId  && b.HouseholdMemberId == model.MemberId);
 
             }
@@ -62,20 +62,20 @@ namespace App.Core.Services
             switch (model.Sorting)
             {
                 case SalariesSorting.HighestFirst:
-                    salariesToShow = salariesToShow
+                    allSalaries = allSalaries
                               .OrderByDescending(b => b.Salary);
                     break;
                 case SalariesSorting.LowestFirst:
-                    salariesToShow = salariesToShow
+                    allSalaries = allSalaries
                               .OrderBy(b => b.Salary);
                     break;
                 case SalariesSorting.None:
-                    salariesToShow = salariesToShow
+                    allSalaries = allSalaries
                               .OrderByDescending(b => b.Id);
                     break;
 
             }
-            var salaries = await salariesToShow
+            var salariesToShow = await allSalaries
                .Skip((model.CurrentPage - 1) * model.MembersSalariesPerPage)
                .Take(model.MembersSalariesPerPage)
                .Select(b => new ArchiveMemberSalaryViewModel()
@@ -86,12 +86,22 @@ namespace App.Core.Services
                    Date = b.Date,
                })
                .ToListAsync();
+            var salariesToDownload= await allSalaries               
+               .Select(b => new ArchiveMemberSalaryViewModel()
+               {
+                   Id = b.Id,
+                   Salary = b.Salary,
+                   Name = b.HouseholdMember.Name,
+                   Date = b.Date,
+               })
+               .ToListAsync();
 
-            int totalArchivedSalaries = await salariesToShow.CountAsync();
+            int totalArchivedSalaries = await allSalaries.CountAsync();
 
             return new ArchiveMemberSalaryQueryModel()
             {
-                ArchivedSalaries = salaries,
+                ArchivedSalariesToDownload=salariesToDownload,
+                ArchivedSalaries = salariesToShow,
                 ArchivedMembersSalariesCount = totalArchivedSalaries,
             };
         }

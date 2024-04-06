@@ -84,11 +84,11 @@ namespace App.Core.Services
        
         public async Task<ArchiveHouseholdBudgetQueryModel> AllBudgetsAsync(string userId,AllArchivedBudgetsQueryModel model)
         {
-            var budgetsToShow = _context.HouseholdBudgets.AsNoTracking().Where(b => b.UserId == userId);
+            var allBudgets = _context.HouseholdBudgets.AsNoTracking().Where(b => b.UserId == userId);
 
             if (model.BudgetMonth != null)
             {
-                budgetsToShow = budgetsToShow
+                allBudgets = allBudgets
                     .Where(b => b.Date == model.BudgetMonth);
                 model.Sorting = BudgetSorting.None;
             }
@@ -97,30 +97,30 @@ namespace App.Core.Services
             switch (model.Sorting)
             {
                 case BudgetSorting.MostIncome:
-                    budgetsToShow = budgetsToShow
+                    allBudgets = allBudgets
                               .OrderByDescending(b => b.Income);
                     break;
                 case BudgetSorting.LeastIncome:
-                    budgetsToShow = budgetsToShow
+                    allBudgets = allBudgets
                               .OrderBy(b => b.Income);
                     break;
                 case BudgetSorting.MostExpences:
-                    budgetsToShow = budgetsToShow
+                    allBudgets = allBudgets
                               .OrderByDescending(b => b.Expences);
                     break;
                 case BudgetSorting.LeastExpences:
-                    budgetsToShow = budgetsToShow
+                    allBudgets = allBudgets
                               .OrderBy(b => b.Expences);
                     break;
                 case BudgetSorting.None:
-                    budgetsToShow = budgetsToShow
+                    allBudgets = allBudgets
                               .OrderByDescending(b => b.Id);
                     break;
 
 
             };
 
-            var budgets = await budgetsToShow
+            var budgetsToShow = await allBudgets
                 .Skip((model.CurrentPage - 1) * model.BudgetsPerPage)
                 .Take(model.BudgetsPerPage)
                 .Select(b => new ArchiveHouseholdBudgetViewModel()
@@ -131,12 +131,21 @@ namespace App.Core.Services
                     Date = b.Date,
                 })
                 .ToListAsync();
-
-            int totalArchivedBudgets = await budgetsToShow.CountAsync();
+            var budgetsToDownload= await allBudgets                
+                .Select(b => new ArchiveHouseholdBudgetViewModel()
+                {
+                    Id = b.Id,
+                    Income = b.Income,
+                    Expences = b.Expences,
+                    Date = b.Date,
+                })
+                .ToListAsync();
+            int totalArchivedBudgets = await allBudgets.CountAsync();
 
             return new ArchiveHouseholdBudgetQueryModel()
             {
-               ArchivedBudgets=budgets,
+                ArchivedBudgetsToDownload = budgetsToDownload,
+               ArchivedBudgets=budgetsToShow,
                ArchivedBudgetsCount=totalArchivedBudgets,
             };
         }
@@ -150,6 +159,21 @@ namespace App.Core.Services
                 return false;
             }
             return true;
+        }
+
+        public bool HouseholdIncomeIsZero(List<MemberSalaryFormViewModel> model)
+        {
+            bool isZero = true;
+            decimal expences = 0;
+            foreach (var item in model)
+            {
+                expences += item.Salary;
+            }
+            if (expences!=0)
+            {
+                isZero = false;
+            }
+            return isZero;
         }
     }
 }

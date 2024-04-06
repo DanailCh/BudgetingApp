@@ -11,5 +11,6 @@ namespace App.Core.Models.Archive.Bill
         public int ArchivedBillsCount { get; set; }
 
         public IEnumerable<ArchiveBillViewModel> ArchivedBills { get; set; } = new List<ArchiveBillViewModel>();
+        public IEnumerable<ArchiveBillViewModel> ArchivedBillsForDownload { get; set; } = new List<ArchiveBillViewModel>();
     }
 }

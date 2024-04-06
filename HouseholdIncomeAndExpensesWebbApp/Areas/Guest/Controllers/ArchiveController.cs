@@ -86,7 +86,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
                model.CurrentPage,
                model.BillsPerPage
               );
-            var bills = archivedBills.ArchivedBills;
+            var bills = archivedBills.ArchivedBillsForDownload;
             if (!bills.Any())
             {
                 return NoContent();
@@ -101,7 +101,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
             var archivedBudgets = await budgetSummaryService.AllBudgetsAsync(
                 User.Id(), model);
 
-            var budgets = archivedBudgets.ArchivedBudgets;
+            var budgets = archivedBudgets.ArchivedBudgetsToDownload;
             if (!budgets.Any())
             {
                 return NoContent();
@@ -118,7 +118,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
             var archivedSalaries = await householdService.AllMembersSalariesAsync(
                 User.Id(), model
                );
-            var salaries = archivedSalaries.ArchivedSalaries;
+            var salaries = archivedSalaries.ArchivedSalariesToDownload;
             if (!salaries.Any())
             {
                 return NoContent();

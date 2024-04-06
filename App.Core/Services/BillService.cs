@@ -28,18 +28,18 @@ namespace App.Core.Services
             int currentPage = 1,
             int billsPerPage=10)
         {
-            var billsToShow = _context.Bills.AsNoTracking().Where(b => b.UserId == userId && b.DeletedOn == null && b.IsArchived == true);
+            var allBills = _context.Bills.AsNoTracking().Where(b => b.UserId == userId && b.DeletedOn == null && b.IsArchived == true);
 
             if (billMonth!=null)
             {
-                billsToShow = billsToShow
+                allBills = allBills
                     .Where(b => b.Date==billMonth);
                 sortingDate = BillsSorting.None;
             }
 
             if (billTypeId != 0)
             {
-                billsToShow = billsToShow
+                allBills = allBills
                     .Where(b => (b.UserId == userId || b.UserId == null) && b.DeletedOn == null && b.BillTypeId == billTypeId);
             }
 
@@ -52,17 +52,17 @@ namespace App.Core.Services
                     switch (sortingCost)
                     {
                         case BillsSorting.CostCheapest:
-                            billsToShow=billsToShow
+                            allBills=allBills
                              .OrderBy(b => b.Date)
                             .ThenBy(b => b.Cost);
                             break;
                         case BillsSorting.CostExpensive:
-                            billsToShow = billsToShow
+                            allBills = allBills
                            .OrderBy(b => b.Date)
                            .ThenByDescending(b => b.Cost);
                             break;
                         case BillsSorting.None:
-                            billsToShow = billsToShow
+                            allBills = allBills
                            .OrderBy(b => b.Date);                           
                             break;
 
@@ -72,17 +72,17 @@ namespace App.Core.Services
                     switch (sortingCost)
                     {
                         case BillsSorting.CostCheapest:
-                            billsToShow = billsToShow
+                            allBills = allBills
                              .OrderByDescending(b => b.Date)
                              .ThenBy(b => b.Cost);
                             break;
                         case BillsSorting.CostExpensive:
-                            billsToShow = billsToShow
+                            allBills = allBills
                            .OrderByDescending(b => b.Date)
                            .ThenByDescending(b => b.Cost);
                             break;
                         case BillsSorting.None:
-                            billsToShow = billsToShow
+                            allBills = allBills
                            .OrderByDescending(b => b.Date);
                             break;
                     };
@@ -91,15 +91,15 @@ namespace App.Core.Services
                     switch (sortingCost)
                     {
                         case BillsSorting.CostCheapest:
-                            billsToShow = billsToShow
+                            allBills = allBills
                              .OrderByDescending(b => b.Cost);
                             break;
                         case BillsSorting.CostExpensive:
-                            billsToShow = billsToShow
+                            allBills = allBills
                            .OrderByDescending(b => b.Cost);
                             break;
                         case BillsSorting.None:
-                            billsToShow = billsToShow
+                            allBills = allBills
                            .OrderByDescending(b => b.Id);
                             break;
                     };
@@ -107,7 +107,7 @@ namespace App.Core.Services
 
             };
 
-            var bills = await billsToShow
+            var billsToShow = await allBills
                 .Skip((currentPage - 1) * billsPerPage)
                 .Take(billsPerPage)
                 .Select(b => new ArchiveBillViewModel()
@@ -118,12 +118,19 @@ namespace App.Core.Services
                     Date=b.Date,
                 })
                 .ToListAsync();
-
-            int totalArchivedBills = await billsToShow.CountAsync();
+            var billsForDownload = await allBills.Select(b => new ArchiveBillViewModel()
+            {
+                Id = b.Id,
+                Cost = b.Cost,
+                BillTypeName = b.BillType.Name,
+                Date = b.Date,
+            }).ToListAsync();
+            int totalArchivedBills = await allBills.CountAsync();
 
             return new ArchiveBillQueryModel()
             {
-                ArchivedBills = bills,
+                ArchivedBillsForDownload=billsForDownload,
+                ArchivedBills = billsToShow,
                 ArchivedBillsCount = totalArchivedBills,                
             };
         }
