@@ -31,11 +31,11 @@ namespace App.Core.Services
             {
                 Id = m.Id,
                 Name = m.Name,
-               
+
             }).ToListAsync();
             return members;
-        }        
-
+        }
+       
 
         public async Task<ArchiveMemberSalaryQueryModel> AllMembersSalariesAsync(string userId, AllArchivedMembersSalariesQueryModel model)
         {
@@ -47,13 +47,33 @@ namespace App.Core.Services
                     .Where(b => b.Date == model.SalariesMonth);
 
             }
-            if (model.MemberId != 0)
+            if (model.MemberId != null)
             {
-                allSalaries = allSalaries
-                    .Where(b => b.UserId == userId  && b.HouseholdMemberId == model.MemberId);
+                switch (model.MemberId)
+                {
+                    case "OnlyActiveMembers":
+                        allSalaries = allSalaries.Join(_context.HouseholdMembers,
+                            s=>s.HouseholdMemberId,
+                            m=>m.Id,
+                            (s,m)=>new  {Salary=s,Deleted=m.DeletedOn })
+                            .Where(salary=>salary.Deleted==null).Select(sa=>sa.Salary);
+                        break;
+                    case "AllInactiveMembers":
+                        allSalaries = allSalaries.Join(_context.HouseholdMembers,
+                           s => s.HouseholdMemberId,
+                           m => m.Id,
+                           (s, m) => new { Salary = s, Deleted = m.DeletedOn })
+                           .Where(salary => salary.Deleted != null).Select(sa => sa.Salary);
+                        break;
+                    default:
+                        allSalaries = allSalaries
+                    .Where(b => b.UserId == userId && b.HouseholdMemberId == int.Parse(model.MemberId));
+                        break;
+                }
+                
 
             }
-            if (model.MemberId != 0 && model.SalariesMonth != null)
+            if (model.MemberId != null && model.SalariesMonth != null)
             {
                 model.Sorting = SalariesSorting.None;
             }
@@ -125,6 +145,7 @@ namespace App.Core.Services
             var member = await _context.HouseholdMembers.FindAsync(id);
             if (member != null)
             {
+                member.Name += "-Inactive";
                 member.DeletedOn= DateTime.Now;
                 await _context.SaveChangesAsync();
             }

@@ -15,7 +15,7 @@ namespace App.Core.Models.Archive.MemberSalary
     {
         public int MembersSalariesPerPage { get; } = Constants.PaginationConstants.MembersSalariesPerPage;
 
-        public int MemberId { get; init; }
+        public string MemberId { get; init; }
 
         public DateTime? SalariesMonth { get; init; }
 

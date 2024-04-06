@@ -11,7 +11,7 @@
     <div class="row">
         <div class="form-group col-md-3 d-flex justify-content-between">
             <div class="form-group mt-4 p-2">
-                <label asp-for="BillTypeId">Sort by Type of Bill</label>
+                <label asp-for="BillTypeId">Select Type of Bill</label>
                 <select asp-for="BillTypeId" class="form-control">
                     <option value="">All</option>
                     @foreach (var billType in Model.BillTypes)
