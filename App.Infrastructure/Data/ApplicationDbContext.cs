@@ -1,4 +1,5 @@
 ﻿using App.Infrastructure.Data.Configurations;
+using App.Infrastructure.Data.Configurations.ShowcaseSeed;
 using App.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -35,8 +36,15 @@ namespace HouseholdBudgetingApp.Data
             modelBuilder.ApplyConfiguration(new SeverityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new StatusConfiguration());
             modelBuilder.ApplyConfiguration(new FeedbackMessageConfiguration());
-            modelBuilder.ApplyConfiguration(new MemberSalaryConfiguration());           
-            
+            modelBuilder.ApplyConfiguration(new MemberSalaryConfiguration());
+
+            modelBuilder.ApplyConfiguration(new ShowcaseMemberConfiguration());
+            modelBuilder.ApplyConfiguration(new ShowcaseBillConfiguration());
+            modelBuilder.ApplyConfiguration(new ShowcaseBudgetConfiguration());
+            modelBuilder.ApplyConfiguration(new ShowcaseSalaryConfiguration());
+            modelBuilder.ApplyConfiguration(new ShowcaseSymmaryConfiguration());
+            modelBuilder.ApplyConfiguration(new ShowcaseFeedbackConfiguration());
+
 
             base.OnModelCreating(modelBuilder);
         }

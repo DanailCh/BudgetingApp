@@ -4,6 +4,7 @@ using HouseholdBudgetingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240406101055_summaryMaxLenghtIncrease")]
+    partial class summaryMaxLenghtIncrease
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,16 +97,16 @@ namespace App.Infrastructure.Data.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0125abad-5f14-479e-8d8d-702b9833046f",
+                            ConcurrencyStamp = "27775724-db62-40f5-bf32-b55f5e2f84f9",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@mail.com",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAELjqajO1TCt1ClgpCeM9AdbKU/gWLxrNt1rU7AofTt2uteiMiU8TqNJNSA4dhYN8MA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDwjaKXoIjDos08lWcYlWPguBxsSvsWdMckxD6935HWZxcfEN7rCEjiY1D2VuxwFpA==",
                             PasswordSetupRequired = true,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "44078568-0bcb-4987-9b00-0c5e0e37d48c",
+                            SecurityStamp = "68e689e6-0c85-4bd9-8396-67ca73f29ffb",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -111,16 +114,16 @@ namespace App.Infrastructure.Data.Migrations
                         {
                             Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fe5a3b44-e0ed-4885-b826-140805d7180e",
+                            ConcurrencyStamp = "10daa75a-3c50-4fc9-afdc-3d45483ba924",
                             Email = "guest@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "guest@mail.com",
                             NormalizedUserName = "GUEST",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPH8uO06q2SQJ644V9RCKAXpPv3vumAtHyewOtoMq6TrawA9lHytu4lBLTbqsUo37w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOISFrFWXmosPXY6726FwQ7gQrxA0cWcvUvI8nhy0FcMEq23XzYf3RBd50ao/GUcCw==",
                             PasswordSetupRequired = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "548cced9-6178-45c4-840c-a266718536f6",
+                            SecurityStamp = "58e9462b-81cf-474c-bb89-8922fa96aaae",
                             TwoFactorEnabled = false,
                             UserName = "guest"
                         },
@@ -128,16 +131,16 @@ namespace App.Infrastructure.Data.Migrations
                         {
                             Id = "7245911e-1ad6-46aa-a087-e4eb1445b500",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "64ff78da-8e91-488b-ba28-e28db32b09e3",
+                            ConcurrencyStamp = "58e8d1c5-7f1f-4094-b5be-4ba600bddf96",
                             Email = "madmin@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "madmin@mail.com",
                             NormalizedUserName = "MASTERADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKJEeSNsjN0XCvzcLpDJrBpuc3Pbw0eDOO0sJAq8Ck/9l69zAxm2snipCe0FnSIYIA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDJHk/ShIb/J3lan/+AAd528h6bEyNT42tTu9Paau6jF3oERcNAaKnLWKZu2Spx+9Q==",
                             PasswordSetupRequired = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f629b008-9692-4242-884c-862e6a06faa6",
+                            SecurityStamp = "b65b9862-c1a4-4a71-b26a-75368b3ec410",
                             TwoFactorEnabled = false,
                             UserName = "masteradmin"
                         });
@@ -194,93 +197,6 @@ namespace App.Infrastructure.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Bills");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BillTypeId = 1,
-                            Cost = 150.00m,
-                            Date = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsArchived = true,
-                            IsPayed = true,
-                            PayerId = 1,
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BillTypeId = 2,
-                            Cost = 70.00m,
-                            Date = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsArchived = true,
-                            IsPayed = true,
-                            PayerId = 2,
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            BillTypeId = 3,
-                            Cost = 150.00m,
-                            Date = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsArchived = true,
-                            IsPayed = true,
-                            PayerId = 3,
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            BillTypeId = 4,
-                            Cost = 20.00m,
-                            Date = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsArchived = true,
-                            IsPayed = true,
-                            PayerId = 4,
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            BillTypeId = 5,
-                            Cost = 1000.00m,
-                            Date = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsArchived = true,
-                            IsPayed = true,
-                            PayerId = 4,
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            BillTypeId = 1,
-                            Cost = 100.00m,
-                            Date = new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsArchived = false,
-                            IsPayed = false,
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            BillTypeId = 3,
-                            Cost = 150.00m,
-                            Date = new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsArchived = false,
-                            IsPayed = false,
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            BillTypeId = 5,
-                            Cost = 1050.00m,
-                            Date = new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsArchived = false,
-                            IsPayed = false,
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        });
                 });
 
             modelBuilder.Entity("App.Infrastructure.Data.Models.BillType", b =>
@@ -372,16 +288,6 @@ namespace App.Infrastructure.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("EndMonthSummaries");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Date = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsResolved = false,
-                            Summary = "Total Household Income: 6500.00<br> <br>Total Household Expences: 1390.00<br> <br>-Victor payed: 150.00 which is 106.62 less.<br> <br>-Danail payed: 70.00 which is 314.92 less.<br> <br>-pesho payed: 150.00 which is 170.77 less.<br> <br>-ivan payed: 1020.00 which is 592.31 too much.",
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        });
                 });
 
             modelBuilder.Entity("App.Infrastructure.Data.Models.FeedbackMessage", b =>
@@ -439,54 +345,6 @@ namespace App.Infrastructure.Data.Migrations
                     b.HasIndex("StatusId");
 
                     b.ToTable("FeedbackMessages");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                            Date = new DateTime(2024, 4, 6, 18, 30, 15, 677, DateTimeKind.Local).AddTicks(6936),
-                            IsReadByUser = true,
-                            SenderId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
-                            StatusId = 1,
-                            Title = "Title for Feedback1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Comment = "Your feedback has been acknowledged and we are working on solving the problem",
-                            Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Dictum fusce ut placerat orci nulla pellentesque dignissim enim sit.",
-                            Date = new DateTime(2024, 3, 27, 18, 30, 15, 677, DateTimeKind.Local).AddTicks(6938),
-                            IsReadByUser = false,
-                            SenderId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
-                            SeverityTypeId = 1,
-                            StatusId = 2,
-                            Title = "Title for Feedback2"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Comment = "Your feedback has been acknowledged and we are working on solving the problem",
-                            Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                            Date = new DateTime(2024, 3, 22, 18, 30, 15, 677, DateTimeKind.Local).AddTicks(6940),
-                            IsReadByUser = true,
-                            SenderId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
-                            SeverityTypeId = 3,
-                            StatusId = 2,
-                            Title = "Title for Feedback3"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Comment = "We are happy to inform you that the issue has been resolved",
-                            Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                            Date = new DateTime(2024, 3, 6, 18, 30, 15, 677, DateTimeKind.Local).AddTicks(6942),
-                            IsReadByUser = false,
-                            SenderId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
-                            SeverityTypeId = 2,
-                            StatusId = 3,
-                            Title = "Title for Feedback4"
-                        });
                 });
 
             modelBuilder.Entity("App.Infrastructure.Data.Models.HouseholdBudget", b =>
@@ -520,16 +378,6 @@ namespace App.Infrastructure.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("HouseholdBudgets");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Date = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Expences = 1390.00m,
-                            Income = 6500.00m,
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        });
                 });
 
             modelBuilder.Entity("App.Infrastructure.Data.Models.HouseholdMember", b =>
@@ -561,32 +409,6 @@ namespace App.Infrastructure.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("HouseholdMembers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Victor",
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Danail",
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Pesho",
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Ivan",
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        });
                 });
 
             modelBuilder.Entity("App.Infrastructure.Data.Models.MemberSalary", b =>
@@ -622,40 +444,6 @@ namespace App.Infrastructure.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("MemberSalaries");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Date = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HouseholdMemberId = 1,
-                            Salary = 1200.00m,
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Date = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HouseholdMemberId = 2,
-                            Salary = 1800.00m,
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Date = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HouseholdMemberId = 3,
-                            Salary = 1500.00m,
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Date = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HouseholdMemberId = 4,
-                            Salary = 2000.00m,
-                            UserId = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        });
                 });
 
             modelBuilder.Entity("App.Infrastructure.Data.Models.SeverityType", b =>

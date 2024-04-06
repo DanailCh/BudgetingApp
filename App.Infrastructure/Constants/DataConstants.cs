@@ -25,7 +25,7 @@ namespace App.Infrastructure.Constants
         }
         public static class EndMonthSummary
         {
-            public const int SummaryMaxLength = 300;            
+            public const int SummaryMaxLength = 3000;            
         }
         public static class Messages
         {
