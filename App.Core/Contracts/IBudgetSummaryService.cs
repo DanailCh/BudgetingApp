@@ -19,7 +19,8 @@ namespace App.Core.Contracts
         Task<bool> HasBillsAsync(string userId);
         Task CreateSummary(List<MemberSalaryFormViewModel> models,string userId);
         Task ResolveSummary(int id);
-       
+        bool HouseholdIncomeIsZero(List<MemberSalaryFormViewModel> model);
+
 
     }
 }

@@ -1,10 +1,12 @@
 ﻿@model List<MemberSalaryFormViewModel>
 @{
     ViewBag.Title = $"Summarize month: ";
+    ViewBag.ErrorMessage = TempData["ErrorMessage"];
 }
 
 
 <h2 class="text-center">@ViewBag.Title</h2>
+<h3 class="text-danger">@ViewBag.ErrorMessage</h3>
 <hr />
 
 <div class="row">

@@ -56,12 +56,18 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromForm] List<MemberSalaryFormViewModel> model)
         {
+            
             foreach (var member in model)
             {
                 if (!(await householdService.AllHouseholdMembersAsync(User.Id())).Any(b => b.Id ==member.Id))
                 {
                     return NotFound();
                 }                
+            }
+            if (budgetSummaryService.HouseholdIncomeIsZero(model))
+            {
+                TempData["ErrorMessage"] = "Houshold Income must not be 0!";
+                return View(model);
             }
 
             if (!ModelState.IsValid)

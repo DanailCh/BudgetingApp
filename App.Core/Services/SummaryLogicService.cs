@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace App.Core.Services
@@ -34,7 +35,7 @@ namespace App.Core.Services
             FillMembersShouldHavePayed(model);
             FillMemberDifferance();
 
-            string summary = Summarize(_userId);
+            string summary = Summarize(model,_userId);
             await  AddDataToDatabase(_userId, date,model);
 
             return summary;
@@ -65,20 +66,28 @@ namespace App.Core.Services
             await _context.SaveChangesAsync();
         }
 
-        private string Summarize(string userId)
+        private string Summarize(List<MemberSalaryFormViewModel> model,string userId)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"Total Household Income: {householdIncome}");
-            sb.AppendLine($"Total Household Expences: {householdExpences}");
-            foreach(var member in memberPayed)
+            sb.AppendLine($"Total Household Income: {householdIncome}\n");
+            
+            sb.AppendLine($"Total Household Expences: {householdExpences}\n");
+            
+            foreach (var member in memberPayed)
             {
-                string name = _context.HouseholdMembers.Where(m => m.Id == member.Key).Select(m => m.Name).FirstOrDefault();
-               
-                string diff = GetDiffString(member.Key);
+                string name = model.Where(m => m.Id == member.Key).Select(m => m.Name).First();
+                
+                string sanitazidName= EscapeHtml(name);
 
-                sb.AppendLine($"{name} payed: {member.Value} which is {diff}");
+                string diff = GetDiffString(member.Key);
+                
+                sb.AppendLine($"-{sanitazidName} payed: {member.Value} which is {diff}.\n");
+               
             }
-            return sb.ToString().TrimEnd();
+            string summary = sb.ToString().TrimEnd();
+            summary = summary.Replace("\n", "<br>");
+
+            return summary;
         }
 
         private string GetDiffString(int id)
@@ -106,16 +115,20 @@ namespace App.Core.Services
         }
         private void FillMembersShouldHavePayed(List<MemberSalaryFormViewModel> model)
         {
-            Dictionary<int,decimal> contributionPercentage=new Dictionary<int,decimal>();
-            foreach(var member in model)
+            if (householdIncome!=0)
             {
-                contributionPercentage.Add(member.Id, ((member.Salary / householdIncome) * 100));
+                Dictionary<int, decimal> contributionPercentage = new Dictionary<int, decimal>();
+                foreach (var member in model)
+                {
+                    contributionPercentage.Add(member.Id, ((member.Salary / householdIncome) * 100));
 
+                }
+                foreach (var member in contributionPercentage)
+                {
+                    memberShouldHavePayed.Add(member.Key, (householdExpences * (member.Value / 100)));
+                }
             }
-            foreach (var member in contributionPercentage)
-            {
-                memberShouldHavePayed.Add(member.Key, (householdExpences*(member.Value / 100)));
-            }
+            
         }
         private void FillMemberDifferance()
         {
@@ -142,6 +155,20 @@ namespace App.Core.Services
                 member.IsArchived = true;
             }
             await _context.SaveChangesAsync();
+        }
+
+        private string EscapeHtml(string html)
+        {
+            return html.Replace("&", "&amp;")
+                       .Replace("<", "&lt;")
+                       .Replace(">", "&gt;")
+                       .Replace("\"", "&quot;")
+                       .Replace("'", "&#39;")
+                       .Replace("\u00A0", "&nbsp;")
+                       .Replace("\u2264", "&le;")
+                       .Replace("\u2265", "&ge;")
+                       .Replace("\u2014", "&mdash;")
+                       .Replace("\u2013", "&ndash;");
         }
     }
 }
