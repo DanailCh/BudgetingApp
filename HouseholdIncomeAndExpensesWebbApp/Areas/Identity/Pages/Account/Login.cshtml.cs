@@ -90,10 +90,9 @@ namespace HouseholdBudgetingApp.Areas.Identity.Pages.Account
                     }
                     else
                     {
-
-                    }
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                        _logger.LogInformation("User logged in.");
+                        return LocalRedirect(returnUrl);
+                    }               
 
                 }                
                 else

@@ -24,8 +24,17 @@ namespace App.Core.Services
         }
 
         public async Task<bool> AdminExistsAsync(string adminId)
-        {
-            return await _context.Users.AnyAsync(u=>u.Id == adminId);
+        { 
+           return await _context.Users
+                .Join(_context.UserRoles,
+                   u => u.Id,
+                   ur => ur.UserId,
+                   (u, ur) => new { User = u, RoleId = ur.RoleId })
+             .Join(_context.Roles,
+                   ur => ur.RoleId,
+                   r => r.Id,
+                   (ur, r) => new { User = ur.User, RoleName = r.Name })
+             .Where(ur => ur.RoleName == "Administrator").AnyAsync(user => user.User.Id == adminId);
         }
 
         public async Task<IEnumerable<AdminViewModel>> AllAdminsAsync()
