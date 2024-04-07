@@ -10,7 +10,7 @@ namespace App.Core.Contracts
         Task CreateMessageAsync(FeedbackMessageFormModel model,string userId);
         Task RemoveMessageAsync(int id);
         
-        Task SetSeverityStatusOnMessageAsync(int messageId,int severityId);
+        Task SetSeverityTypeOnMessageAsync(int messageId,int severityId);
         Task SetDoneStatusOnMessageAsync(int messageId);
         
         Task<bool> MessageExistsAsync(int id);

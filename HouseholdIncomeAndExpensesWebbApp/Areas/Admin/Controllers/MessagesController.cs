@@ -41,7 +41,7 @@ namespace HouseholdBudgetingApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            await feedBackMessageService.SetSeverityStatusOnMessageAsync(messageId, severityId);
+            await feedBackMessageService.SetSeverityTypeOnMessageAsync(messageId, severityId);
             return RedirectToAction(nameof(Index),model);
         }
         [HttpGet]

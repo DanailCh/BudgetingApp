@@ -124,19 +124,19 @@ namespace App.Core.Services
             await _context.SaveChangesAsync();
         } 
 
-        public async Task SetSeverityStatusOnMessageAsync(int messageId, int severityId)
+        public async Task SetSeverityTypeOnMessageAsync(int messageId, int severityId)
         {
             var status = await _context.Statuses.FirstOrDefaultAsync(s => s.Name == "In Progress");
             var message=await _context.FeedbackMessages.FindAsync(messageId);
             var IsThere = await _context.SeverityTypes.AnyAsync(s => s.Id == severityId);
-            if (message != null&& IsThere)
+            if (message != null && IsThere)
             {
-               message.SeverityTypeId=severityId;
+                message.SeverityTypeId = severityId;
                 message.StatusId = status.Id;
-                message.Comment=StatusChangeComment;
-                message.IsReadByUser=false;
+                message.Comment = StatusChangeComment;
+                message.IsReadByUser = false;
                 await _context.SaveChangesAsync();
-            }
+            }           
         }
 
         public async Task<IEnumerable<SeverityTypeViewModel>> GetSeverityTypesAsync()

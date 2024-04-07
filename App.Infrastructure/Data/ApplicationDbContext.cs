@@ -10,10 +10,16 @@ namespace HouseholdBudgetingApp.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        private bool _seedDb;
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, bool seedDb=true)
             : base(options)
         {
+            if (!Database.IsRelational())
+            {
+                Database.EnsureCreated();
+            }
 
+            _seedDb = seedDb;
         }
         public DbSet<Bill> Bills { get; init; }
         public DbSet<BillType> BillTypes { get; init; }
@@ -29,7 +35,7 @@ namespace HouseholdBudgetingApp.Data
         {
 
            
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            
             modelBuilder.ApplyConfiguration(new BillConfiguration());
             modelBuilder.ApplyConfiguration(new BillTypeConfiguration());
             
@@ -37,13 +43,16 @@ namespace HouseholdBudgetingApp.Data
             modelBuilder.ApplyConfiguration(new StatusConfiguration());
             modelBuilder.ApplyConfiguration(new FeedbackMessageConfiguration());
             modelBuilder.ApplyConfiguration(new MemberSalaryConfiguration());
-
-            modelBuilder.ApplyConfiguration(new ShowcaseMemberConfiguration());
-            modelBuilder.ApplyConfiguration(new ShowcaseBillConfiguration());
-            modelBuilder.ApplyConfiguration(new ShowcaseBudgetConfiguration());
-            modelBuilder.ApplyConfiguration(new ShowcaseSalaryConfiguration());
-            modelBuilder.ApplyConfiguration(new ShowcaseSymmaryConfiguration());
-            modelBuilder.ApplyConfiguration(new ShowcaseFeedbackConfiguration());
+            if (_seedDb)
+            {
+                modelBuilder.ApplyConfiguration(new UserConfiguration());
+                modelBuilder.ApplyConfiguration(new ShowcaseMemberConfiguration());
+                modelBuilder.ApplyConfiguration(new ShowcaseBillConfiguration());
+                modelBuilder.ApplyConfiguration(new ShowcaseBudgetConfiguration());
+                modelBuilder.ApplyConfiguration(new ShowcaseSalaryConfiguration());
+                modelBuilder.ApplyConfiguration(new ShowcaseSymmaryConfiguration());
+                modelBuilder.ApplyConfiguration(new ShowcaseFeedbackConfiguration());
+            }        
 
 
             base.OnModelCreating(modelBuilder);
