@@ -32,7 +32,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         public async Task<IActionResult> Add()
         {
 
-            if (await householdService.MinimumMembersAsync(User.Id()))
+            if (await householdService.UnderMinimumMembersAsync(User.Id()))
             {
                 TempData["Message"] = "Not enough members";
                 return RedirectToAction(nameof(Index),"Household");

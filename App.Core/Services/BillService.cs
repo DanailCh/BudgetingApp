@@ -7,52 +7,45 @@ using App.Infrastructure.Data.Models;
 using HouseholdBudgetingApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace App.Core.Services
 {
     public class BillService : IBillService
     {
         private readonly ApplicationDbContext _context;
-        private readonly IHouseholdService _householdService;
-        public BillService(ApplicationDbContext context,IHouseholdService householdService)
+       
+        public BillService(ApplicationDbContext context)
         {
-            _householdService = householdService;
             _context = context;
         }
         public async Task<ArchiveBillQueryModel> AllBillsAsync(
-            string userId,
-            DateTime? billMonth,
-            int? billTypeId,            
-            BillsSorting sortingDate = BillsSorting.None,
-            BillsSorting sortingCost = BillsSorting.None,            
-            int currentPage = 1,
-            int billsPerPage=10)
+            string userId, AllArchivedBillsQueryModel model)
         {
             var allBills = _context.Bills.AsNoTracking().Where(b => b.UserId == userId && b.DeletedOn == null && b.IsArchived == true);
 
-            if (billMonth!=null)
+            if (model.BillMonth!=null)
             {
                 allBills = allBills
-                    .Where(b => b.Date==billMonth);
-                sortingDate = BillsSorting.None;
+                    .Where(b => b.Date==model.BillMonth);
+                model.SortingDate = BillsSorting.None;
             }
 
-            if (billTypeId != 0)
+            if (model.BillTypeId != null)
             {
                 allBills = allBills
-                    .Where(b => (b.UserId == userId || b.UserId == null) && b.DeletedOn == null && b.BillTypeId == billTypeId);
+                    .Where(b => (b.UserId == userId || b.UserId == null) && b.DeletedOn == null && b.BillTypeId == model.BillTypeId);
             }
 
-           
 
-          
-            switch (sortingDate)
+            
+            switch (model.SortingDate)
             {
                 case BillsSorting.DateAscending:
-                    switch (sortingCost)
+                    switch (model.SortingCost)
                     {
                         case BillsSorting.CostCheapest:
-                            allBills=allBills
+                            allBills = allBills
                              .OrderBy(b => b.Date)
                             .ThenBy(b => b.Cost);
                             break;
@@ -63,13 +56,13 @@ namespace App.Core.Services
                             break;
                         case BillsSorting.None:
                             allBills = allBills
-                           .OrderBy(b => b.Date);                           
+                           .OrderBy(b => b.Date);
                             break;
 
                     };
                     break;
                 case BillsSorting.DateDescending:
-                    switch (sortingCost)
+                    switch (model.SortingCost)
                     {
                         case BillsSorting.CostCheapest:
                             allBills = allBills
@@ -88,11 +81,11 @@ namespace App.Core.Services
                     };
                     break;
                 case BillsSorting.None:
-                    switch (sortingCost)
+                    switch (model.SortingCost)
                     {
                         case BillsSorting.CostCheapest:
                             allBills = allBills
-                             .OrderByDescending(b => b.Cost);
+                             .OrderBy(b => b.Cost);
                             break;
                         case BillsSorting.CostExpensive:
                             allBills = allBills
@@ -108,8 +101,8 @@ namespace App.Core.Services
             };
 
             var billsToShow = await allBills
-                .Skip((currentPage - 1) * billsPerPage)
-                .Take(billsPerPage)
+                .Skip((model.CurrentPage - 1) * model.BillsPerPage)
+                .Take(model.BillsPerPage)
                 .Select(b => new ArchiveBillViewModel()
                 {
                     Id = b.Id,
@@ -261,10 +254,13 @@ namespace App.Core.Services
         public async Task PayBillAsync(BillViewModel model, int id)
         {
             var bill = await _context.Bills.FindAsync(id);
-            bill.IsPayed = true;
-            bill.PayerId = model.PayerId;
+            if (bill != null) {
+                bill.IsPayed = true;
+                bill.PayerId = model.PayerId;
 
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+            }
+            
         }
     }
 }

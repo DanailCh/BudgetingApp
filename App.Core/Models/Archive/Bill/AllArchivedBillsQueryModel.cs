@@ -8,12 +8,12 @@ namespace App.Core.Models.Archive.Bill
     {
         public int BillsPerPage { get; } = Constants.PaginationConstants.BillsPerPage;
 
-        public int BillTypeId { get; init; }
+        public int? BillTypeId { get; init; }
 
         public DateTime? BillMonth { get; init; }
 
-        public BillsSorting SortingDate { get; init; } = BillsSorting.None;
-        public BillsSorting SortingCost { get; init; } = BillsSorting.None;
+        public BillsSorting SortingDate { get; set; } = BillsSorting.None;
+        public BillsSorting SortingCost { get; set; } = BillsSorting.None;
 
         public int CurrentPage { get; init; } = 1;
 

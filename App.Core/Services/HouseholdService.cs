@@ -163,7 +163,7 @@ namespace App.Core.Services
             return await _context.HouseholdMembers.AnyAsync(hm=>hm.Id == id);
         }
 
-        public async Task<bool> MinimumMembersAsync(string userId)
+        public async Task<bool> UnderMinimumMembersAsync(string userId)
         {
             return (await _context.HouseholdMembers.Where(hm => hm.UserId == userId && hm.DeletedOn == null).CountAsync()) < MinimumMembers;
         }

@@ -129,7 +129,7 @@ namespace App.Core.Services
             var status = await _context.Statuses.FirstOrDefaultAsync(s => s.Name == "In Progress");
             var message=await _context.FeedbackMessages.FindAsync(messageId);
             var IsThere = await _context.SeverityTypes.AnyAsync(s => s.Id == severityId);
-            if (message != null && IsThere)
+            if (message != null&&message.SeverityTypeId==null && IsThere)
             {
                 message.SeverityTypeId = severityId;
                 message.StatusId = status.Id;
@@ -171,8 +171,9 @@ namespace App.Core.Services
         public async Task SetDoneStatusOnMessageAsync(int messageId)
         {
             var status = await _context.Statuses.FirstOrDefaultAsync(s => s.Name == "Done");
+            var statusInProgress = await _context.Statuses.FirstOrDefaultAsync(s => s.Name == "In Progress");
             var message = await _context.FeedbackMessages.FindAsync(messageId);
-            if (message != null)
+            if (message != null&&message.StatusId==statusInProgress.Id)
             {
                 message.StatusId = status.Id;
                 message.Comment = ResolveComment;

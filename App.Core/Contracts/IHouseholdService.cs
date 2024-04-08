@@ -20,7 +20,7 @@ namespace App.Core.Contracts
         Task CreateHouseholdMemberAsync(HouseholdMemberFormViewModel model, string userId);
         
         Task<bool> OverMembersLimitAsync(string userId);
-        Task<bool> MinimumMembersAsync(string userId);
+        Task<bool> UnderMinimumMembersAsync(string userId);
 
         Task<bool> MemberExistsAsync(int id);
         Task<bool> MemberBelongsToUserAsync(int id,string userId);        

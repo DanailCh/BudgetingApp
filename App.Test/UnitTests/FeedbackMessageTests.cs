@@ -112,8 +112,8 @@ namespace App.Test.UnitTests
         {
             var messageModel = new FeedbackMessageFormModel()
             {
-                Title="TitleTest",
-                Content="ContentTest",                
+                Title = "TitleTest",
+                Content = "ContentTest",
             };
             var msCountBefore = _data.FeedbackMessages.Count();
             await feedbackMessageService.CreateMessageAsync(messageModel, Guest.Id);
@@ -121,20 +121,123 @@ namespace App.Test.UnitTests
             Assert.That(msCountBefore, Is.LessThan(msCountAfter));
             var ms = _data.FeedbackMessages.Where(ms => ms.Title == "TitleTest").FirstOrDefault();
             Assert.That(ms, Is.Not.Null);
-            Assert.That(ms.SenderId,Is.EqualTo(Guest.Id));
+            Assert.That(ms.Title, Is.EqualTo("TitleTest"));
+            Assert.That(ms.SenderId, Is.EqualTo(Guest.Id));
             Assert.That(ms.Content, Is.EqualTo("ContentTest"));
             Assert.That(ms.Comment, Is.EqualTo(String.Empty));
             Assert.That(ms.SeverityTypeId, Is.Null);
             Assert.That(ms.StatusId, Is.EqualTo(1));
-            Assert.That(ms.IsReadByUser,Is.EqualTo(true));
+            Assert.That(ms.IsReadByUser, Is.EqualTo(true));
 
         }
 
         [Test]
         public async Task SetSeverityType_ShouldSetCorrectType()
         {
-            
 
+            await feedbackMessageService.SetSeverityTypeOnMessageAsync(1, 2);
+            var messageAfter = _data.FeedbackMessages.Find(1);
+            Assert.That(messageAfter.SeverityTypeId, Is.EqualTo(2));
+            Assert.That(messageAfter.StatusId, Is.EqualTo(2));
+            Assert.That(messageAfter.Comment, Is.Not.EqualTo(String.Empty));
+            Assert.That(messageAfter.IsReadByUser, Is.False);
+        }
+        [Test]
+        public async Task SetSeverityType_ShouldntDoAnything()
+        {
+            var messageBefore = _data.FeedbackMessages.Find(2);
+            await feedbackMessageService.SetSeverityTypeOnMessageAsync(2, 2);
+            var messageAfter = _data.FeedbackMessages.Find(2);
+            Assert.That(messageAfter, Is.EqualTo(messageBefore));
+        }
+
+        [Test]
+        public async Task GetSeverityTypes_ShouldReturnAllTypes()
+        {
+            var expectedResult = _data.SeverityTypes.ToList();
+            var expectedSeverity = expectedResult.Where(s => s.Id == 2).First();
+            var result = await feedbackMessageService.GetSeverityTypesAsync();
+            var severity = result.Where(s => s.Id == 2).First();
+            
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.Count, Is.EqualTo(expectedResult.Count));
+            Assert.That(severity.Name, Is.EqualTo(expectedSeverity.Name));
+        }
+
+        [Test]
+        public async Task SeverityTypeExists_ShouldReturnCorrectBool()
+        {
+            bool result = await feedbackMessageService.SeverityTypeExistsAsync(1);
+            bool result2 = await feedbackMessageService.SeverityTypeExistsAsync(10);
+            Assert.That(result, Is.True);
+            Assert.That(result2, Is.False);
+        }
+        [Test]
+        public async Task GetStatuses_ShouldReturnAllStatuses()
+        {
+
+            var result = await feedbackMessageService.GetStatusesAsync();
+            var status = result.Where(s => s.Id == 2).First();
+            var expectedResult = _data.Statuses.ToList();
+            var expectedStatus = expectedResult.Where(s => s.Id == 2).First();
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.Count, Is.EqualTo(expectedResult.Count));
+            Assert.That(status.Name, Is.EqualTo(expectedStatus.Name));
+        }
+
+        [Test]
+        public async Task SetDoneStatusOnMessage_ShouldSetCorrectStatus()
+        {
+            int statusIdBefore = _data.FeedbackMessages.Where(m=>m.Id==2).Select(m=>m.StatusId).First();            
+           await feedbackMessageService.SetDoneStatusOnMessageAsync(2);
+            int statusIdAfter = _data.FeedbackMessages.Where(m => m.Id == 2).Select(m => m.StatusId).First();
+            Assert.That(statusIdBefore,Is.Not.EqualTo(statusIdAfter));
+        }
+        [Test]
+        public async Task SetDoneStatusOnMessage_ShouldDoNothing()
+        {
+            int statusIdBefore = _data.FeedbackMessages.Where(m => m.Id == 4).Select(m => m.StatusId).First();
+            await feedbackMessageService.SetDoneStatusOnMessageAsync(4);
+            int statusIdAfter = _data.FeedbackMessages.Where(m => m.Id == 4).Select(m => m.StatusId).First();
+            Assert.That(statusIdBefore, Is.EqualTo(statusIdAfter));
+        }
+
+        [Test]
+        public async Task RemoveMessage_ShouldSetCorrectBoolForCorrectMessage()
+        {
+            bool msBefore = _data.FeedbackMessages.Where(m=>m.Id==2).Select(m=>m.IsReadByUser).First();
+            Assert.IsFalse(msBefore);
+            await feedbackMessageService.RemoveMessageAsync(2);
+            bool msAfter = _data.FeedbackMessages.Where(m => m.Id == 2).Select(m => m.IsReadByUser).First();
+           Assert.IsTrue(msAfter);
+        }
+
+        [Test]
+        public void GetTextColor_ShouldRetirnCorrectColor()
+        {
+            var expected = "info";
+            var result=feedbackMessageService.GetTextColor("Low");
+            Assert.That(result, Is.EqualTo(expected));
+            var expected2 = "warning";
+            var result2 = feedbackMessageService.GetTextColor("Medium");
+            Assert.That(result2, Is.EqualTo(expected2));
+            var expected3 = "danger";
+            var result3 = feedbackMessageService.GetTextColor("High");
+            Assert.That(result3, Is.EqualTo(expected3));
+            var expected4 = "secondary";
+            var result4 = feedbackMessageService.GetTextColor("New");
+            Assert.That(result4, Is.EqualTo(expected4));
+            var expected5 = "primary";
+            var result5 = feedbackMessageService.GetTextColor("In Progress");
+            Assert.That(result5, Is.EqualTo(expected5));
+            var expected6 = "success";
+            var result6 = feedbackMessageService.GetTextColor("Done");
+            Assert.That(result6, Is.EqualTo(expected6));
+            var expected7 = String.Empty;
+            var result7 = feedbackMessageService.GetTextColor("other");
+            Assert.That(result7, Is.EqualTo(expected7));
         }
     }
 }

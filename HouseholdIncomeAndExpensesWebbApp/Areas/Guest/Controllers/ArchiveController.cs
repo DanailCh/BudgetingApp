@@ -32,14 +32,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         {
 
             var archivedBills = await billService.AllBillsAsync(
-                User.Id(),
-                model.BillMonth,
-                model.BillTypeId,
-                model.SortingDate,
-                model.SortingCost,
-                model.CurrentPage,
-                model.BillsPerPage
-               );
+                User.Id(),model);
 
 
             model.BillTypes = await billService.GetBillTypesAsync(User.Id());
@@ -78,20 +71,13 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         public async Task<IActionResult> DownloadTextFileForBills([FromQuery] AllArchivedBillsQueryModel model)
         {
             var archivedBills = await billService.AllBillsAsync(
-               User.Id(),
-               model.BillMonth,
-               model.BillTypeId,
-               model.SortingDate,
-               model.SortingCost,
-               model.CurrentPage,
-               model.BillsPerPage
-              );
+               User.Id(), model);
             var bills = archivedBills.ArchivedBillsForDownload;
             if (!bills.Any())
             {
                 return NoContent();
             }
-            string text = fileGeneratorService.GenerateFileForArchivedBills(User.Id(), bills);
+            string text = fileGeneratorService.GenerateFileForArchivedBills( bills);
             Response.Headers.Add(HeaderNames.ContentDisposition, @"attachment;filename=billsArchive.txt");
             return File(Encoding.UTF8.GetBytes(text), "text/plain");
         }
@@ -108,7 +94,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
             }
 
 
-            string text = fileGeneratorService.GenerateFileForArchivedBudgets(User.Id(), budgets);
+            string text = fileGeneratorService.GenerateFileForArchivedBudgets( budgets);
             Response.Headers.Add(HeaderNames.ContentDisposition, @"attachment;filename=budgetsArchive.txt");
             return File(Encoding.UTF8.GetBytes(text), "text/plain");
         }
@@ -125,7 +111,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
             }
 
 
-            string text = fileGeneratorService.GenerateFileForArchivedSalaries(User.Id(), salaries);
+            string text = fileGeneratorService.GenerateFileForArchivedSalaries( salaries);
             Response.Headers.Add(HeaderNames.ContentDisposition, @"attachment;filename=salariesArchive.txt");
             return File(Encoding.UTF8.GetBytes(text), "text/plain");
         }

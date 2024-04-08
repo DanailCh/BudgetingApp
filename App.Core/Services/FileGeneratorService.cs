@@ -16,7 +16,7 @@ namespace App.Core.Services
     {
         
 
-        public string GenerateFileForArchivedBills(string userId, IEnumerable<ArchiveBillViewModel> model)
+        public string GenerateFileForArchivedBills(IEnumerable<ArchiveBillViewModel> model)
         {
             int maxBillTypeWidth = model.Max(b => b.BillTypeName.Length);
             int maxDateWidth = model.Max(b => b.Date.ToString("MMMM yyyy").Length);
@@ -36,7 +36,7 @@ namespace App.Core.Services
             return sb.ToString();
         }
 
-        public string GenerateFileForArchivedBudgets(string v, IEnumerable<ArchiveHouseholdBudgetViewModel> model)
+        public string GenerateFileForArchivedBudgets(IEnumerable<ArchiveHouseholdBudgetViewModel> model)
         {
             int maxDateWidth = model.Max(b => b.Date.ToString("MMMM yyyy").Length);
             int maxIncomeWidth = model.Max(b => b.Income.ToString().Length);
@@ -56,7 +56,7 @@ namespace App.Core.Services
             return sb.ToString();
         }
 
-        public string GenerateFileForArchivedSalaries(string v, IEnumerable<ArchiveMemberSalaryViewModel> model)
+        public string GenerateFileForArchivedSalaries( IEnumerable<ArchiveMemberSalaryViewModel> model)
         {
             int maxDateWidth = model.Max(b => b.Date.ToString("MMMM yyyy").Length);
             int maxNameWidth = model.Max(b => b.Name.Length);

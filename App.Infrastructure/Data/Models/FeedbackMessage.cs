@@ -48,7 +48,7 @@ namespace App.Infrastructure.Data.Models
         public int? SeverityTypeId { get; set; }
 
         [ForeignKey(nameof(SeverityTypeId))]
-        public SeverityType? SeverityType { get; set; } = null!;
+        public SeverityType? SeverityType { get; set; }
 
 
         
@@ -61,7 +61,7 @@ namespace App.Infrastructure.Data.Models
         public int StatusId { get; set; }
 
         [ForeignKey(nameof(StatusId))]
-        public Status Status { get; set; }
+        public Status Status { get; set; }= null!;
 
         [Required]
         public bool IsReadByUser { get; set; }

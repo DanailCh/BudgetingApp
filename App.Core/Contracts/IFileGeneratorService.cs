@@ -11,8 +11,8 @@ namespace App.Core.Contracts
 {
     public interface IFileGeneratorService
     {
-        string GenerateFileForArchivedBills(string userId, IEnumerable<ArchiveBillViewModel> model);
-        string GenerateFileForArchivedBudgets(string v, IEnumerable<ArchiveHouseholdBudgetViewModel> budgets);
-        string GenerateFileForArchivedSalaries(string v, IEnumerable<ArchiveMemberSalaryViewModel> salaries);
+        string GenerateFileForArchivedBills(IEnumerable<ArchiveBillViewModel> model);
+        string GenerateFileForArchivedBudgets( IEnumerable<ArchiveHouseholdBudgetViewModel> budgets);
+        string GenerateFileForArchivedSalaries( IEnumerable<ArchiveMemberSalaryViewModel> salaries);
     }
 }

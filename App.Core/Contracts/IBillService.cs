@@ -12,11 +12,7 @@ namespace App.Core.Contracts
 {
     public interface IBillService
     {
-        Task<ArchiveBillQueryModel> AllBillsAsync(string userId, DateTime? billMonth, int? billTypeId,
-            BillsSorting sortingDate,
-            BillsSorting sortingCost,           
-            int currentPage = 1,
-            int billsPerPage=10);
+        Task<ArchiveBillQueryModel> AllBillsAsync(string userId, AllArchivedBillsQueryModel model);
         Task<IEnumerable<BillViewModel>> AllCurentMonthBillsAsync(string userId,DateTime date);
         Task<bool> BillExistsAsync(int id);
         Task<bool> BillBelongsToUserAsync(int id,string userId);
