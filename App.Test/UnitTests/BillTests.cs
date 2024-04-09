@@ -28,6 +28,7 @@ namespace App.Test.UnitTests
             {
                 BillMonth = dateBillArchive,
                 BillTypeId = 1,
+                CurrentPage = 1,
             };
             var result = await billService.AllBillsAsync(Guest.Id, model);
             int expected = _data.Bills.Where(x => x.UserId == Guest.Id && x.IsArchived == true && x.Date == dateBillArchive && x.BillTypeId == 1).Count();

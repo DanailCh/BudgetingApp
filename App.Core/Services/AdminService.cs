@@ -4,23 +4,15 @@ using App.Infrastructure.Data.Models;
 using HouseholdBudgetingApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace App.Core.Services
 {
     public class AdminService : IAdminService
     {
-        private readonly UserManager<ApplicationUser> _userManager;       
         private readonly ApplicationDbContext _context;
-        public AdminService(ApplicationDbContext context,UserManager<ApplicationUser> userManager)
+        public AdminService(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
-           
         }
 
         public async Task<bool> AdminExistsAsync(string adminId)
@@ -63,7 +55,8 @@ namespace App.Core.Services
             var adminToDelete=await _context.Users.FirstOrDefaultAsync(u=>u.Id==adminId);
             if (adminToDelete!=null)
             {
-                await _userManager.DeleteAsync(adminToDelete);
+                 _context.Users.Remove(adminToDelete);
+                await _context.SaveChangesAsync();
             }
         }
     }

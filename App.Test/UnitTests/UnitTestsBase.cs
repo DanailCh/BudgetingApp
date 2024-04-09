@@ -48,6 +48,7 @@ namespace App.Test.UnitTests
         public EndMonthSummary Summary { get; set; }
 
         public HouseholdBudget Budget { get; set; }
+        public HouseholdBudget Budget2 { get; set; }
 
         public MemberSalary Salary1 { get; set; }
         public MemberSalary Salary2 { get; set; }
@@ -260,12 +261,21 @@ namespace App.Test.UnitTests
                 UserId = Guest.Id,
             };
             _data.HouseholdBudgets.Add(Budget);
+            Budget2 = new HouseholdBudget()
+            {
+                Id = 2,
+                Date = dateBillArchive.AddMonths(1),
+                Income = 1500.00M,
+                Expences = 2000.00M,
+                UserId = Guest.Id,
+            };
+            _data.HouseholdBudgets.Add(Budget2);
 
             Summary = new EndMonthSummary()
             {
                 Id = 1,
                 Date = dateBillArchive,
-                Summary = "Total Household Income: 6500.00<br> <br>Total Household Expences: 1390.00<br> <br>-Victor payed: 150.00 which is 106.62 less.<br> <br>-Danail payed: 70.00 which is 314.92 less.<br> <br>-pesho payed: 150.00 which is 170.77 less.<br> <br>-ivan payed: 1020.00 which is 592.31 too much.",
+                Summary = "Total Household Income: 6500.00<br> <br>Total Household Expences: 1390.00<br> <br>-Victor payed: 150.00 which is 106.62 less.<br> <br>-Danail payed: 70.00 which is 314.92 less.<br> <br>-Pesho payed: 150.00 which is 170.77 less.<br> <br>-Ivan payed: 1020.00 which is 592.31 too much.",
                 IsResolved = false,
                 UserId = Guest.Id,
 

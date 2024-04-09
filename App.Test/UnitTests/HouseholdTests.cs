@@ -44,6 +44,8 @@ namespace App.Test.UnitTests
             {
                 SalariesMonth = date,
                 MemberId = "2",
+                CurrentPage = 1,
+                
             };
 
             var result2 = await householdService.AllMembersSalariesAsync(Guest.Id,model2);

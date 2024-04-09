@@ -1,16 +1,10 @@
 ﻿using App.Core.Contracts;
 using App.Core.Enum;
-using App.Core.Models.Archive.Bill;
 using App.Core.Models.Archive.HouseholdBudget;
 using App.Core.Models.BudgetSummary;
 using App.Infrastructure.Data.Models;
 using HouseholdBudgetingApp.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace App.Core.Services
 {
@@ -47,7 +41,7 @@ namespace App.Core.Services
         public async Task CreateSummary(List<MemberSalaryFormViewModel> model, string userId)
         {
             var date=await billService.GetDateAsync(userId);
-            string summary = await _summaryLogicService.GetSummary(model, userId,date);
+            string summary =  await _summaryLogicService.GetSummaryAsync(model, userId,date);
             var newSummary = new EndMonthSummary
             {
                 Summary = summary,
@@ -55,7 +49,7 @@ namespace App.Core.Services
                 UserId = userId,
                 Date = date,
             };
-            await _summaryLogicService.ArchiveBills(userId);
+            await _summaryLogicService.ArchiveBillsAsync(userId);
 
             await _context.EndMonthSummaries.AddAsync(newSummary);
             await _context.SaveChangesAsync();

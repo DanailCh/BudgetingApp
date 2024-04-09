@@ -3,13 +3,7 @@ using App.Core.Models.BudgetSummary;
 using App.Infrastructure.Data.Models;
 using HouseholdBudgetingApp.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration.UserSecrets;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace App.Core.Services
 {
@@ -27,7 +21,7 @@ namespace App.Core.Services
             _context = context;
         }
 
-        public async Task<string> GetSummary(List<MemberSalaryFormViewModel> model,string _userId,DateTime date)
+        public async Task<string> GetSummaryAsync(List<MemberSalaryFormViewModel> model,string _userId,DateTime date)
         {
             GetHouseholdExpences(_userId);
             GetHouseholdIncome(model);
@@ -35,13 +29,13 @@ namespace App.Core.Services
             FillMembersShouldHavePayed(model);
             FillMemberDifferance();
 
-            string summary = Summarize(model,_userId);
-            await  AddDataToDatabase(_userId, date,model);
-
+            string summary = CreateSummaryText(model,_userId);
+            await AddDataToDatabaseAsync(_userId, date,model);
+            
             return summary;
         }
 
-        private async Task AddDataToDatabase(string userId, DateTime date,List<MemberSalaryFormViewModel> members)
+        private async Task AddDataToDatabaseAsync(string userId, DateTime date,List<MemberSalaryFormViewModel> members)
         {
             HouseholdBudget householdBudget = new HouseholdBudget()
             {
@@ -66,7 +60,7 @@ namespace App.Core.Services
             await _context.SaveChangesAsync();
         }
 
-        private string Summarize(List<MemberSalaryFormViewModel> model,string userId)
+        private string CreateSummaryText(List<MemberSalaryFormViewModel> model,string userId)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"Total Household Income: {householdIncome}\n");
@@ -147,7 +141,7 @@ namespace App.Core.Services
             }
         }
 
-        public async Task ArchiveBills(string userId)
+        public async Task ArchiveBillsAsync(string userId)
         {
             var bills = await _context.Bills.Where(b => b.UserId == userId && b.DeletedOn == null && b.IsArchived == false).ToListAsync();
             foreach(var member in bills)

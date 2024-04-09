@@ -31,7 +31,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(BillTypeFormViewModel model)
         {
-            if (await billTypeService.BillTypeExistsAsync(model, User.Id()))
+            if (await billTypeService.BillTypeWhitNameAlreadyExistsAsync(model, User.Id()))
             {
                 ModelState.AddModelError(nameof(model.Name), "Bill Type already exist.");
             }

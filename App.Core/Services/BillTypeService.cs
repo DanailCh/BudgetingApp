@@ -30,7 +30,7 @@ namespace App.Core.Services
             return billTypes;
         }
 
-        public async Task<bool> BillTypeExistsAsync(BillTypeFormViewModel model, string userId)
+        public async Task<bool> BillTypeWhitNameAlreadyExistsAsync(BillTypeFormViewModel model, string userId)
         {
             return await _context.BillTypes.AsNoTracking().AnyAsync(bt => (bt.UserId == userId || bt.UserId == null) && bt.Name.ToLower() == model.Name.ToLower() && bt.DeletedOn == null);
         }

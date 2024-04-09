@@ -13,6 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            
             services.AddScoped<IBillService, BillService>();
             services.AddScoped<IHouseholdService, HouseholdService>();
             services.AddScoped<IBillTypeService, BillTypeService>();
@@ -20,6 +21,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<ISummaryLogicService, SummaryLogicService>();
             services.AddScoped<IFileGeneratorService, FileGeneratorService>();
             services.AddScoped<IFeedBackMessageService, FeedbackMessageService>();
+           
             services.AddScoped<IAdminService, AdminService>();
 
 

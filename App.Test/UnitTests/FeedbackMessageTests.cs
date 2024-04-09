@@ -31,11 +31,16 @@ namespace App.Test.UnitTests
         {
 
             var result = await feedbackMessageService.GetAllMessagesAsync(Guest2.Id);
-
+            var expectedMessage = _data.FeedbackMessages.Where(m => m.SenderId == Guest2.Id && m.IsReadByUser == false).FirstOrDefault(m => m.Id == Feedback5.Id);
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Count, Is.EqualTo(1));
-            var message = result.FirstOrDefault(m => m.Id == Feedback5.Id);
-            Assert.That(message, Is.Not.Null);
+            var resultMessage = result.FirstOrDefault(m => m.Id == Feedback5.Id);
+            Assert.That(resultMessage, Is.Not.Null);
+            Assert.That(resultMessage.Content,Is.EqualTo(expectedMessage.Content));
+            Assert.That(resultMessage.Comment, Is.EqualTo(expectedMessage.Comment));
+            Assert.That(resultMessage.Title, Is.EqualTo(expectedMessage.Title));
+            Assert.That(resultMessage.Date, Is.EqualTo(expectedMessage.Date));
+
 
         }
 

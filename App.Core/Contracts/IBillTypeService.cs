@@ -14,7 +14,7 @@ namespace App.Core.Contracts
 
         Task CreateCustomBillTypeAsync(BillTypeFormViewModel model, string userId);
 
-        Task<bool> BillTypeExistsAsync(BillTypeFormViewModel model, string userId);
+        Task<bool> BillTypeWhitNameAlreadyExistsAsync(BillTypeFormViewModel model, string userId);
 
 
 
