@@ -5,12 +5,21 @@
 }
 
 
-<h2 class="text-center">@ViewBag.Title</h2>
-<h3 class="text-danger">@ViewBag.ErrorMessage</h3>
+<h2 class="text-center">@ViewBag.Title</h2> 
+@{if (ViewBag.ErrorMessage != null)
+    {
+    <div class="row justify-content-center">
+        <div class="col-6 alert alert-dismissible alert-danger text-center">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @ViewBag.ErrorMessage
+        </div>
+    </div>
+
+    }}
 <hr />
 
-<div class="row">
-    
+<div class="row d-grid gap-2">
+<div class="row d-grid gap-2">
     <form asp-action="Add" method="post">
 
         @for (int i = 0; i < Model.Count(); i++)
@@ -26,14 +35,17 @@
                 </div>
             </div>
         }
-    <div class="mb-3">
-                <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Summarize" />
+        <div class="row justify-content-around">
+            <div class="col-md-5 d-grid gap-2">
+                <input class="btn btn-success " type="submit" value="Summarize" />
             </div>
-        <div class="alert alert-info" role="alert">
-            Summarizing the month will archive all your curent month's bills and push you one month forward!
-            Archived bills can't be deleted or edited!
         </div>
     </form>
+</div>
+<div class="alert alert-warning" role="alert">
+    Summarizing the month will archive all your curent month's bills and push you one month forward!
+    Archived bills can't be deleted or edited!
+</div>
 </div>
 
 

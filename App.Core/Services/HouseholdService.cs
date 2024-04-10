@@ -165,7 +165,8 @@ namespace App.Core.Services
 
         public async Task<bool> UnderMinimumMembersAsync(string userId)
         {
-            return (await _context.HouseholdMembers.Where(hm => hm.UserId == userId && hm.DeletedOn == null).CountAsync()) < MinimumMembers;
+            var allParticipatinMembers = _context.Bills.Where(b => b.UserId == userId && b.IsArchived == false&&b.DeletedOn==null).Select(b => b.PayerId).Distinct().ToList();
+            return (await _context.HouseholdMembers.Where(hm => hm.UserId == userId &&allParticipatinMembers.Contains(hm.Id)).CountAsync()) < MinimumMembers;
         }
 
         public async Task<bool> OverMembersLimitAsync(string userId)

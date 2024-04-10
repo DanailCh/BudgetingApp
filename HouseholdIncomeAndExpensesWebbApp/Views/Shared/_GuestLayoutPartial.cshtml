@@ -1,26 +1,20 @@
-﻿<ul class="navbar-nav flex-grow-1">
+﻿<ul class="navbar-nav me-auto">
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Guest" asp-controller="Bill" asp-action="Index">Bills</a>
+        <a class="nav-link " asp-area="Guest" asp-controller="Bill" asp-action="Index">Bills</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Guest" asp-controller="Household" asp-action="Index">Household</a>
+        <a class="nav-link " asp-area="Guest" asp-controller="Household" asp-action="Index">Household</a>
     </li>
-    <li class="nav-item">
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Archive
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="nav-link text-dark dropdown-item" asp-area="Guest" asp-controller="Archive" asp-action="BillsArchive">Bills Archive</a></li>
-                <li><a class="nav-link text-dark dropdown-item" asp-area="Guest" asp-controller="Archive" asp-action="HouseholdArchive">Household Archive</a></li>
-                <li><a class="nav-link text-dark dropdown-item" asp-area="Guest" asp-controller="Archive" asp-action="SalariesArchive">Members Salaries Archive</a></li>
-            </ul>
-        </div>
-    </li>
-    <ul class="navbar-nav">
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Guest" asp-controller="Feedback" asp-action="Index">Feedback</a>
-        </li>
-    </ul>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Archive</a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" asp-area="Guest" asp-controller="Archive" asp-action="BillsArchive">Bills Archive</a>
+            <a class="dropdown-item" asp-area="Guest" asp-controller="Archive" asp-action="HouseholdArchive">Household Archive</a>
+            <a class="dropdown-item" asp-area="Guest" asp-controller="Archive" asp-action="SalariesArchive">Members Salaries Archive</a>
 
+        </div>
+    </li>    
+    <li class="nav-item">
+        <a class="nav-link" asp-area="Guest" asp-controller="Feedback" asp-action="Index">Feedback</a>
+        </li>
 </ul>

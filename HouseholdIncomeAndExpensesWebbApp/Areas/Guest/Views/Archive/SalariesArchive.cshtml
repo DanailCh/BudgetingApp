@@ -4,18 +4,12 @@
 }
 
 
-<h2 class="text-center">@ViewBag.Title</h2>
+<h1 class="text-center">@ViewBag.Title</h1>
 <hr />
 
 <form method="get">
-    <div class="row">
-        <div class="form-group col-md-3 d-flex justify-content-between">
-            <div class="form-group mt-4 p-2">
-                <label asp-for="SalariesMonth">Sort by Month</label>
-                <input asp-for="SalariesMonth" type="month" id="salariesMonth">
-            </div>
-        </div>            
-        <div class="form-group col-md-3 d-flex justify-content-between">
+    <div class="row d-flex justify-content-center">
+        <div class="form-group col-md-4 d-flex justify-content-center">
             <div class="form-group mt-4 p-2">
                 <label asp-for="MemberId">Select Member</label>
                 <select asp-for="MemberId" class="form-control" id="memberId">
@@ -26,22 +20,31 @@
                     }
                     <option value="OnlyActiveMembers">Only Active Members</option>
                     <option value="AllInactiveMembers">All Inactive Members</option>
-                </select>
-               <label asp-for="Sorting">Sort by salary</label>
-            <select asp-for="Sorting" class="form-control" id="sorting">
-                <option value="0">-</option>
-                <option value="1">Highest Salary First</option>
-                <option value="2">Lowest Salary First</option>
-            </select>
-            </div>            
+                </select>               
+            </div>
         </div>
-        
-        <div class="form-group col-md-3 d-flex justify-content-between">
+        <div class="form-group col-md-4 d-flex justify-content-center">
+            <div class="form-group mt-4 p-2">
+                <label asp-for="SalariesMonth">Sort by Month</label>
+                <input asp-for="SalariesMonth" type="month" id="salariesMonth">
+            </div>
+        </div>  
+        <div class="form-group col-md-4 d-flex justify-content-center">
+            <div class="form-group mt-4 p-2">                
+                <label asp-for="Sorting">Sort by salary</label>
+                <select asp-for="Sorting" class="form-control" id="sorting">
+                    <option value="0">-</option>
+                    <option value="1">Highest Salary First</option>
+                    <option value="2">Lowest Salary First</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-md-12 d-flex justify-content-center">
             <div class="form-group mt-4 p-2">
                 <input type="submit" value="Search" class="btn btn-primary" />
             </div>           
         </div>
-        <div class="form-group col-md-3 d-flex justify-content-between">
+        <div class="form-group col-md-3 d-flex justify-content-center">
             <div id="error-message" style="display: none; color: red;"></div>
         </div>
     </div>
@@ -137,7 +140,7 @@
 <div class="row">
     <table class="table table-striped">
         <thead>
-            <tr>
+            <tr >
                 <th scope="col">Name</th>
                 <th scope="col">Month</th>
                 <th scope="col">Salary</th>
@@ -156,14 +159,15 @@
                 </tr>
             }
         </tbody>
-    </table>
-    <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
+    </table>   
+</div>
+<div class="row justify-content-around">
+    <div class="col-md-5 d-grid gap-2">
         <a class="btn btn-primary @(shouldDownloadButtonBeDisabled ? "disabled" : string.Empty)"
            asp-controller="Archive"
            asp-action="DownloadTextFileForSalaries"
            asp-route-memberId="@Model.MemberId"
            asp-route-salariesMonth="@Model.SalariesMonth"
-           asp-route-sorting="@((int)Model.Sorting)">Download File</a>
+           asp-route-sorting="@((int)Model.Sorting)">Download Report</a>
     </div>
-
 </div>

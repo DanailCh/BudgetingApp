@@ -1,10 +1,9 @@
 ﻿using App.Core.Contracts;
 using App.Core.Models.Bill;
-using App.Infrastructure.Constants;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 using System.Security.Claims;
+using static App.Core.Constants.TempDataMessagesConstants;
+using static App.Core.Constants.TempDataErrorMessagesConstants;
 
 namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 {
@@ -71,6 +70,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
             }
 
             await billService.CreateBillAsync(model, User.Id());
+            TempData["Message"] = BillCreatedMessage;
             return RedirectToAction("Index");
 
         }
@@ -85,7 +85,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
             }
             if (await billService.BillIsPayedAsync(id))
             {
-                TempData["ErrorMessage"] = "Cannot edit details of a bill that has already been paid.";
+                TempData["ErrorMessage"] = BillEditNotAlowedMessage;
                 return StatusCode(StatusCodes.Status409Conflict);
             }
 
@@ -107,7 +107,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
             }
             if (await billService.BillIsPayedAsync(id))
             {
-                TempData["ErrorMessage"] = "Cannot edit details of a bill that has already been paid.";
+                TempData["ErrorMessage"] = BillEditNotAlowedMessage;
                 return StatusCode(StatusCodes.Status409Conflict);
             }
 
@@ -161,6 +161,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 
 
             await billService.PayBillAsync(model, id);
+            TempData["Message"] = BillPayedMessage;
             return RedirectToAction("Index");
         }
 

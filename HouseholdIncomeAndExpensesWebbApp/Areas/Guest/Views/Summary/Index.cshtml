@@ -2,38 +2,70 @@
 @{
     ViewBag.Title = "All Summaries";
     ViewBag.Text = $"Summarize {ViewBag.Date}";
+    ViewBag.ErrorMessage = TempData["ErrorMessage"];
     ViewBag.Message = TempData["Message"];
 }
 
 
-<h2 class="text-center">@ViewBag.Title</h2>
-<h3 class="text-center">@ViewBag.Message</h3>
+<h1 class="text-center">@ViewBag.Title</h1>@{
+    if (ViewBag.ErrorMessage != null)
+    {
+        <div class="row justify-content-center">
+            <div class="col-6 alert alert-dismissible alert-danger text-center">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                @ViewBag.ErrorMessage
+            </div>
+        </div>
+
+    }
+    if (ViewBag.Message != null)
+    {
+        <div class="row justify-content-center">
+            <div class="col-6 alert alert-dismissible alert-success text-center">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                @ViewBag.Message
+            </div>
+        </div>
+
+    }
+}
 <hr />
 
-<div class="text-center row">
+<div class="row d-flex gap-2 justify-content-evenly">
+<div class="accordion">
     @foreach (var e in Model)
     {
-        <div class="card col-4" style="width: 20rem; ">
-            <div class="card-body">
-                <h5 class="card-title mt-1">@e.Date</h5>
-                <h6 class="card-subtitle mb-2 text-body-secondary">Summary</h6>
-                <p class="card-text">@Html.Raw(e.Summary)</p>                
-                @{
-                    if (e.IsResolved)
-                    {
-                        <p class="mb-0"><span class="fw-bold">Resolved</span></p>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@e.Id" aria-expanded="false" aria-controls="collapse-@e.Id">
+                    @e.Date - Summary
+                </button>
+            </h2>
+            <div id="collapse-@e.Id" class="accordion-collapse collapse">
+                <div class="accordion-body row">
+                    <div class="col-md-12 text-center d-grid gap-2">@Html.Raw(e.Summary)</div>
+                    @{
+                        if (e.IsResolved)
+                        {
+                            <p class="col-md-12 text-center text-success">Resolved</p>
+                        }
+                        else
+                        {
+                                <form class="input-group-sm col-md-12 text-center" asp-controller="Summary" asp-action="Resolve" asp-route-id="@e.Id">
+                                    <input type="submit" value="Resolve" class="btn btn-success col-md-12 text-center" />
+                            </form>
+                        }
                     }
-                    else
-                    {
-                        <form class="input-group-sm " asp-controller="Summary" asp-action="Resolve" asp-route-id="@e.Id">
-                            <input type="submit" value="Resolve" class="fs-6 btn btn-primary mb-3 w-100 p-3 fw-bold" />
-                        </form>
-                    }
-                }
+                </div>
             </div>
         </div>
     }
-    <a asp-controller="Summary" asp-action="Add" class="btn btn-warning mb-2 w-100 p-3 fw-bold">@ViewBag.Text</a>
+</div>
+<div class="row justify-content-around">
+    <div class="col-md-5 d-grid gap-2">
+        <a asp-controller="Summary" asp-action="Add" class="btn btn-success ">@ViewBag.Text</a>
+    </div>
+</div>
 </div>
 
 @section Scripts {

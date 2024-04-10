@@ -57,7 +57,8 @@ namespace App.Core.Services
 
         public async Task<List<MemberSalaryFormViewModel>> GetMemberSalaryFormModelsAsync(string userId)
         {
-            var members = await _context.HouseholdMembers.Where(m => m.UserId == userId && m.DeletedOn == null).Select(m => new MemberSalaryFormViewModel()
+            var allParticipatinMembers=_context.Bills.Where(b=>b.UserId==userId&&b.IsArchived==false&&b.DeletedOn==null).Select(b=>b.PayerId).Distinct().ToList();
+            var members = await _context.HouseholdMembers.Where(m => m.UserId == userId && allParticipatinMembers.Contains(m.Id)).Select(m => new MemberSalaryFormViewModel()
             {
                 Id = m.Id,
                 Name = m.Name,

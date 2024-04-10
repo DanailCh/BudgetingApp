@@ -14,9 +14,10 @@
                 <textarea asp-for="@Model.Content"  class="form-control" aria-required="true"></textarea>
                 <span asp-validation-for="@Model.Content" class="text-danger"></span>
             </div>
-
-            <div class="mb-3">
-                <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Send Feedback" />
+            <div class="row justify-content-around">
+                <div class="col-md-5 d-grid gap-2">
+                <input class="btn btn-success" type="submit" value="Send Feedback" />
+            </div>
             </div>
         </form>
     </div>

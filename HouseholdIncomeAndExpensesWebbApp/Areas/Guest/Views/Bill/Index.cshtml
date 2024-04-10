@@ -1,83 +1,119 @@
 ﻿@model IEnumerable<BillViewModel>
 @{
     ViewBag.Title = $"{ViewBag.Date} bills.";
+    ViewBag.ErrorMessage = TempData["ErrorMessage"];
     ViewBag.Message = TempData["Message"];
 }
 
 
-<h2 class="text-center">@ViewBag.Title</h2>
-<h3 class="text-center">@ViewBag.Message</h3>
-<hr />
+<h1 class="text-center ">@ViewBag.Title</h1>
 
-<div class="text-center row">
+@{
+    if (ViewBag.ErrorMessage!=null)
+    {
+    <div class="row justify-content-center">
+                    <div class="col-6 alert alert-dismissible alert-danger text-center">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        @ViewBag.ErrorMessage
+                    </div>
+    </div>
+
+    }
+    if (ViewBag.Message!=null)
+    {
+    <div class="row justify-content-center">
+       <div class="col-6 alert alert-dismissible alert-success text-center">
+           <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+           @ViewBag.Message
+       </div>
+    </div>
+    }}
+<hr />
+<div class="row d-flex gap-5 justify-content-evenly">
+<div class="row d-flex gap-2 justify-content-evenly">
     @foreach (var e in Model)
     {
-        <div class="card col-4" style="width: 20rem; ">
-            <div class="card-body">
-                <h5 class="card-title mt-1">@e.BillTypeName</h5>                
-                <p class="mb-0"><span class="fw-bold">Cost: </span>@e.Cost</p>
-                @{if (!e.IsPayed)
-                {
-                                <p class="mb-0"><span class="fw-bold">Payed By: None </span></p>  
-                                
-                        <button class="fs-6 btn btn-success mb-2 PayButton" data-target="#hiddenSection-@e.Id">Pay</button>
-                        <section id="hiddenSection-@e.Id" class="hiddenSection" style="display: none;">
-                            <form class="input-group-sm " asp-controller="Bill" asp-action="Pay" asp-route-id="@e.Id">
-                            <label asp-for="@e.PayerId" class="form-label-add-edit">Choose who payed the bill</label>
-                            <div class="form-check">
-                                @foreach (var type in e.Payers)
-                                {
-                                    <input type="radio" name="PayerId" value="@type.Id" class="form-check-input" aria-required="true">
-                                    <label class="form-check-label">@type.Name</label>
-
-                                    <br>
-                                }
-                            </div>
-                            <span asp-validation-for="@e.PayerId" class="text-danger"></span>
-                                <div class="d-grid gap-2">
-                                    <input type="submit" value="Pay" class="fs-6 btn btn-success mb-2" />
-                                </div>                                
-                            </form>
-                        </section>
-                        <a asp-controller="Bill" asp-action="Edit" asp-route-id="@e.Id" class="fs-6 btn btn-warning mb-2 ">Edit</a>
-                        
-                }
-                else
-                {
-                                <p class="mb-0"><span class="fw-bold">Payed By: </span>@e.PayedBy</p>
-                }}
-                
-            </div>
-            <form class="input-group-sm " asp-controller="Bill" asp-action="Delete" asp-route-id="@e.Id">
-                <div class="d-grid gap-2">
-                    <input type="submit" value="Delete" class="btn btn-danger mb-2"
-                       onclick="return confirm('Are you sure you want to delete bill: @e.BillTypeName')" />
+        if (!e.IsPayed)
+        {
+            
+            <div class="card bg-light  col-md-3  justify-content-between" style="max-width: 50rem; min-width:15rem;">
+                <div class="card-header">@e.BillTypeName</div>
+                <div class="card-body">
+                    <h6 class="card-title"><span class="fw-bold">Cost: </span>@e.Cost</h6>
+                    <h6 class="card-title"><span class="fw-bold">Payed By: </span>None</h6>
+                    <div class="row justify-content-center">
+                    <div class="btn-group" role="group" >
+                            <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#payModal">Pay</button>
+                            <a asp-controller="Bill" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning">Edit</a>
+                        <button type="submit" class="btn btn-danger " asp-controller="Bill" asp-action="Delete" asp-route-id="@e.Id" 
+                        onclick="return confirm('Are you sure you want to delete bill: @e.BillTypeName')">Delete</button>
+                    </div>
+                    </div>
                 </div>
-            </form>
+            </div>
            
-        </div>
-    }
+            
 
-    <a asp-controller="Bill" asp-action="Add" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Add a new bill</a>
-    <a asp-controller="BillType" asp-action="Index" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Custom BillTypes</a>
+            <div class="modal" id="payModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title ">Pay @e.BillTypeName  Bill</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body ">
+                            <form class="input-group-sm " asp-controller="Bill" asp-action="Pay" asp-route-id="@e.Id">
+                            <label asp-for="@e.PayerId" class="form-label-add-edit">Choose Member who payed the bill</label>
+                             <div class="row justify-content-around">
+                                 <div class="col-md-12 d-grid gap-2">
+                                   @foreach (var type in e.Payers)
+                                   {
+                                           
+                                     <input type="radio" class="btn-check  form-check-input" name="PayerId" value="@type.Id" id="@type.Id" aria-required="true">
+                                     <label class="btn btn-outline-success form-check-label" for="@type.Id">@type.Name</label>
+                                               
+                                   }
+                                 </div>
+                             </div>  
+                            <span asp-validation-for="@e.PayerId" class="text-danger"></span>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" value="Pay" class="btn btn-primary">Pay</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else{
+            
+            <div class="card text-white bg-success  col-md-3 justify-content-between" style="max-width: 50rem; min-width:15rem;">
+                <div class="card-header">@e.BillTypeName</div>
+                <div class="card-body">
+                    <h6 class="card-title"><span class="fw-bold">Cost: </span>@e.Cost</h6>
+                    <h6 class="card-title"><span class="fw-bold">Payed By: </span>@e.PayedBy</h6>
+                    <form class="card-link " asp-controller="Bill" asp-action="Delete" asp-route-id="@e.Id">
+                        <div class="d-grid gap-2">
+                            <input type="submit" value="Delete" class="btn btn-danger"
+                           onclick="return confirm('Are you sure you want to delete bill: @e.BillTypeName')" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        }
+}
+</div>
+<div class="row justify-content-around">
+    <div class="col-md-5 d-grid gap-2">
+        <a asp-controller="Bill" asp-action="Add" class="btn  btn-success">Add a new bill</a>
+        <a asp-controller="BillType" asp-action="Index" class="btn  btn-primary ">Custom BillTypes</a>
+    </div>
+</div>
 </div>
 
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        $(document).ready(function () {
-            $('.PayButton').click(function () {
-                var targetId = $(this).data('target');
-                $(targetId).toggle();
-
-                
-                if ($(this).text() === 'Pay') {
-                    $(this).text('Close'); 
-                } else {
-                    $(this).text('Pay'); 
-                }
-            });
-        });
-    </script>
 }

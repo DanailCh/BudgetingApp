@@ -3,6 +3,8 @@ using App.Core.Models.BudgetSummary;
 using App.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static App.Core.Constants.TempDataMessagesConstants;
+using static App.Core.Constants.TempDataErrorMessagesConstants;
 
 namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 {
@@ -34,17 +36,17 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 
             if (await householdService.UnderMinimumMembersAsync(User.Id()))
             {
-                TempData["Message"] = "Not enough members";
+                TempData["ErrorMessage"] = NotEnoughMembersMessage;
                 return RedirectToAction(nameof(Index),"Household");
             }
             if (await budgetSummaryService.HasBillsAsync(User.Id())==false)
             {
-                TempData["Message"] = "No Bills to Summarize";
+                TempData["ErrorMessage"] = NoBillsMessage;
                 return RedirectToAction(nameof(Index));
             }
             if (await budgetSummaryService.NotAllBillsPayedAsync(User.Id()))
             {
-                TempData["Message"] = "All Bills must be payed in order to Summarize month!";
+                TempData["ErrorMessage"] = BillsNotPayedMessage;
                 return RedirectToAction(nameof(Index), "Bill");
             }
             var model = await budgetSummaryService.GetMemberSalaryFormModelsAsync(User.Id());
@@ -57,16 +59,9 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         public async Task<IActionResult> Add([FromForm] List<MemberSalaryFormViewModel> model)
         {
             
-            foreach (var member in model)
-            {
-                if (!(await householdService.AllHouseholdMembersAsync(User.Id())).Any(b => b.Id ==member.Id))
-                {
-                    return NotFound();
-                }                
-            }
             if (budgetSummaryService.HouseholdIncomeIsZero(model))
             {
-                TempData["ErrorMessage"] = "Houshold Income must not be 0!";
+                TempData["ErrorMessage"] = IncomeCantBeZeroMessage;
                 return View(model);
             }
 
@@ -75,6 +70,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
                 return View(model);
             }
             await budgetSummaryService.CreateSummary(model, User.Id());
+            TempData["Message"] = SummaryCreatedMessage;
             return RedirectToAction("Index");
         }
 

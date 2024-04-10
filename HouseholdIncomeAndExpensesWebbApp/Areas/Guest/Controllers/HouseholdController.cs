@@ -1,14 +1,13 @@
 ﻿using App.Core.Contracts;
-using App.Core.Models.Bill;
 using App.Core.Models.HouseholdMember;
-using App.Core.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 using System.Security.Claims;
+using static App.Core.Constants.TempDataMessagesConstants;
+using static App.Core.Constants.TempDataErrorMessagesConstants;
 
 namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 {
-    
+
     public class HouseholdController : BaseController
     {
         private readonly IHouseholdService householdService;
@@ -35,7 +34,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
         {
             if (await householdService.OverMembersLimitAsync(User.Id()))
             {
-                TempData["ErrorMessage"] = "Household Member Limit reached";
+                TempData["ErrorMessage"] = OverMemberLimitMessage;
                 return BadRequest();
             }
 
@@ -46,6 +45,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
             }
 
             await householdService.CreateHouseholdMemberAsync(model, User.Id());
+            TempData["Message"] =HouseholdMemberAddedMessage;
             return RedirectToAction("Index");
 
         }

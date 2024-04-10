@@ -11,7 +11,7 @@ namespace App.Infrastructure.Constants
         public static class Bill
         {
             public const string CostMax = "10000000";
-            public const string CostMin = "0";
+            public const string CostMin = "1";
         }
         public static class BillType
         {

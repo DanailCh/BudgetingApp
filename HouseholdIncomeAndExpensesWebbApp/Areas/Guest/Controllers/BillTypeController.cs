@@ -1,14 +1,12 @@
 ﻿using App.Core.Contracts;
-using App.Core.Models.Bill;
 using App.Core.Models.BillType;
-using App.Core.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 using System.Security.Claims;
+using static App.Core.Constants.TempDataMessagesConstants;
 
 namespace HouseholdBudgetingApp.Areas.Guest.Controllers
 {
-    
+
     public class BillTypeController : BaseController
     {
         private readonly IBillTypeService billTypeService;
@@ -41,6 +39,7 @@ namespace HouseholdBudgetingApp.Areas.Guest.Controllers
             }
 
             await billTypeService.CreateCustomBillTypeAsync(model, User.Id());
+            TempData["Message"] = BillTypeAddedMessage;
             return RedirectToAction("Index");
 
         }

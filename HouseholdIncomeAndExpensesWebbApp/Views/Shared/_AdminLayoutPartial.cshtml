@@ -1,11 +1,11 @@
-﻿<ul class="navbar-nav flex-grow-1">
+﻿<ul class="navbar-nav me-auto">
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Messages" asp-action="Index">Messages</a>
+        <a class="nav-link" asp-area="Admin" asp-controller="Messages" asp-action="Index">Messages</a>
     </li>
     @{if (User.IsMasterAdmin())
     {
         <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Admin" asp-action="Index">Manage Admin Accounts</a>
+        <a class="nav-link" asp-area="Admin" asp-controller="Admin" asp-action="Index">Manage Admin Accounts</a>
     </li>
     }}
-</ul>
+</ul>        
