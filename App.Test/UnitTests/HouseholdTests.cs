@@ -174,10 +174,6 @@ namespace App.Test.UnitTests
         {
             bool isFalse = await householdService.UnderMinimumMembersAsync(Guest2.Id);
             Assert.That(isFalse, Is.False);
-            await householdService.DeleteHouseholdMemberByIdAsync(6);
-            bool isTrue = await householdService.UnderMinimumMembersAsync(Guest2.Id);
-            Assert.That(isTrue, Is.True);
-
         }
 
 

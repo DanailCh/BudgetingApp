@@ -102,12 +102,7 @@ namespace App.Test.UnitTests
         [Test]
         public async Task GetMemberSalaryFormModels_ShouldReturnCorrectMemberCountAndData()
         {
-           var householdService = new HouseholdService(_data);
-            var member = new HouseholdMemberFormViewModel()
-            {
-                Name = "Test"
-            };
-            await householdService.CreateHouseholdMemberAsync(member, Guest2.Id);
+           
             var expected = _data.HouseholdMembers.Where(m => m.UserId == Guest2.Id).ToList();
             var expectedMember = expected.First();
 

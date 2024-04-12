@@ -45,6 +45,10 @@ namespace App.Test.UnitTests
         public Bill Bill2 { get; set; }
         public Bill Bill3 { get; set; }
 
+        public Bill Bill4 { get; set; }
+        public Bill Bill5 { get; set; }
+        public Bill Bill6 { get; set; }
+
         public EndMonthSummary Summary { get; set; }
 
         public HouseholdBudget Budget { get; set; }
@@ -251,6 +255,43 @@ namespace App.Test.UnitTests
                 IsArchived = false
             };
             _data.Bills.Add(Bill3);
+
+            Bill4 = new Bill()
+            {
+                Id = 9,
+                BillTypeId = 1,
+                Cost = 100.00M,
+                IsPayed = true,
+                PayerId = 5,
+                UserId = Guest2.Id,
+                Date = dateBill,
+                IsArchived = false
+            };
+            _data.Bills.Add(Bill4);
+            Bill5 = new Bill()
+            {
+                Id = 10,
+                BillTypeId = 3,
+                Cost = 150.00M,
+                IsPayed = true,
+                PayerId = 5,
+                UserId = Guest2.Id,
+                Date = dateBill,
+                IsArchived = false
+            };
+            _data.Bills.Add(Bill5);
+            Bill6 = new Bill()
+            {
+                Id = 11,
+                BillTypeId = 5,
+                Cost = 1050.00M,
+                IsPayed = true,
+                PayerId = 6,
+                UserId = Guest2.Id,
+                Date = dateBill,
+                IsArchived = false
+            };
+            _data.Bills.Add(Bill6);
 
             Budget = new HouseholdBudget()
             {
