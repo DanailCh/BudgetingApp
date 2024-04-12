@@ -28,7 +28,7 @@
                 <div class="fw-bold col-md-9">@e.Title</div>
                 <div class="col-md-2 "><div class="text-end">@date</div></div>
                 <form class="input-group-sm col-md-1 d-flex justify-content-end " asp-controller="Feedback" asp-action="Remove" asp-route-id="@e.Id">
-                   <button type="submit" class="btn btn-dark" aria-label="Close">X</button>
+                            <button type="submit" class="btn btn-dark" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
                 </form>
               </div>                    
             @e.Content

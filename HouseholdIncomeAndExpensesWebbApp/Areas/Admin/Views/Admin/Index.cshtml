@@ -16,7 +16,8 @@
                     <div class="fw-bold">@e.Email</div>                    
                 </div>               
                 <form class="input-group-sm " asp-controller="Admin" asp-action="Delete" asp-route-id="@e.Id">
-                    <button type="submit" class="btn-close" aria-label="Close" onclick="return confirm('Are you sure you want to delete admin: @e.UserName')"></button>
+                    <button type="submit" class="btn btn-dark" aria-label="Close" onclick="return confirm('Are you sure you want to delete admin: @e.UserName')">Delete</button>
+                    
                 </form>
             </li>
         </ol>

@@ -1,20 +1,26 @@
 ﻿<ul class="navbar-nav me-auto">
     <li class="nav-item">
-        <a class="nav-link " asp-area="Guest" asp-controller="Bill" asp-action="Index">Bills</a>
+        <a class="nav-link text-light" style="font-size:1.3rem;" asp-area="Guest" asp-controller="Bill" asp-action="Index"><i class="fa-solid fa-receipt" style="font-size:1.2rem; color:ghostwhite"></i> Bills</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link " asp-area="Guest" asp-controller="Household" asp-action="Index">Household</a>
+        <a class="nav-link text-light" style="font-size:1.3rem;" asp-area="Guest" asp-controller="BillType" asp-action="Index"><i class="fa-regular fa-square-plus" style="font-size:1.2rem; color:ghostwhite"></i> Custom Bill Type</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-light" style="font-size:1.3rem;" asp-area="Guest" asp-controller="Household" asp-action="Index"><i class="fa-solid fa-house-chimney" style="font-size:1.2rem; color:ghostwhite"></i> Household</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-light" style="font-size:1.3rem;" asp-area="Guest" asp-controller="Summary" asp-action="Index"><i class="fa-regular fa-rectangle-list" style="font-size:1.2rem; color:ghostwhite"></i> Summary</a>
     </li>
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Archive</a>
+        <a class="nav-link dropdown-toggle text-light" style="font-size:1.3rem;" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-box-archive" style="font-size:1.2rem; color:ghostwhite"></i> Archive</a>
         <div class="dropdown-menu">
-            <a class="dropdown-item" asp-area="Guest" asp-controller="Archive" asp-action="BillsArchive">Bills Archive</a>
-            <a class="dropdown-item" asp-area="Guest" asp-controller="Archive" asp-action="HouseholdArchive">Household Archive</a>
-            <a class="dropdown-item" asp-area="Guest" asp-controller="Archive" asp-action="SalariesArchive">Members Salaries Archive</a>
+            <a class="dropdown-item" asp-area="Guest" asp-controller="Archive" asp-action="BillsArchive"><i class="fa-solid fa-receipt"></i> Bills Archive</a>
+            <a class="dropdown-item" asp-area="Guest" asp-controller="Archive" asp-action="HouseholdArchive"><i class="fa-solid fa-house"></i> Household Archive</a>
+            <a class="dropdown-item" asp-area="Guest" asp-controller="Archive" asp-action="SalariesArchive"><i class="fa-solid fa-wallet"></i> Members Salaries Archive</a>
 
         </div>
     </li>    
     <li class="nav-item">
-        <a class="nav-link" asp-area="Guest" asp-controller="Feedback" asp-action="Index">Feedback</a>
+        <a class="nav-link text-light" style="font-size:1.3rem;" asp-area="Guest" asp-controller="Feedback" asp-action="Index"> <i class="fa-solid fa-message" style="font-size:1.2rem; color:ghostwhite"></i> Feedback</a>
         </li>
 </ul>

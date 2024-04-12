@@ -27,7 +27,35 @@
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Guest\Data\" />
     <Folder Include="Areas\Guest\Models\" />
-    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Assets\css\all.css" />
+    <None Include="wwwroot\Assets\css\all.min.css" />
+    <None Include="wwwroot\Assets\css\brands.css" />
+    <None Include="wwwroot\Assets\css\brands.min.css" />
+    <None Include="wwwroot\Assets\css\fontawesome.css" />
+    <None Include="wwwroot\Assets\css\fontawesome.min.css" />
+    <None Include="wwwroot\Assets\css\regular.css" />
+    <None Include="wwwroot\Assets\css\regular.min.css" />
+    <None Include="wwwroot\Assets\css\solid.css" />
+    <None Include="wwwroot\Assets\css\solid.min.css" />
+    <None Include="wwwroot\Assets\css\svg-with-js.css" />
+    <None Include="wwwroot\Assets\css\svg-with-js.min.css" />
+    <None Include="wwwroot\Assets\css\v4-font-face.css" />
+    <None Include="wwwroot\Assets\css\v4-font-face.min.css" />
+    <None Include="wwwroot\Assets\css\v4-shims.css" />
+    <None Include="wwwroot\Assets\css\v4-shims.min.css" />
+    <None Include="wwwroot\Assets\css\v5-font-face.css" />
+    <None Include="wwwroot\Assets\css\v5-font-face.min.css" />
+    <None Include="wwwroot\Assets\webfonts\fa-brands-400.ttf" />
+    <None Include="wwwroot\Assets\webfonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\Assets\webfonts\fa-regular-400.ttf" />
+    <None Include="wwwroot\Assets\webfonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\Assets\webfonts\fa-solid-900.ttf" />
+    <None Include="wwwroot\Assets\webfonts\fa-solid-900.woff2" />
+    <None Include="wwwroot\Assets\webfonts\fa-v4compatibility.ttf" />
+    <None Include="wwwroot\Assets\webfonts\fa-v4compatibility.woff2" />
   </ItemGroup>
 
 </Project>

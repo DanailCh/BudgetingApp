@@ -8,52 +8,57 @@
             var severity = message.SeverityTypes.FirstOrDefault(s => s.Id == message.SeverityId);
             var status = message.Statuses.FirstOrDefault(s => s.Id == message.StatusId);
             var date = message.Date.ToString("dd/MMM/yy HH:mm");
-            <div class="accordion" id="accordionPanels">
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@message.Id" aria-expanded="false" aria-controls="collapse-@message.Id">
-                              <div class="col">
-                                   <h3>@message.Title</h3>
-                               </div>
-                               <div class="col">
-                                   <div class="row ">
-                                       @{ if (message.SeverityId != 0)
+                <div class="accordion" id="accordionPanels">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@message.Id" aria-expanded="false" aria-controls="collapse-@message.Id">
+                                  <div class="col">
+                                       <h3>@message.Title</h3>
+                                   </div>
+                                   <div class="col">
+                                       <div class="row ">
+                                           @{ if (message.SeverityId != 0)
                                            {
                                                var textColor=messageService.GetTextColor(severity.Name);
-                                                <h4 class="text-bg-dark text-end text-@textColor">
-                                                    Priority: @severity.Name
-                                                </h4>
+                                                    <div class=" text-end ">
+                                                        <span class="badge bg-@textColor ">
+                                                            Priority: @severity.Name
+                                                        </span>
+                                                        </div>
                                            }}</div>
-                                   <div class="row">
-                                    @{
+                                       <div class="row">
+                                        @{
                                         var color = messageService.GetTextColor(status.Name);
-                                    }
-                                       <h4 class="text-bg-dark text-end text-@color">@status.Name</h4>
+                                        }
+                                        <div class="text-end"><span class="badge bg-@color ">@status.Name</span></div>
+                                       </div>
                                    </div>
-                               </div>
-                      </button>
-                  </h2>
-                 <div id="collapse-@message.Id" class="accordion-collapse collapse ">
-                             <div class="accordion-body">
-                                <figure >
-                                    <blockquote class="blockquote">
-                                      <p>@message.Content</p>
-                                    </blockquote>
-                                    <figcaption class="blockquote-footer text-end">
-                                    Sender: <cite >@message.SenderUsername</cite>                                   
-                                    </figcaption>
-                                    <figcaption class="blockquote-footer text-end">                                        
-                                        Timestamp: <cite>@date</cite>
-                                    </figcaption>
-                                </figure>
-                                 @{if (message.SeverityId==0)
+                          </button>
+                      </h2>
+                     <div id="collapse-@message.Id" class="accordion-collapse collapse ">
+                                 <div class="accordion-body">
+                                    <figure >
+                                        <blockquote class="blockquote">
+                                        <div style="overflow-wrap:break-word;">@message.Content</div>
+                                        </blockquote>
+                                        <figcaption class="blockquote-footer text-end">
+                                        Sender: <cite >@message.SenderUsername</cite>                                   
+                                        </figcaption>
+                                        <figcaption class="blockquote-footer text-end">                                        
+                                            Timestamp: <cite>@date</cite>
+                                        </figcaption>
+                                    </figure>
+                                     @{if (message.SeverityId==0)
                                  {
-                                   <h3 class="text-lg-center">Asign Priority</h3>
-                                    <div class="d-grid gap-2 col-6 mx-auto">
-                                        @foreach (var item in message.SeverityTypes){
+                                            <div class="row d-flex justify-content-center">
+                                            <div class="col-md-6 text-center" style="font-size:2rem">Asign Priority</div>
+                                            </div>
+                                            <div class="row d-flex justify-content-center">
+                                            <div class="btn-group " role="group">
+                                                @foreach (var item in message.SeverityTypes){
                                         var textColor = messageService.GetTextColor(item.Name);
                                        
-                                            <a class="fs-6 btn btn-@textColor mb-3 w-100 p-3 fw-bold"
+                                                    <a  class="btn btn-@textColor "
                                              asp-controller="Messages"
                                              asp-action="AsignPriority"
                                              asp-route-messageId="@message.Id"
@@ -63,12 +68,13 @@
                                              asp-route-statusId="@Model.StatusId"
                                              asp-route-sorting="@((int)Model.Sorting)">@item.Name</a>
                                         }
-                                    </div>
+                                            </div>
+                                            </div>
                                                                  
                                  } else if(status.Name=="In Progress"){
-                                    <div class="d-grid gap-2 col-6 mx-auto">
-                                      
-                                        <a class="fs-6 btn btn-success mb-3 w-100 p-3 fw-bold"
+                                            <div class="row d-flex justify-content-center">
+                                              
+                                                <a class="btn btn-success"
                                            asp-controller="Messages"
                                            asp-action="Complete"
                                            asp-route-messageId="@message.Id"
@@ -76,11 +82,11 @@
                                            asp-route-severityTypeId="@Model.SeverityTypeId"
                                            asp-route-statusId="@Model.StatusId"
                                            asp-route-sorting="@((int)Model.Sorting)">Mark as Done</a>
-                                  </div>}}
+                                          </div>}}
+                                 </div>
                              </div>
                          </div>
                      </div>
-                 </div>
      }
     }    
 </div>

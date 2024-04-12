@@ -1,11 +1,15 @@
 ﻿<ul class="navbar-nav me-auto">
+
     <li class="nav-item">
-        <a class="nav-link" asp-area="Admin" asp-controller="Messages" asp-action="Index">Messages</a>
+        <a class="nav-link text-light" style="font-size:1.3rem;" asp-area="Admin" asp-controller="Messages" asp-action="Index"><i class="fa-solid fa-envelope-open-text" style="font-size:1.2rem; color:ghostwhite"></i> Messages</a>
     </li>
     @{if (User.IsMasterAdmin())
     {
-        <li class="nav-item">
-        <a class="nav-link" asp-area="Admin" asp-controller="Admin" asp-action="Index">Manage Admin Accounts</a>
-    </li>
+        <li class="nav-item ">
+                <a class="nav-link text-light" style="font-size:1.3rem;" asp-area="Admin" asp-controller="Admin" asp-action="Index"><i class="fa-brands fa-creative-commons-by" style="font-size:1.2rem; color:ghostwhite"></i> Manage Admin Accounts</a>
+        </li>
+        <li class="nav-item ">
+                <a class="nav-link text-light" style="font-size:1.3rem;" asp-area="Identity" asp-page="/Account/Register"><i class="fa-solid fa-plus" style="font-size:1.2rem; color:ghostwhite"></i> Create Admin account</a>
+        </li>
     }}
 </ul>        

@@ -8,19 +8,12 @@
     if (User.IsInRole("Guest"))
     {
       <li class="nav-item">
-              <a class="nav-link " asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+                <a class="nav-link " asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="fa-solid fa-bars"></i> @User.Identity?.Name</a>
       </li>
-    } 
-    
-    if (User.IsMasterAdmin())
-    {
-        <li class="nav-item">
-            <a class="nav-link " asp-area="Identity" asp-page="/Account/Register">Create Admin account</a>
-        </li>
-    }
+    }     
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link">Logout</button>
+                <button type="submit" class="nav-link btn btn-link"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
         </form>
     </li>
 }
@@ -30,7 +23,7 @@ else
         <a class="nav-link " asp-area="Identity" asp-page="/Account/Register">Register</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link " asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link " asp-area="Identity" asp-page="/Account/Login"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
     </li>
 }
 </ul>

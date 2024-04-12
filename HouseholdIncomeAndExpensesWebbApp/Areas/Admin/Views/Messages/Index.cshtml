@@ -9,7 +9,7 @@
 
 <form method="get">
     <div class="row">
-        <div class="form-group col-md-3 d-flex justify-content-between">
+        <div class="form-group col-md-4 d-flex justify-content-center">
             <div class="form-group mt-4 p-2">
                 <label asp-for="SeverityTypeId">Select Priority</label>
                 <select asp-for="SeverityTypeId" class="form-control" id="severityId">
@@ -19,7 +19,9 @@
                         <option value="@Type.Id">@Type.Name</option>
                     }
                 </select>
-            </div>
+            </div>           
+        </div>
+        <div class="form-group col-md-4 d-flex justify-content-center">           
             <div class="form-group mt-4 p-2">
                 <label asp-for="StatusId">Select Status</label>
                 <select asp-for="StatusId" class="form-control" id="statusId">
@@ -31,8 +33,7 @@
                 </select>
             </div>
         </div>
-
-        <div class="form-group col-md-3 d-flex justify-content-between">
+        <div class="form-group col-md-4 d-flex justify-content-center">
             <div class="form-group mt-4 p-2">
                 <label asp-for="Sorting">Sort by date</label>
                 <select asp-for="Sorting" class="form-control" id="sortingDate">
@@ -42,8 +43,7 @@
                 </select>
             </div>
         </div>
-
-        <div class="form-group col-md-3 d-flex justify-content-between">
+        <div class="form-group col-md-12 d-flex justify-content-center">
             <div class="form-group mt-4 p-2">
                 <input type="submit" value="Search" class="btn btn-primary" />
             </div>

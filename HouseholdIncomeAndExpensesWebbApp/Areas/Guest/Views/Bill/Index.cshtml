@@ -43,10 +43,10 @@
                     <h6 class="card-title"><span class="fw-bold">Payed By: </span>None</h6>
                     <div class="row justify-content-center">
                     <div class="btn-group" role="group" >
-                            <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#payModal">Pay</button>
-                            <a asp-controller="Bill" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning">Edit</a>
-                        <button type="submit" class="btn btn-danger " asp-controller="Bill" asp-action="Delete" asp-route-id="@e.Id" 
-                        onclick="return confirm('Are you sure you want to delete bill: @e.BillTypeName')">Delete</button>
+                                <button type="button" class="btn btn-success " data-bs-toggle="modal" data-bs-target="#payModal">Pay</button>
+                                <a asp-controller="Bill" asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning">Edit</a>
+                        <button type="submit" class="btn btn-danger " asp-controller="Bill" asp-action="Delete" asp-route-id="@e.Id"
+                                onclick="return confirm('Are you sure you want to delete bill: @e.BillTypeName')">Delete</button>
                     </div>
                     </div>
                 </div>
@@ -108,7 +108,6 @@
 <div class="row justify-content-around">
     <div class="col-md-5 d-grid gap-2">
         <a asp-controller="Bill" asp-action="Add" class="btn  btn-success">Add a new bill</a>
-        <a asp-controller="BillType" asp-action="Index" class="btn  btn-primary ">Custom BillTypes</a>
     </div>
 </div>
 </div>
